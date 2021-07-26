@@ -1,6 +1,7 @@
 #include<gl/glut.h>
 #include<cmath>
 #include"math.h"
+#include"transform.h"
 
 int width = 800, height = 800;
 
@@ -10,8 +11,9 @@ void putpixel(int x, int y, const vec3& col);
 void Line(int x1, int y1, int x2, int y2, const vec3& color);
 void triangle(vec3i v1, vec3i v2, vec3i v3, const vec3& color);
 void fillTriangle(vec3i v1, vec3i v2, vec3i v3, const vec3& color);
-void cube(vec3 v0, vec3 v1, vec3 v2, vec3 v3, vec3 v4, vec3 v5, vec3 v6, vec3 v7, const vec3& color);
+void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color);
 void getProjection(vec3& v);
+//void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color);
 
 void putpixel(int x, int y, const vec3& col) {
     glColor3f(col.x,col.y,col.z);
@@ -125,7 +127,7 @@ void fillTriangle(vec2i v1, vec2i v2, vec2i v3, const vec3& color) {
     }
 }
 
-void cube(vec3 v0, vec3 v1, vec3 v2, vec3 v3, vec3 v4, vec3 v5, vec3 v6, vec3 v7, const vec3& color) {
+void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color) {
     getProjection(v0);
     getProjection(v1);
     getProjection(v2);
@@ -148,11 +150,24 @@ void cube(vec3 v0, vec3 v1, vec3 v2, vec3 v3, vec3 v4, vec3 v5, vec3 v6, vec3 v7
     Line(v2.x, v2.y, v6.x, v6.y, color);
     Line(v3.x, v3.y, v7.x, v7.y, color);
 
+    /*fillTriangle(v0,v3,v2, color);
+    fillTriangle(v0, v1, v2, color);
+    fillTriangle(v0, v4, v7, color);
+    fillTriangle(v0, v1, v4, color);
+    fillTriangle(v0, v3, v2, color);
+    fillTriangle(v0, v3, v2, color);
+    fillTriangle(v0, v3, v2, color);
+    fillTriangle(v0, v3, v2, color);
+    fillTriangle(v0, v3, v2, color);
+    fillTriangle(v0, v3, v2, color);
+    fillTriangle(v0, v3, v2, color);*/
+
+
 }
 
 void getProjection(vec3& v) {
     float xv, yv, zv, zvp = 0, xp, yp, zp;
-    float xprp = 100, yprp =100, zprp = 100;
+    float xprp = 450, yprp =450, zprp = 450;
     zp = zvp;
     float u = (zvp - v.z) / (zprp - v.z);
     xp = v.x - ((zvp - v.z) / (zprp - v.z)) * (v.x - xprp);
@@ -160,5 +175,39 @@ void getProjection(vec3& v) {
     v.x = xp;
     v.y = yp;
     v.z = zp;
-    std::cout << v.x << " " << v.y << " " << std::endl;
+    //std::cout << v.x << " " << v.y << " " << std::endl;
+}
+
+void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color) {
+    float val = 45;
+    rotateY(v0, val);
+    rotateY(v1, val);
+    rotateY(v2, val);
+    rotateY(v3, val);
+    rotateY(v4, val);
+    rotateY(v5, val);
+    rotateY(v6, val);
+    rotateY(v7, val);
+
+    getProjection(v0);
+    getProjection(v1);
+    getProjection(v2);
+    getProjection(v3);
+    getProjection(v4);
+    getProjection(v5);
+    getProjection(v6);
+    getProjection(v7);
+
+    Line(v0.x, v0.y, v1.x, v1.y, color);
+    Line(v1.x, v1.y, v2.x, v2.y, color);
+    Line(v2.x, v2.y, v3.x, v3.y, color);
+    Line(v3.x, v3.y, v0.x, v0.y, color);
+    Line(v4.x, v4.y, v5.x, v5.y, color);
+    Line(v5.x, v5.y, v6.x, v6.y, color);
+    Line(v6.x, v6.y, v7.x, v7.y, color);
+    Line(v7.x, v7.y, v4.x, v4.y, color);
+    Line(v0.x, v0.y, v4.x, v4.y, color);
+    Line(v1.x, v1.y, v5.x, v5.y, color);
+    Line(v2.x, v2.y, v6.x, v6.y, color);
+    Line(v3.x, v3.y, v7.x, v7.y, color);
 }

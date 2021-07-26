@@ -1,7 +1,7 @@
 ﻿  main.cpp
-C:\Users\Yaman\source\repos\try\includes.h(26,16): warning C4101: 'k': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(26,9): warning C4101: 'steps': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(154,11): warning C4101: 'xv': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(154,15): warning C4101: 'yv': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(154,19): warning C4101: 'zv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(28,16): warning C4101: 'k': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(28,9): warning C4101: 'steps': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(169,11): warning C4101: 'xv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(169,15): warning C4101: 'yv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(169,19): warning C4101: 'zv': unreferenced local variable
   try.vcxproj -> C:\Users\Yaman\source\repos\try\Debug\try.exe

@@ -25,14 +25,15 @@ void display() {
     triangle(vec2i{ 100,500 }, vec2i{ 500,100 }, vec2i{ 500, 500 }, col2);*/
 
     vec3 v0 = { 300,600,0 };
-    vec3 v1 = { 600,300,0 };
+    vec3 v1 = { 600,600,0 };
     vec3 v2 = { 600,300,0 };
     vec3 v3 = { 300,300,0 };
     vec3 v4 = { 300,600,-300 };
-    vec3 v5 = { 600,300,-300 };
+    vec3 v5 = { 600,600,-300 };
     vec3 v6 = { 600,300,-300 };
     vec3 v7 = { 300,300,-300 };
-    cube(v0,v1,v2,v3,v4,v5,v6,v7,col1);
+    //cube(v0,v1,v2,v3,v4,v5,v6,v7,col1);
+    rotateCube(v0, v1, v2, v3, v4, v5, v6, v7, col1);
 
     glFlush();
     glutSwapBuffers();
@@ -50,3 +51,4 @@ void reshape(int w, int h) {
     glLoadIdentity();
     glutPostRedisplay();
 }
+
