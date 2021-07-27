@@ -9,16 +9,36 @@ int main(int argc, char** argv){
     glutCreateWindow("Project");
 
     glutReshapeFunc(reshape);
-    glutDisplayFunc(display);
+    glutIdleFunc(display);
+    glutDisplayFunc(draw);
     glutMainLoop();
 
     return 0;
+}
+
+void Spin() {
+    val = 0;
+    if (val > 360) {
+        val=0;
+    }
+    else {
+        val = val+5;
+    }
+
+    glutPostRedisplay();
 }
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
 
+    draw();
+
+    glFlush();
+    glutSwapBuffers();
+}
+
+void draw() {
     vec3 col1 = { 1.0,0.0,0.0 };
     vec3 col2 = { 0.0,1.0,0.0 };
     /*triangle(vec2i{ 100,100 }, vec2i{ 100,500 }, vec2i{ 500, 100 }, col1);
@@ -32,11 +52,8 @@ void display() {
     vec3 v5 = { 600,600,-300 };
     vec3 v6 = { 600,300,-300 };
     vec3 v7 = { 300,300,-300 };
-    //cube(v0,v1,v2,v3,v4,v5,v6,v7,col1);
-    rotateCube(v0, v1, v2, v3, v4, v5, v6, v7, col1);
-
-    glFlush();
-    glutSwapBuffers();
+    //cube(v0,v1,v2,v3,v4,v5,v6,v7,col1,perspective);
+    rotateCube(v0, v1, v2, v3, v4, v5, v6, v7, col1, perspective);
 }
 
 void reshape(int w, int h) {

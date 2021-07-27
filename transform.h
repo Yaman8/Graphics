@@ -20,6 +20,14 @@ void rotateY(vec3& v1, float angle) {
 	std::cout <<v1.x<<" "<<v1.y<<" "<<v1.z <<std::endl;
 
 }
+
+void translate(vec3& v1, vec3& points){
+	v1.x += points.x;
+	v1.y += points.y;
+	v1.z += points.z;
+	std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
+
+}
 //vec4 matrix_product(vec4& v, float matrix[4][4])
 //{
 //	vec3 temp;

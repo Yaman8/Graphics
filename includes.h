@@ -4,6 +4,9 @@
 #include"transform.h"
 
 int width = 800, height = 800;
+const float l = 1.6;
+bool perspective = false;
+float val = 0;
 
 void reshape(int w, int h);
 void display();
@@ -11,9 +14,11 @@ void putpixel(int x, int y, const vec3& col);
 void Line(int x1, int y1, int x2, int y2, const vec3& color);
 void triangle(vec3i v1, vec3i v2, vec3i v3, const vec3& color);
 void fillTriangle(vec3i v1, vec3i v2, vec3i v3, const vec3& color);
-void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color);
-void getProjection(vec3& v);
-//void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color);
+void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective);
+void getProjection(vec3& v, bool perspective);
+void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective);
+void Spin();
+void draw();
 
 void putpixel(int x, int y, const vec3& col) {
     glColor3f(col.x,col.y,col.z);
@@ -127,15 +132,16 @@ void fillTriangle(vec2i v1, vec2i v2, vec2i v3, const vec3& color) {
     }
 }
 
-void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color) {
-    getProjection(v0);
-    getProjection(v1);
-    getProjection(v2);
-    getProjection(v3);
-    getProjection(v4);
-    getProjection(v5);
-    getProjection(v6);
-    getProjection(v7);
+void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective) {
+    getProjection(v0, perspective);
+    getProjection(v1, perspective);
+    getProjection(v2, perspective);
+    getProjection(v3, perspective);
+    getProjection(v4, perspective);
+    getProjection(v5, perspective);
+    getProjection(v6, perspective);
+    getProjection(v7, perspective);
+
 
     Line(v0.x, v0.y, v1.x, v1.y,color);
     Line(v1.x, v1.y, v2.x, v2.y,color);
@@ -165,21 +171,60 @@ void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, 
 
 }
 
-void getProjection(vec3& v) {
-    float xv, yv, zv, zvp = 0, xp, yp, zp;
-    float xprp = 450, yprp =450, zprp = 450;
-    zp = zvp;
-    float u = (zvp - v.z) / (zprp - v.z);
-    xp = v.x - ((zvp - v.z) / (zprp - v.z)) * (v.x - xprp);
-    yp = v.y - ((zvp - v.z) / (zprp - v.z)) * (v.y - yprp);
-    v.x = xp;
-    v.y = yp;
-    v.z = zp;
+void getProjection(vec3& v,bool perspective) {
+    if (perspective) {
+        float xv, yv, zv, zvp = 0, xp, yp, zp;
+        float xprp = 450, yprp = 450, zprp = 450;
+        zp = zvp;
+        float u = (zvp - v.z) / (zprp - v.z);
+        xp = v.x - ((zvp - v.z) / (zprp - v.z)) * (v.x - xprp);
+        yp = v.y - ((zvp - v.z) / (zprp - v.z)) * (v.y - yprp);
+        v.x = xp;
+        v.y = yp;
+        v.z = zp;
+    }
+    else {
+        float xv, yv, zv, zvp = 0, xp, yp, zp, phi = 45, alpha = 45;
+        float xprp, yprp, zprp;
+        xp = v.x + l * cos(phi);
+        yp = v.y + l * sin(phi);
+        float l1 = 0;
+        xp = v.x + l1 * (zvp - v.z) * cos(phi);
+        yp = v.y + l1 * (zvp - v.z) * sin(phi);
+        v.x = xp;
+        v.y = yp;
+    }
     //std::cout << v.x << " " << v.y << " " << std::endl;
 }
 
-void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color) {
-    float val = 45;
+void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective) {
+    getProjection(v0, perspective);
+    getProjection(v1, perspective);
+    getProjection(v2, perspective);
+    getProjection(v3, perspective);
+    getProjection(v4, perspective);
+    getProjection(v5, perspective);
+    getProjection(v6, perspective);
+    getProjection(v7, perspective);
+
+    vec3 t = { -450,-450,150 };
+    vec3 r = { 450,450,-150 };
+
+    if (val > 360) {
+        val = 0;
+    }
+    else {
+        val = val+5;
+    }
+    translate(v0, t);
+    translate(v1, t);
+    translate(v2, t);
+    translate(v3, t);
+    translate(v4, t);
+    translate(v5, t);
+    translate(v6, t);
+    translate(v7, t);
+
     rotateY(v0, val);
     rotateY(v1, val);
     rotateY(v2, val);
@@ -189,14 +234,16 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     rotateY(v6, val);
     rotateY(v7, val);
 
-    getProjection(v0);
-    getProjection(v1);
-    getProjection(v2);
-    getProjection(v3);
-    getProjection(v4);
-    getProjection(v5);
-    getProjection(v6);
-    getProjection(v7);
+    translate(v0, r);
+    translate(v1, r);
+    translate(v2, r);
+    translate(v3, r);
+    translate(v4, r);
+    translate(v5, r);
+    translate(v6, r);
+    translate(v7, r);
+
+    
 
     Line(v0.x, v0.y, v1.x, v1.y, color);
     Line(v1.x, v1.y, v2.x, v2.y, color);
@@ -210,4 +257,5 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     Line(v1.x, v1.y, v5.x, v5.y, color);
     Line(v2.x, v2.y, v6.x, v6.y, color);
     Line(v3.x, v3.y, v7.x, v7.y, color);
+
 }
