@@ -4,6 +4,7 @@
 #include<cmath>
 
 void rotateY(vec3& v1 ,float angle);
+void rotateX(vec3& v1, float angle);
 vec4 matrix(vec4& v, float matrix[4][4]);
 
 void rotateY(vec3& v1, float angle) {
@@ -18,6 +19,21 @@ void rotateY(vec3& v1, float angle) {
 	v1.z = v1.z*cos(ang)-v1.x*sin(ang);
 
 	std::cout <<v1.x<<" "<<v1.y<<" "<<v1.z <<std::endl;
+
+}
+
+void rotateX(vec3& v1, float angle) {
+	float ang = angle * 3.1456 / 180;
+	float composite[4][4] = { {1,0,0,0},
+							{0,cos(ang),-sin(ang),0},
+							{0,sin(ang),cos(ang),0},
+							{0,0,0,1}
+	};
+	v1.x = v1.x;
+	v1.y = v1.y * cos(ang) - v1.z * sin(ang);
+	v1.z = v1.y * sin(ang) + v1.z * cos(ang);
+
+	std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
 
 }
 

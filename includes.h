@@ -8,16 +8,20 @@ const float l = 1.6;
 bool perspective = false;
 float val = 0;
 
+vec3 red = { 1.0,0.0,0.0 };
+vec3 green = { 0.0,1.0,0.0 };
+vec3 blue = { 0.0,0.0,1.0 };
+vec3 white = { 1,1,1 };
+
 void reshape(int w, int h);
 void display();
 void putpixel(int x, int y, const vec3& col);
 void Line(int x1, int y1, int x2, int y2, const vec3& color);
-void triangle(vec3i v1, vec3i v2, vec3i v3, const vec3& color);
-void fillTriangle(vec3i v1, vec3i v2, vec3i v3, const vec3& color);
+void triangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color);
+void fillTriangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color);
 void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective);
 void getProjection(vec3& v, bool perspective);
 void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective);
-void Spin();
 void draw();
 
 void putpixel(int x, int y, const vec3& col) {
@@ -78,14 +82,14 @@ void Line(int x1, int y1, int x2, int y2, const vec3& color)
     putpixel(x, y,color);
 }
 
-void triangle(vec2i v1, vec2i v2, vec2i v3, const vec3& color) {
+void triangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color) {
     //fillTriangle(v1, v2, v3, color);
     Line(v1.x, v1.y, v2.x, v2.y, color);
     Line(v1.x, v1.y, v3.x, v3.y, color);
     Line(v3.x, v3.y, v2.x, v2.y, color);
 }
 
-void fillTriangle(vec2i v1, vec2i v2, vec2i v3, const vec3& color) {
+void fillTriangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color) {
     if (v1.y == v2.y && v2.y == v3.y) return;
     //Bubble sort on y-position
     if (v1.y > v2.y) { std::swap(v1, v2); }
@@ -243,7 +247,17 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     translate(v6, r);
     translate(v7, r);
 
-    
+    //fillTriangle(v0, v3, v2, red);
+    //fillTriangle(v0, v1, v2, green);
+    //fillTriangle(v0, v7, v3, white);
+    //fillTriangle(v0, v4, v3, white);
+    //fillTriangle(v1, v5, v6, blue);
+    //fillTriangle(v1, v6, v2, green);
+    //fillTriangle(v4, v5, v6, color);
+    //fillTriangle(v4, v7, v6, color);
+    //fillTriangle(v0, v7, v4, color);
+    //fillTriangle(v0, v3, v2, color);
+    //fillTriangle(v0, v3, v2, color);
 
     Line(v0.x, v0.y, v1.x, v1.y, color);
     Line(v1.x, v1.y, v2.x, v2.y, color);
