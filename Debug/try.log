@@ -1,14 +1,15 @@
 ﻿  main.cpp
-C:\Users\Yaman\source\repos\try\includes.h(55,16): warning C4101: 'k': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(55,9): warning C4101: 'steps': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(198,15): warning C4101: 'xv': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(198,19): warning C4101: 'yv': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(198,23): warning C4101: 'zv': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(210,21): warning C4101: 'yprp': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(209,44): warning C4101: 'zp': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(209,15): warning C4101: 'xv': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(210,15): warning C4101: 'xprp': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(210,27): warning C4101: 'zprp': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(209,19): warning C4101: 'yv': unreferenced local variable
-C:\Users\Yaman\source\repos\try\includes.h(209,23): warning C4101: 'zv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(56,16): warning C4101: 'k': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(56,9): warning C4101: 'steps': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(170,15): warning C4101: 'xv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(170,19): warning C4101: 'yv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(170,23): warning C4101: 'zv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(182,21): warning C4101: 'yprp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(181,44): warning C4101: 'zp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(181,15): warning C4101: 'xv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(182,15): warning C4101: 'xprp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(182,27): warning C4101: 'zprp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(181,19): warning C4101: 'yv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(181,23): warning C4101: 'zv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\main.cpp(42,23): warning C4018: '<': signed/unsigned mismatch
   try.vcxproj -> C:\Users\Yaman\source\repos\try\Debug\try.exe

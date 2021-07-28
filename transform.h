@@ -112,3 +112,13 @@ void translate(Point& v1, Point& points){
 //	return temp;
 //}
 
+void transate_polygon(Point& pt, Point translate)
+{
+	pt = pt + translate;
+}
+
+void scale_polygon(Point& pt, Point scale)
+{
+
+	pt = pt.scaleProduct(scale);
+}

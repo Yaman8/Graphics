@@ -9,7 +9,7 @@
 
 Camera camera = Camera(Point{ 0.0f,0.0f,3.0f });
 
-int width = 1024, height = 768;
+int width = 800, height = 800;
 const float l = 1.6;
 bool perspective = false, firstMouse=true;
 float val = 0;
@@ -22,7 +22,6 @@ float yfactor = height / 8.0f;
 
 void processKeys(unsigned char key, int x, int y);
 void processMouse(int xpos, int ypos);
-vec3 Convert_to_Screen(vec3& pt);
 
 vec3 red = { 1.0,0.0,0.0 };
 vec3 green = { 0.0,1.0,0.0 };
@@ -41,6 +40,8 @@ void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Poin
 void getProjection(Point& v, bool perspective);
 void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective);
 void draw();
+void fillBottomFlatTriangle(Point v1, Point v2, Point v3, const vec3& color);
+void fillTopFlatTriangle(Point v1, Point v2, Point v3, const vec3& color);
 
 void putpixel(int x, int y, const vec3& col) {
     glColor3f(col.x,col.y,col.z);
@@ -108,49 +109,20 @@ void triangle(Point v1, Point v2, Point v3, const vec3& color) {
 }
 
 void fillTriangle(Point v1, Point v2, Point v3, const vec3& color) {
-    if (v1.y == v2.y && v2.y == v3.y) return;
-    //Bubble sort on y-position
-    if (v1.y > v2.y) { std::swap(v1, v2); }
-    if (v1.y > v3.y) { std::swap(v1, v3); }
+    if (v1.y > v2.y) { std::swap(v2, v1); }
+    if (v1.y > v3.y) { std::swap(v3, v1); }
     if (v2.y > v3.y) { std::swap(v3, v2); }
 
-    //divide triangle into two halves
-
-    int height = v3.y - v1.y;
-
-    for (int y = v1.y; y <= v2.y; y++)
+    if (int(v2.y) == int(v3.y)) { fillBottomFlatTriangle(v1, v2, v3, color); }
+    else if (int(v1.y) == int(v2.y)) { fillTopFlatTriangle(v1, v2, v3, color); }
+    else
     {
-        int partialHeight = v2.y - v1.y + 1; // +1 because both upper and lower limit is included
-
-        float alpha = (float)(y - v1.y) / height;// be careful with divisions by zero 
-        if (partialHeight != 0)
-        {
-            float beta = (float)(y - v1.y) / partialHeight;
-            int Ax = (v1.x + (v3.x - v1.x) * alpha), Ay = v1.y + (v3.y - v1.y) * alpha;
-            int Bx = v1.x + (v2.x - v1.x) * beta, By = v1.y + (v2.y - v1.y) * beta;
-            if (Ax > Bx) { std::swap(Ax, Bx); }
-            for (int j = Ax; j <= Bx; j++)
-                putpixel(j, y, color);
-        }
-
-    }
-
-    for (int y = v2.y; y <= v3.y; y++)
-    {
-        int partialHeight = v3.y - v2.y + 1; // +1 because both upper and lower limit is included
-
-        float alpha = (float)(y - v1.y) / height;
-        if (partialHeight != 0)
-        {
-            float beta = (float)(y - v2.y) / partialHeight; // be careful with divisions by zero 
-
-            int Ax = v1.x + (v3.x - v1.x) * alpha, Ay = v1.y + (v3.y - v1.y) * alpha;
-            int Bx = v2.x + (v3.x - v2.x) * beta, By = v2.y + (v3.y - v2.y) * beta;
-            if (Ax > Bx) { std::swap(Ax, Bx); }
-            for (int j = Ax; j <= Bx; j++)
-                putpixel(j, y, color);
-        }
-
+        // general case - split the triangle in a topflat and bottom-flat one
+        Point* v4 = new Point({
+            (v1.x + ((float)(v2.y - v1.y) / (float)(v3.y - v1.y)) * (v3.x - v1.x)),v2.y, 0
+            });
+        fillBottomFlatTriangle(v1, v2, *v4, color);
+        fillTopFlatTriangle(v2, *v4, v3, color);
     }
 }
 
@@ -221,7 +193,7 @@ void getProjection(Point& v,bool perspective) {
 
 void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective) {
     Point camera;
-    Point v = { 300,600,0 };
+    Point v = { 300,600,80 };
     camera.x = v.x - cv.x;
     camera.y = v.y - cv.y;
     camera.z = v.z - cv.z;
@@ -252,6 +224,15 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
     translate(v5, t);
     translate(v6, t);
     translate(v7, t);
+
+    //rotateX(v0, val);
+    //rotateX(v1, val);
+    //rotateX(v2, val);
+    //rotateX(v3, val);
+    //rotateX(v4, val);
+    //rotateX(v5, val);
+    //rotateX(v6, val);
+    //rotateX(v7, val);
 
     rotateY(v0, val);
     rotateY(v1, val);
@@ -367,3 +348,48 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
 //    pt.z = (pt.z) * cubeH;
 //    return pt;
 //}
+
+void fillBottomFlatTriangle(Point v1, Point v2, Point v3, const vec3& color)
+{
+    float invslope1 = (v2.x - v1.x) / (v2.y - v1.y);
+    // cout <<"a"<< (v2.x - v1.x) / (v2.y - v1.y)<<endl;
+    float invslope2 = (v3.x - v1.x) / (v3.y - v1.y);
+
+    float curx1 = v1.x;
+    float curx2 = v1.x;
+
+    Line(v1.x, v1.y, v2.x, v2.y, color);
+    Line(v2.x, v2.y, v3.x, v3.y, color);
+    Line(v3.x, v3.y, v1.x, v1.y, color);
+
+    for (int scanlineY = v1.y; scanlineY < v2.y - 0.5f; scanlineY++)
+    {
+        // if (scanlineY == v2.y)
+        // {
+        //     std::cout << "x" << curx1 << "," << curx2 << std::endl;
+        //     std::cout << v2.y << endl;
+        // }
+        Line(curx1, scanlineY, curx2, scanlineY, color);
+        curx1 += invslope1;
+        curx2 += invslope2;
+    }
+}
+
+void fillTopFlatTriangle(Point v1, Point v2, Point v3, const vec3& color)
+{
+    float invslope1 = (v3.x - v1.x) / (v3.y - v1.y);
+    float invslope2 = (v3.x - v2.x) / (v3.y - v2.y);
+
+    float curx1 = v3.x;
+    float curx2 = v3.x;
+    Line(v1.x, v1.y, v2.x, v2.y, color);
+    Line(v2.x, v2.y, v3.x, v3.y, color);
+    Line(v3.x, v3.y, v1.x, v1.y, color);
+
+    for (int scanlineY = v3.y; scanlineY > v1.y; scanlineY--)
+    {
+        Line(curx1, scanlineY, curx2, scanlineY, color);
+        curx1 -= invslope1;
+        curx2 -= invslope2;
+    }
+}

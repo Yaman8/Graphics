@@ -65,6 +65,7 @@ private:
 
 Camera::Camera(Point position, Point up, float yaw, float pitch) : Front(Point{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
+    std::cout << "camera";
     Position = position;
     WorldUp = up;
     Yaw = yaw;
@@ -74,6 +75,7 @@ Camera::Camera(Point position, Point up, float yaw, float pitch) : Front(Point{ 
 
 Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(Point{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
+    std::cout << "camera camera";
     Position = Point{ posX, posY, posZ };
     WorldUp = Point{ upX, upY, upZ };
     Yaw = yaw;

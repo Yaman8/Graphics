@@ -14,6 +14,16 @@ struct Point {
 	float yfactor = h / 8.0f;
 	float cube_height = cH / 8.0f;
 
+    Point Convert_to_Screen(Point& pt) const
+    {
+        pt.x = (pt.x + 1.0f) * xfactor;
+        pt.y = (pt.y + 1.0f) * yfactor;
+        // pt.x = (pt.x) * xfactor;
+        // pt.y = (pt.y) * yfactor;
+        pt.z = (pt.z) * cube_height;
+        return pt;
+    }
+
     Point operator+(Point& translate)
     {
         return { x + translate.x, y + translate.y, z + translate.z, w };

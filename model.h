@@ -15,6 +15,7 @@ std::vector<Triangle> load(std::string filename)
         std::cout << "File cannot be opened \n";
         exit(-1);
     }
+    //std::cout << "open";
     // Local cache of verts
     std::vector<Point> verts;
     std::vector<Triangle>triangles;
