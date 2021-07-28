@@ -7,11 +7,12 @@ int width = 800, height = 800;
 const float l = 1.6;
 bool perspective = false;
 float val = 0;
+vec3 cv = {0,0,8 };
 
 vec3 red = { 1.0,0.0,0.0 };
 vec3 green = { 0.0,1.0,0.0 };
 vec3 blue = { 0.0,0.0,1.0 };
-vec3 white = { 1,1,1 };
+vec3 white = { 1,1,0 };
 
 void reshape(int w, int h);
 void display();
@@ -202,6 +203,12 @@ void getProjection(vec3& v,bool perspective) {
 }
 
 void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective) {
+    vec3 camera;
+    vec3 v = { 300,600,0 };
+    camera.x = v.x - cv.x;
+    camera.y = v.y - cv.y;
+    camera.z = v.z - cv.z;
+
     getProjection(v0, perspective);
     getProjection(v1, perspective);
     getProjection(v2, perspective);
@@ -218,7 +225,7 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
         val = 0;
     }
     else {
-        val = val+5;
+        val = val + 1.5;
     }
     translate(v0, t);
     translate(v1, t);
@@ -247,17 +254,59 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     translate(v6, r);
     translate(v7, r);
 
-    //fillTriangle(v0, v3, v2, red);
-    //fillTriangle(v0, v1, v2, green);
-    //fillTriangle(v0, v7, v3, white);
-    //fillTriangle(v0, v4, v3, white);
-    //fillTriangle(v1, v5, v6, blue);
-    //fillTriangle(v1, v6, v2, green);
-    //fillTriangle(v4, v5, v6, color);
-    //fillTriangle(v4, v7, v6, color);
-    //fillTriangle(v0, v7, v4, color);
-    //fillTriangle(v0, v3, v2, color);
-    //fillTriangle(v0, v3, v2, color);
+    
+
+    vec3 normal0 = GetNormal(v0, v1, v2);
+    vec3 normal1 = GetNormal(v1, v5, v6);
+    vec3 normal2 = GetNormal(v0, v4, v7);
+    vec3 normal3 = GetNormal(v4, v5, v7);
+    //vec3 normal4 = GetNormal(v0, v1, v2);
+    //vec3 normal5 = GetNormal(v0, v1, v2);
+
+    if (dot(camera, normal0) > 0) {
+        std::cout<<"Not drawn0"<<std::endl;
+    }
+    else {
+        fillTriangle(v0, v3, v2, red);
+        fillTriangle(v0, v1, v2, red);
+    }
+
+    if (dot(camera, normal1) > 0) {
+        std::cout << "Not drawn1" << std::endl;
+    }
+    else {
+        fillTriangle(v1, v5, v2, blue);
+        fillTriangle(v5, v6, v2, blue);
+    }
+
+    if (dot(camera, normal2) > 0) {
+        std::cout << "Not drawn2" << std::endl;
+    }
+    else {
+        fillTriangle(v0, v7, v3, white);
+        fillTriangle(v0, v7, v4, white);
+    }
+
+    if (dot(camera, normal3) > 0) {
+        std::cout << "Not drawn3" << std::endl;
+    }
+    else {
+        fillTriangle(v4, v5, v6, green);
+        fillTriangle(v4, v7, v6, green);
+
+    }
+  /*  fillTriangle(v0, v3, v2, red);
+    fillTriangle(v0, v1, v2, red);
+    fillTriangle(v0, v7, v3, white);
+    fillTriangle(v3, v7, v4, white);
+    fillTriangle(v1, v5, v2, blue);
+    fillTriangle(v5, v6, v2, blue);
+    fillTriangle(v4, v5, v6, green);
+    fillTriangle(v4, v7, v6, green);
+    fillTriangle(v0, v7, v4, color);
+    fillTriangle(v0, v3, v2, color);
+    fillTriangle(v0, v3, v2, color);*/
+
 
     Line(v0.x, v0.y, v1.x, v1.y, color);
     Line(v1.x, v1.y, v2.x, v2.y, color);

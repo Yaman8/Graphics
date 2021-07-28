@@ -6,6 +6,32 @@
 void rotateY(vec3& v1 ,float angle);
 void rotateX(vec3& v1, float angle);
 vec4 matrix(vec4& v, float matrix[4][4]);
+vec3 GetNormal(vec3 v0, vec3 v1, vec3 v2);
+float dot(vec3 a, vec3 b);
+
+float dot(vec3 a, vec3 b) {
+	float c = a.x * b.x + a.y * b.y + a.z * b.z;
+	return c;
+}
+
+vec3 GetNormal(vec3 v0, vec3 v1, vec3 v2) {
+	vec3 a, b;
+	a.x = v0.x - v1.x;
+	a.y = v0.y - v1.y;
+	a.z = v0.z - v1.z;
+	b.x = v0.x - v2.x;
+	b.y = v0.y - v2.y;
+	b.z = v0.z - v2.z;
+	vec3 ret;
+	ret.x = a.y * b.z - b.y * a.z;
+	ret.y = b.x * a.z - a.x * b.z;
+	ret.z = a.x * b.y - b.x * a.y;
+
+	std::cout << ret.x << " " << ret.y << " " << ret.z << std::endl;
+	return ret;
+
+}
+
 
 void rotateY(vec3& v1, float angle) {
 	float ang = angle * 3.1456 / 180;
@@ -18,7 +44,7 @@ void rotateY(vec3& v1, float angle) {
 	v1.y = v1.y;
 	v1.z = v1.z*cos(ang)-v1.x*sin(ang);
 
-	std::cout <<v1.x<<" "<<v1.y<<" "<<v1.z <<std::endl;
+	//std::cout <<v1.x<<" "<<v1.y<<" "<<v1.z <<std::endl;
 
 }
 
@@ -33,7 +59,7 @@ void rotateX(vec3& v1, float angle) {
 	v1.y = v1.y * cos(ang) - v1.z * sin(ang);
 	v1.z = v1.y * sin(ang) + v1.z * cos(ang);
 
-	std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
+	//std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
 
 }
 
@@ -41,7 +67,7 @@ void translate(vec3& v1, vec3& points){
 	v1.x += points.x;
 	v1.y += points.y;
 	v1.z += points.z;
-	std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
+	//std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
 
 }
 //vec4 matrix_product(vec4& v, float matrix[4][4])
