@@ -8,6 +8,13 @@ void rotateX(vec3& v1, float angle);
 vec4 matrix(vec4& v, float matrix[4][4]);
 vec3 GetNormal(vec3 v0, vec3 v1, vec3 v2);
 float dot(vec3 a, vec3 b);
+vec3 cross(vec3 a, vec3 b);
+vec3 normalize(vec3 in);
+
+vec3 normalize(vec3 in) {
+	float temp = sqrt(in.x * in.x + in.y * in.y + in.z * in.z);
+	return vec3(in * 1 / temp);
+}
 
 float dot(vec3 a, vec3 b) {
 	float c = a.x * b.x + a.y * b.y + a.z * b.z;
@@ -30,6 +37,14 @@ vec3 GetNormal(vec3 v0, vec3 v1, vec3 v2) {
 	std::cout << ret.x << " " << ret.y << " " << ret.z << std::endl;
 	return ret;
 
+}
+
+vec3 cross(vec3 a, vec3 b) {
+	vec3 ret;
+	ret.x = a.y * b.z - b.y * a.z;
+	ret.y = b.x * a.z - a.x * b.z;
+	ret.z = a.x * b.y - b.x * a.y;
+	return ret;
 }
 
 
@@ -78,3 +93,7 @@ void translate(vec3& v1, vec3& points){
 //	temp.z = matrix[2][0] * v.x + matrix[2][1] * v.y + matrix[2][2] * v.z + matrix[2][3];
 //	return temp;
 //}
+
+struct mat4f {
+	float matrix4[4][4];
+};

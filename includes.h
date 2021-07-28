@@ -3,7 +3,7 @@
 #include"math.h"
 #include"transform.h"
 
-int width = 800, height = 800;
+int width = 1024, height = 768;
 const float l = 1.6;
 bool perspective = false;
 float val = 0;
@@ -229,7 +229,7 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     else {
         val = val + 1.5;
     }
-    translate(v0, t);
+    /*translate(v0, t);
     translate(v1, t);
     translate(v2, t);
     translate(v3, t);
@@ -254,7 +254,7 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     translate(v4, r);
     translate(v5, r);
     translate(v6, r);
-    translate(v7, r);
+    translate(v7, r);*/
 
     
 
