@@ -1,35 +1,42 @@
 #pragma once
 
 #include"math.h"
+#include"Coord.h"
 #include<cmath>
 
-void rotateY(vec3& v1 ,float angle);
-void rotateX(vec3& v1, float angle);
-vec4 matrix(vec4& v, float matrix[4][4]);
-vec3 GetNormal(vec3 v0, vec3 v1, vec3 v2);
-float dot(vec3 a, vec3 b);
-vec3 cross(vec3 a, vec3 b);
-vec3 normalize(vec3 in);
 
-vec3 normalize(vec3 in) {
-	float temp = sqrt(in.x * in.x + in.y * in.y + in.z * in.z);
-	return vec3(in * 1 / temp);
+void rotateY(Point& v1 ,float angle);
+void rotateX(Point& v1, float angle);
+vec4 matrix(vec4& v, float matrix[4][4]);
+Point GetNormal(Point v0, Point v1, Point v2);
+float dot(Point a, Point b);
+Point cross(Point a, Point b);
+Point normalize(Point in);
+Point mul(mat4f matrix, Point& p);
+
+float deg_to_radians(float a) {
+	return float(a * 3.1456 / 180);
 }
 
-float dot(vec3 a, vec3 b) {
+Point normalize(Point in) {
+	float temp = sqrt(in.x * in.x + in.y * in.y + in.z * in.z);
+	return Point(in * 1 / temp);
+}
+
+float dot(Point a, Point b) {
 	float c = a.x * b.x + a.y * b.y + a.z * b.z;
 	return c;
 }
 
-vec3 GetNormal(vec3 v0, vec3 v1, vec3 v2) {
-	vec3 a, b;
+Point GetNormal(Point v0, Point v1, Point v2) {
+	Point a, b;
 	a.x = v0.x - v1.x;
 	a.y = v0.y - v1.y;
 	a.z = v0.z - v1.z;
 	b.x = v0.x - v2.x;
 	b.y = v0.y - v2.y;
 	b.z = v0.z - v2.z;
-	vec3 ret;
+	Point ret;
 	ret.x = a.y * b.z - b.y * a.z;
 	ret.y = b.x * a.z - a.x * b.z;
 	ret.z = a.x * b.y - b.x * a.y;
@@ -39,8 +46,8 @@ vec3 GetNormal(vec3 v0, vec3 v1, vec3 v2) {
 
 }
 
-vec3 cross(vec3 a, vec3 b) {
-	vec3 ret;
+Point cross(Point a, Point b) {
+	Point ret;
 	ret.x = a.y * b.z - b.y * a.z;
 	ret.y = b.x * a.z - a.x * b.z;
 	ret.z = a.x * b.y - b.x * a.y;
@@ -48,7 +55,7 @@ vec3 cross(vec3 a, vec3 b) {
 }
 
 
-void rotateY(vec3& v1, float angle) {
+void rotateY(Point& v1, float angle) {
 	float ang = angle * 3.1456 / 180;
 	float composite[4][4] = { {1,0,0,0},
 							{0,cos(ang),-sin(ang),0},
@@ -63,7 +70,7 @@ void rotateY(vec3& v1, float angle) {
 
 }
 
-void rotateX(vec3& v1, float angle) {
+void rotateX(Point& v1, float angle) {
 	float ang = angle * 3.1456 / 180;
 	float composite[4][4] = { {1,0,0,0},
 							{0,cos(ang),-sin(ang),0},
@@ -78,13 +85,24 @@ void rotateX(vec3& v1, float angle) {
 
 }
 
-void translate(vec3& v1, vec3& points){
+void translate(Point& v1, Point& points){
 	v1.x += points.x;
 	v1.y += points.y;
 	v1.z += points.z;
 	//std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
 
 }
+//
+//vec3 mul(mat4f matrix, vec3& p){
+//	// float homogenous_b[] = {b[0], b[1], b[2], 1};
+//	vec3 temp;
+//	temp.x = matrix.matrix4[0][0] * p.x + matrix.matrix4[0][1] * p.y + matrix.matrix4[0][2] * p.z + matrix.matrix4[0][3];
+//	temp.y = matrix.matrix4[1][0] * p.x + matrix.matrix4[1][1] * p.y + matrix.matrix4[1][2] * p.z + matrix.matrix4[1][3];
+//	temp.z = matrix.matrix4[2][0] * p.x + matrix.matrix4[2][1] * p.y + matrix.matrix4[2][2] * p.z + matrix.matrix4[2][3];
+//	//temp.w = p.w;
+//	return temp;
+//}
+
 //vec4 matrix_product(vec4& v, float matrix[4][4])
 //{
 //	vec3 temp;
@@ -94,6 +112,3 @@ void translate(vec3& v1, vec3& points){
 //	return temp;
 //}
 
-struct mat4f {
-	float matrix4[4][4];
-};

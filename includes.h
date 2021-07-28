@@ -2,12 +2,27 @@
 #include<cmath>
 #include"math.h"
 #include"transform.h"
+#include"matrix.h"
+#include"camera.h"
+#include"model.h"
+#include<vector>
+
+Camera camera = Camera(Point{ 0.0f,0.0f,3.0f });
 
 int width = 1024, height = 768;
 const float l = 1.6;
-bool perspective = false;
+bool perspective = false, firstMouse=true;
 float val = 0;
 vec3 cv = {300,600,150 };
+float lastX = width / 2;
+float lastY = height / 2;
+const unsigned int cubeH = 300;
+float xfactor = width/ 8.0f;
+float yfactor = height / 8.0f;
+
+void processKeys(unsigned char key, int x, int y);
+void processMouse(int xpos, int ypos);
+vec3 Convert_to_Screen(vec3& pt);
 
 vec3 red = { 1.0,0.0,0.0 };
 vec3 green = { 0.0,1.0,0.0 };
@@ -20,11 +35,11 @@ void reshape(int w, int h);
 void display();
 void putpixel(int x, int y, const vec3& col);
 void Line(int x1, int y1, int x2, int y2, const vec3& color);
-void triangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color);
-void fillTriangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color);
-void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective);
-void getProjection(vec3& v, bool perspective);
-void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective);
+void triangle(Point v1, Point v2, Point v3, const vec3& color);
+void fillTriangle(Point v1, Point v2, Point v3, const vec3& color);
+void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective);
+void getProjection(Point& v, bool perspective);
+void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective);
 void draw();
 
 void putpixel(int x, int y, const vec3& col) {
@@ -85,14 +100,14 @@ void Line(int x1, int y1, int x2, int y2, const vec3& color)
     putpixel(x, y,color);
 }
 
-void triangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color) {
+void triangle(Point v1, Point v2, Point v3, const vec3& color) {
     //fillTriangle(v1, v2, v3, color);
     Line(v1.x, v1.y, v2.x, v2.y, color);
     Line(v1.x, v1.y, v3.x, v3.y, color);
     Line(v3.x, v3.y, v2.x, v2.y, color);
 }
 
-void fillTriangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color) {
+void fillTriangle(Point v1, Point v2, Point v3, const vec3& color) {
     if (v1.y == v2.y && v2.y == v3.y) return;
     //Bubble sort on y-position
     if (v1.y > v2.y) { std::swap(v1, v2); }
@@ -139,7 +154,7 @@ void fillTriangle(vec3 v1, vec3 v2, vec3 v3, const vec3& color) {
     }
 }
 
-void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective) {
+void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective) {
     getProjection(v0, perspective);
     getProjection(v1, perspective);
     getProjection(v2, perspective);
@@ -178,7 +193,7 @@ void cube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, 
 
 }
 
-void getProjection(vec3& v,bool perspective) {
+void getProjection(Point& v,bool perspective) {
     if (perspective) {
         float xv, yv, zv, zvp = 0, xp, yp, zp;
         float xprp = 450, yprp = 450, zprp = 450;
@@ -204,9 +219,9 @@ void getProjection(vec3& v,bool perspective) {
     //std::cout << v.x << " " << v.y << " " << std::endl;
 }
 
-void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3& v6, vec3& v7, const vec3& color, bool perspective) {
-    vec3 camera;
-    vec3 v = { 300,600,0 };
+void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective) {
+    Point camera;
+    Point v = { 300,600,0 };
     camera.x = v.x - cv.x;
     camera.y = v.y - cv.y;
     camera.z = v.z - cv.z;
@@ -220,8 +235,8 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     getProjection(v6, perspective);
     getProjection(v7, perspective);
 
-    vec3 t = { -450,-450,150 };
-    vec3 r = { 450,450,-150 };
+    Point t = { -450,-450,150 };
+    Point r = { 450,450,-150 };
 
     if (val > 360) {
         val = 0;
@@ -229,7 +244,7 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     else {
         val = val + 1.5;
     }
-    /*translate(v0, t);
+    translate(v0, t);
     translate(v1, t);
     translate(v2, t);
     translate(v3, t);
@@ -254,31 +269,31 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     translate(v4, r);
     translate(v5, r);
     translate(v6, r);
-    translate(v7, r);*/
+    translate(v7, r);
 
     
 
-    vec3 normal0 = GetNormal(v0, v1, v2);
-    vec3 normal1 = GetNormal(v1, v5, v6);
-    vec3 normal2 = GetNormal(v4, v0, v3);
-    vec3 normal3 = GetNormal(v5, v4, v7);
-    vec3 normal4 = GetNormal(v0, v4, v5);
-    vec3 normal5 = GetNormal(v3, v2, v7);
+    Point normal0 = GetNormal(v0, v1, v2);
+    Point normal1 = GetNormal(v1, v5, v6);
+    Point normal2 = GetNormal(v4, v0, v3);
+    Point normal3 = GetNormal(v5, v4, v7);
+    Point normal4 = GetNormal(v0, v4, v5);
+    Point normal5 = GetNormal(v3, v2, v7);
 
     if (dot(camera, normal0) < 0) {
         std::cout<<"Not drawn0"<<std::endl;
     }
     else {
         fillTriangle(v0, v3, v2, red);
-        fillTriangle(v0, v1, v2, red);
+        fillTriangle(v0, v1, v2, blue);
     }
 
     if (dot(camera, normal1) < 0) {
         std::cout << "Not drawn1" << std::endl;
     }
     else {
-        fillTriangle(v1, v5, v2, blue);
-        fillTriangle(v5, v6, v2, blue);
+        fillTriangle(v1, v5, v2, green);
+        fillTriangle(v5, v6, v2, yello);
     }
 
     if (dot(camera, normal2) < 0) {
@@ -286,15 +301,15 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     }
     else {
         fillTriangle(v0, v7, v3, white);
-        fillTriangle(v0, v7, v4, white);
+        fillTriangle(v0, v7, v4, unk);
     }
 
     if (dot(camera, normal3) < 0) {
         std::cout << "Not drawn3" << std::endl;
     }
     else {
-        fillTriangle(v4, v5, v6, yello);
-        fillTriangle(v4, v7, v6, yello);
+        fillTriangle(v4, v5, v6, green);
+        fillTriangle(v4, v7, v6, red);
 
     }
 
@@ -342,3 +357,13 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     //Line(v3.x, v3.y, v7.x, v7.y, color);
 
 }
+
+//vec3 Convert_to_Screen(vec3& pt)
+//{
+//    pt.x = (pt.x + 1.0f) * xfactor;
+//    pt.y = (pt.y + 1.0f) * yfactor;
+//    // pt.x = (pt.x) * xfactor;
+//    // pt.y = (pt.y) * yfactor;
+//    pt.z = (pt.z) * cubeH;
+//    return pt;
+//}

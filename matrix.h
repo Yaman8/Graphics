@@ -1,6 +1,16 @@
 //#pragma once
 //
 //#include "transform.h"
+//#include"model.h"
+//#include<gl/glut.h>
+//#include<vector>
+//
+//void applyTransform(mat4f& transform, std::vector<Triangle>& triangles);
+//mat4f mul(mat4f a, mat4f b);
+//mat4f perspectiveMatrix();
+//mat4f rotateMatrix(float yaw, float pitch, float roll);
+//mat4f orthoprojectMatrix();
+//void applyTransform(mat4f& transform, std::vector<Triangle>& triangles);
 //
 //mat4f mul(mat4f a, mat4f b)
 //{
@@ -46,13 +56,13 @@
 //    return ortho;
 //}
 //
-//void applyTransform(mat4f& transform, std::vector<Triangle>& triangles)
-//{
-//    for (auto& tri : triangles)
-//    {
-//        tri.vertices[0] = mul(transform, tri.vertices[0]);
-//        tri.vertices[1] = mul(transform, tri.vertices[1]);
-//        tri.vertices[2] = mul(transform, tri.vertices[2]);
-//    }
-//    glutPostRedisplay();
-//}
+////void applyTransform(mat4f& transform, std::vector<Triangle>& triangles)
+////{
+////    for (auto& tri : triangles)
+////    {
+////        tri.vertices[0] = mul(transform, tri.vertices[0]);
+////        tri.vertices[1] = mul(transform, tri.vertices[1]);
+////        tri.vertices[2] = mul(transform, tri.vertices[2]);
+////    }
+////    glutPostRedisplay();
+////}
