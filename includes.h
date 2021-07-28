@@ -7,12 +7,14 @@ int width = 800, height = 800;
 const float l = 1.6;
 bool perspective = false;
 float val = 0;
-vec3 cv = {0,0,8 };
+vec3 cv = {300,600,150 };
 
 vec3 red = { 1.0,0.0,0.0 };
 vec3 green = { 0.0,1.0,0.0 };
 vec3 blue = { 0.0,0.0,1.0 };
-vec3 white = { 1,1,0 };
+vec3 white = { 1,1,1 };
+vec3 yello = { 1,1,0 };
+vec3 unk = { 0,1,1 };
 
 void reshape(int w, int h);
 void display();
@@ -258,12 +260,12 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
 
     vec3 normal0 = GetNormal(v0, v1, v2);
     vec3 normal1 = GetNormal(v1, v5, v6);
-    vec3 normal2 = GetNormal(v0, v4, v7);
-    vec3 normal3 = GetNormal(v4, v5, v7);
-    //vec3 normal4 = GetNormal(v0, v1, v2);
-    //vec3 normal5 = GetNormal(v0, v1, v2);
+    vec3 normal2 = GetNormal(v4, v0, v3);
+    vec3 normal3 = GetNormal(v5, v4, v7);
+    vec3 normal4 = GetNormal(v0, v4, v5);
+    vec3 normal5 = GetNormal(v3, v2, v7);
 
-    if (dot(camera, normal0) > 0) {
+    if (dot(camera, normal0) < 0) {
         std::cout<<"Not drawn0"<<std::endl;
     }
     else {
@@ -271,7 +273,7 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
         fillTriangle(v0, v1, v2, red);
     }
 
-    if (dot(camera, normal1) > 0) {
+    if (dot(camera, normal1) < 0) {
         std::cout << "Not drawn1" << std::endl;
     }
     else {
@@ -279,7 +281,7 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
         fillTriangle(v5, v6, v2, blue);
     }
 
-    if (dot(camera, normal2) > 0) {
+    if (dot(camera, normal2) < 0) {
         std::cout << "Not drawn2" << std::endl;
     }
     else {
@@ -287,14 +289,32 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
         fillTriangle(v0, v7, v4, white);
     }
 
-    if (dot(camera, normal3) > 0) {
+    if (dot(camera, normal3) < 0) {
         std::cout << "Not drawn3" << std::endl;
     }
     else {
-        fillTriangle(v4, v5, v6, green);
-        fillTriangle(v4, v7, v6, green);
+        fillTriangle(v4, v5, v6, yello);
+        fillTriangle(v4, v7, v6, yello);
 
     }
+
+    //if (dot(camera, normal4) < 0) {
+    //    std::cout << "Not drawn4" << std::endl;
+    //}
+    //else {
+    //    fillTriangle(v0, v7, v4, unk);
+    //    fillTriangle(v4, v7, v5, unk);
+
+    //}
+
+    //if (dot(camera, normal5) < 0) {
+    //    std::cout << "Not drawn5" << std::endl;
+    //}
+    //else {
+    //    fillTriangle(v7, v3, v2, green);
+    //    fillTriangle(v7, v2, v6, green);
+
+    //}
   /*  fillTriangle(v0, v3, v2, red);
     fillTriangle(v0, v1, v2, red);
     fillTriangle(v0, v7, v3, white);
@@ -308,17 +328,17 @@ void rotateCube(vec3& v0, vec3& v1, vec3& v2, vec3& v3, vec3& v4, vec3& v5, vec3
     fillTriangle(v0, v3, v2, color);*/
 
 
-    Line(v0.x, v0.y, v1.x, v1.y, color);
-    Line(v1.x, v1.y, v2.x, v2.y, color);
-    Line(v2.x, v2.y, v3.x, v3.y, color);
-    Line(v3.x, v3.y, v0.x, v0.y, color);
-    Line(v4.x, v4.y, v5.x, v5.y, color);
-    Line(v5.x, v5.y, v6.x, v6.y, color);
-    Line(v6.x, v6.y, v7.x, v7.y, color);
-    Line(v7.x, v7.y, v4.x, v4.y, color);
-    Line(v0.x, v0.y, v4.x, v4.y, color);
-    Line(v1.x, v1.y, v5.x, v5.y, color);
-    Line(v2.x, v2.y, v6.x, v6.y, color);
-    Line(v3.x, v3.y, v7.x, v7.y, color);
+    //Line(v0.x, v0.y, v1.x, v1.y, color);
+    //Line(v1.x, v1.y, v2.x, v2.y, color);
+    //Line(v2.x, v2.y, v3.x, v3.y, color);
+    //Line(v3.x, v3.y, v0.x, v0.y, color);
+    //Line(v4.x, v4.y, v5.x, v5.y, color);
+    //Line(v5.x, v5.y, v6.x, v6.y, color);
+    //Line(v6.x, v6.y, v7.x, v7.y, color);
+    //Line(v7.x, v7.y, v4.x, v4.y, color);
+    //Line(v0.x, v0.y, v4.x, v4.y, color);
+    //Line(v1.x, v1.y, v5.x, v5.y, color);
+    //Line(v2.x, v2.y, v6.x, v6.y, color);
+    //Line(v3.x, v3.y, v7.x, v7.y, color);
 
 }
