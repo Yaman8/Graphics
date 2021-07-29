@@ -4,22 +4,22 @@
 #include<vector>
 #include<iostream>
 
-const unsigned int w = 800;
-const unsigned int h = 600;
-const unsigned int cH = 500;
+const unsigned int wid = 800;
+const unsigned int hei = 800;
+const unsigned int cH = 300;
 
 struct Point {
 	float x, y, z, w;
-	float xfactor = w / 8.0f;
-	float yfactor = h / 8.0f;
+	float xfactor = wid / 8.0f;
+	float yfactor = hei / 8.0f;
 	float cube_height = cH / 8.0f;
 
     Point Convert_to_Screen(Point& pt) const
     {
         pt.x = (pt.x + 1.0f) * xfactor;
         pt.y = (pt.y + 1.0f) * yfactor;
-        // pt.x = (pt.x) * xfactor;
-        // pt.y = (pt.y) * yfactor;
+         //pt.x = (pt.x) +200;
+         //pt.y = (pt.y) + 200;
         pt.z = (pt.z) * cube_height;
         return pt;
     }

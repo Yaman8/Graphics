@@ -32,7 +32,7 @@ std::vector<Triangle> load(std::string filename)
 
         if (line[0] == 'v')
         {
-            vec3 v;
+            Point v;
             s >> junk >> v.x >> v.y >> v.z;
             verts.push_back(v);
         }

@@ -6,12 +6,13 @@
 #include"camera.h"
 #include"model.h"
 #include<vector>
+#include"projections.h"
 
 Camera camera = Camera(Point{ 0.0f,0.0f,3.0f });
 
 int width = 800, height = 800;
 const float l = 1.6;
-bool perspective = false, firstMouse=true;
+bool perspect = false, firstMouse=true;
 float val = 0;
 vec3 cv = {300,600,150 };
 float lastX = width / 2;
@@ -311,17 +312,17 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
     //    fillTriangle(v7, v2, v6, green);
 
     //}
-  /*  fillTriangle(v0, v3, v2, red);
-    fillTriangle(v0, v1, v2, red);
-    fillTriangle(v0, v7, v3, white);
-    fillTriangle(v3, v7, v4, white);
-    fillTriangle(v1, v5, v2, blue);
-    fillTriangle(v5, v6, v2, blue);
-    fillTriangle(v4, v5, v6, green);
-    fillTriangle(v4, v7, v6, green);
-    fillTriangle(v0, v7, v4, color);
-    fillTriangle(v0, v3, v2, color);
-    fillTriangle(v0, v3, v2, color);*/
+    //fillTriangle(v0, v3, v2, red);
+    //fillTriangle(v0, v1, v2, red);
+    //fillTriangle(v0, v7, v3, white);
+    //fillTriangle(v3, v7, v4, white);
+    //fillTriangle(v1, v5, v2, blue);
+    //fillTriangle(v5, v6, v2, blue);
+    //fillTriangle(v4, v5, v6, green);
+    //fillTriangle(v4, v7, v6, green);
+    //fillTriangle(v0, v7, v4, color);
+    //fillTriangle(v0, v3, v2, color);
+    //fillTriangle(v0, v3, v2, color);
 
 
     //Line(v0.x, v0.y, v1.x, v1.y, color);

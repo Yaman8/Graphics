@@ -5,26 +5,29 @@
 
 #include <vector>
 
-// Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
-enum Camera_Movement {
+enum CameraMovement
+{
     FORWARD,
     BACKWARD,
     LEFT,
     RIGHT
 };
 
-
-mat4f lookAt(Point eye, Point target, Point vUp);
 // Default camera values
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 2.5f;
-const float SENSITIVITY = 0.1f;
+const float SENSITIVITY = 0.01f;
 const float ZOOM = 45.0f;
 
+mat4f lookAt(Point eye, Point target, Point vUp);
 
 class Camera
 {
+private:
+    // calculates the front vector from the Camera's (updated) Euler Angles
+    void updateCameraVectors();
+
 public:
     // camera Attributes
     Point Position;
@@ -32,41 +35,29 @@ public:
     Point Up;
     Point Right;
     Point WorldUp;
-    // euler Angles
     float Yaw;
     float Pitch;
-    // camera options
     float MovementSpeed;
     float MouseSensitivity;
     float Zoom;
+
     Camera(Point position = Point{ 0.0f, 0.0f, 0.0f }, Point up = Point{ 0.0f, 1.0f, 0.0f }, float yaw = YAW, float pitch = PITCH);
-    // constructor with vectors
-    // constructor with scalar values
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
-    // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     mat4f GetViewMatrix();
 
-    // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-    void ProcessKeyboard(Camera_Movement direction, float deltaTime);
+    void processKeyboard(CameraMovement direction, float deltaTime);
+    void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
+    void processMouseScroll(float yoffset);
 
-    // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-    void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
 
-    // processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
-    void ProcessMouseScroll(float yoffset);
-
-private:
-    // calculates the front vector from the Camera's (updated) Euler Angles
-    void updateCameraVectors();
 };
-
-
 
 Camera::Camera(Point position, Point up, float yaw, float pitch) : Front(Point{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
-    std::cout << "camera";
+    std::cout << "Hello Camera 1\n";
     Position = position;
+    
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
@@ -75,7 +66,8 @@ Camera::Camera(Point position, Point up, float yaw, float pitch) : Front(Point{ 
 
 Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(Point{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
-    std::cout << "camera camera";
+    std::cout << "Hello Camera 2\n";
+
     Position = Point{ posX, posY, posZ };
     WorldUp = Point{ upX, upY, upZ };
     Yaw = yaw;
@@ -88,8 +80,9 @@ mat4f Camera::GetViewMatrix()
     return lookAt(Position, Position + Front, Up);
 }
 
-void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
+void Camera::processKeyboard(CameraMovement direction, float deltaTime)
 {
+
     float velocity = MovementSpeed * deltaTime;
     Point temp1 = Up * velocity;
     Point temp2 = Right * velocity;
@@ -103,7 +96,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
         Position = Position + temp2;
 }
 
-void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch /*= true*/)
+void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch /*= true*/)
 {
     xoffset *= MouseSensitivity;
     yoffset *= MouseSensitivity;
@@ -124,7 +117,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPi
     updateCameraVectors();
 }
 
-void Camera::ProcessMouseScroll(float yoffset)
+void Camera::processMouseScroll(float yoffset)
 {
     Zoom -= (float)yoffset;
     if (Zoom < 1.0f)
@@ -135,31 +128,46 @@ void Camera::ProcessMouseScroll(float yoffset)
 
 void Camera::updateCameraVectors()
 {
-    // calculate the new Front vector
     Point front;
     front.x = cos(deg_to_radians(Yaw)) * cos(deg_to_radians(Pitch));
     front.y = sin(deg_to_radians(Pitch));
     front.z = sin(deg_to_radians(Yaw)) * cos(deg_to_radians(Pitch));
-    Front = normalize(front);
-    // also re-calculate the Right and Up vector
-    Right = normalize(cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-    Up = normalize(cross(Right, Front));
+    Front = Point::normalize(front);
+
+
+    Point temp1 = Front.crossProduct(WorldUp);
+    Right = Point::normalize(temp1);
+    //std::cout << "Right " << Right.x << " " << Right.y << " " << Right.z;
+    // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    Point temp2 = Right.crossProduct(Front);
+    Up = Point::normalize(temp2);
 }
 
+//-------------------------------- lookAt matrix ---------------------------------------------------
 mat4f lookAt(Point eye, Point target, Point vUp = { 0, 1, 0 })
 {
     // Calculate new forward direction
     Point temp = eye - target;
-    Point forward = normalize(temp);
-    temp = cross(vUp,target);
-    Point left =normalize(temp);
-    // Calculate new Up direction
-    Point up = cross(forward,left);
 
-    mat4f view = { {{left.x, left.y, left.z, -dot(left, eye)},
-                   {up.x, up.y, up.z, -dot(up, eye)},
-                   {forward.x, forward.y, forward.z, -dot(forward, eye)},
+    Point forward = Point::normalize(temp);
+    temp = vUp.crossProduct(target);
+    Point left = Point::normalize(temp);
+    // Calculate new Up direction
+    Point up = forward.crossProduct(left);
+
+    mat4f view = { {{left.x, left.y, left.z, -dotProduct(left, eye)},
+                   {up.x, up.y, up.z, -dotProduct(up, eye)},
+                   {forward.x, forward.y, forward.z, -dotProduct(forward, eye)},
                    {0, 0, 0, 1}} };
+    //std::cout << "l " << left.x << " " << left.y << " " << left.z << std::endl;
+    //std::cout << "u " << up.x << " " << up.y << " " << up.z << std::endl;
+    //std::cout << "f " << forward.x << " " << forward.y << " " << forward.z << std::endl;
+    float one = dotProduct(left, eye);
+    float two = -dotProduct(up, eye);
+    float three = -dotProduct(forward, eye);
+/*    std::cout << one << std::end;
+    std::cout << two << std::end;
+    std::cout << three << std::end*/;
     // Construct Dimensioning and Translation Matrix
     return view;
 }
