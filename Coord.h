@@ -8,20 +8,34 @@ const unsigned int wid = 800;
 const unsigned int hei = 800;
 const unsigned int cH = 300;
 
+struct Point2i
+{
+    float x, y;
+    // Point Convert_to_Screen(Point &pt) const
+    // {
+    //     pt.x = (pt.x + 1.0f) * xfactor;
+    //     pt.y = (pt.y + 1.0f) * yfactor;
+    //     // pt.x = (pt.x) * xfactor;
+    //     // pt.y = (pt.y) * yfactor;
+    //     return pt;
+    // }
+};
+
+
 struct Point {
 	float x, y, z, w;
 	float xfactor = wid / 8.0f;
 	float yfactor = hei / 8.0f;
 	float cube_height = cH / 8.0f;
 
-    Point Convert_to_Screen(Point& pt) const
+    Point Convert_to_Screen()
     {
-        pt.x = (pt.x + 1.0f) * xfactor;
-        pt.y = (pt.y + 1.0f) * yfactor;
+        x = (x + 1.0f) * xfactor;
+        y = (y + 1.0f) * yfactor;
          //pt.x = (pt.x) +200;
          //pt.y = (pt.y) + 200;
-        pt.z = (pt.z) * cube_height;
-        return pt;
+        z = (z) * cube_height;
+        return { x,y,z };
     }
 
     Point operator+(Point& translate)
@@ -41,11 +55,11 @@ struct Point {
     {
         return { float(x / div), float(y / div), float(z / div), w };
     }
-    Point scaleProduct(Point& pt)
+    Point scaleProduct(Point pt)
     {
         return { x * pt.x, y * pt.y, z * pt.z, w };
     }
-    Point crossProduct(Point& pt)
+    Point crossProduct(Point pt)
     {
         Point ret;
         ret.x = y * pt.z - z * pt.y;
@@ -62,13 +76,20 @@ struct Point {
         return out;
     }
 
-    static Point normalize(Point& pt)
+    Point normalize()
     {
-        float mag = pt.x * pt.x + pt.y * pt.y + pt.z * pt.z;
+        float mag = x * x + y * y + z * z;
         mag = pow(mag, 0.5);
-        pt = pt / (mag);
-        return pt;
+        return { x / mag, y / mag, z / mag };
     }
+
+    //static Point normalize(Point& pt)
+    //{
+    //    float mag = pt.x * pt.x + pt.y * pt.y + pt.z * pt.z;
+    //    mag = pow(mag, 0.5);
+    //    pt = pt / (mag);
+    //    return pt;
+    //}
 };
 
 float dotProduct(Point& pt1, Point& pt2)

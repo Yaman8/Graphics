@@ -132,15 +132,15 @@ void Camera::updateCameraVectors()
     front.x = cos(deg_to_radians(Yaw)) * cos(deg_to_radians(Pitch));
     front.y = sin(deg_to_radians(Pitch));
     front.z = sin(deg_to_radians(Yaw)) * cos(deg_to_radians(Pitch));
-    Front = Point::normalize(front);
+    Front = front.normalize();
 
 
     Point temp1 = Front.crossProduct(WorldUp);
-    Right = Point::normalize(temp1);
+    Right = temp1.normalize();
     //std::cout << "Right " << Right.x << " " << Right.y << " " << Right.z;
     // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     Point temp2 = Right.crossProduct(Front);
-    Up = Point::normalize(temp2);
+    Up = temp2.normalize();
 }
 
 //-------------------------------- lookAt matrix ---------------------------------------------------
@@ -149,9 +149,9 @@ mat4f lookAt(Point eye, Point target, Point vUp = { 0, 1, 0 })
     // Calculate new forward direction
     Point temp = eye - target;
 
-    Point forward = Point::normalize(temp);
+    Point forward = temp.normalize();
     temp = vUp.crossProduct(target);
-    Point left = Point::normalize(temp);
+    Point left = temp.normalize();
     // Calculate new Up direction
     Point up = forward.crossProduct(left);
 

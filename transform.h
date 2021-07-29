@@ -19,10 +19,10 @@ float deg_to_radians(float a) {
 	return float(a * 3.1456 / 180);
 }
 
-Point normalize(Point in) {
-	float temp = sqrt(in.x * in.x + in.y * in.y + in.z * in.z);
-	return Point(in * 1 / temp);
-}
+//Point normalize(Point in) {
+//	float temp = sqrt(in.x * in.x + in.y * in.y + in.z * in.z);
+//	return Point(in * 1 / temp);
+//}
 
 void matrix_product(Point& p, float matrix[4][4])
 {

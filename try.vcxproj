@@ -140,19 +140,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="modelLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="colorOptions.h" />
     <ClInclude Include="Coord.h" />
     <ClInclude Include="includes.h" />
+    <ClInclude Include="lineFunc.h" />
+    <ClInclude Include="loader.h" />
     <ClInclude Include="load_object.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="modelLoader.h" />
+    <ClInclude Include="modelDraw.h" />
+    <ClInclude Include="modelFuncs.h" />
     <ClInclude Include="projections.h" />
     <ClInclude Include="transform.h" />
+    <ClInclude Include="triangleRaster.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

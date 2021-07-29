@@ -1,8 +1,5 @@
 #include<iostream>
 #include"includes.h"
-#include"modelLoader.h"
-
-void ob();
 
 int main(int argc, char** argv){
     glutInit(&argc, argv);
@@ -16,8 +13,7 @@ int main(int argc, char** argv){
     //glutMotionFunc(processMouse);
     glutReshapeFunc(reshape);
     glutIdleFunc(display);
-    //glutDisplayFunc(draw);
-    glutDisplayFunc(ob);
+    glutDisplayFunc(draw);
     glutMainLoop();
 
     return 0;
@@ -34,58 +30,58 @@ void display() {
     glutSwapBuffers();
 }
 
-void ob() {
-    modelLoader obj = modelLoader("dharahara.obj");
-    obj.Draw();
-}
 
 void draw() {
-    
+    mat4f mat = { {{1, 2, 3, 4},{2, 3, 4, 5},{1, 3, 2, 4},{ 1, 3, 2, 2}} };
+    mat4f val = mul(mat, mat);
+
     mat4f view = camera.GetViewMatrix();
-    for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-        std::cout << "view" << "[" << i << "]" << "[" << j << "]" << view.matrix4[i][j] << std::endl;
-    }
-}
     mat4f perspec = perspectiveMatrix();
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            std::cout << "pers" << "[" << i << "]" << "[" << j << "]" << perspec.matrix4[i][j] << std::endl;
-        }
-    }
-
-
     mat4f view_projection = mul(perspec, view);
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
-        }
-    }
 
     std::vector<Triangle> model = load("videoship.obj");
 
     applyTransform(view_projection, model);
-    for (int i = 0; i < model.size(); i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            //std::cout << "inside";
-            model[i].vertices[j] = model[i].vertices[j].Convert_to_Screen(model[i].vertices[j]);
-            std::cout << model[i].vertices[0];
-            std::cout << model[i].vertices[1];
-            std::cout << model[i].vertices[2];
-            transate_polygon(model[i].vertices[j], { wid , hei / 1.5, 0, 0 }); // translate the cube back to its original position
-            //scale_polygon(model[i].vertices[j], { 0.5,0.5,0.5 });
-        }
-        triangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], white);
-        //fillTriangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
 
-    }
+    convertToScreen_model(model);
+    translate_model(model, { wid / 4, hei / 4, 0, 0 }); // translate the cube back to its original position
+    //scale_model(model, {0.25, 0.25, 0.25});
+    drawWireframe_model(model);
+    //draw_model(model);
 
 
+    //mat4f view = camera.GetViewMatrix();
+    //mat4f perspec = perspectiveMatrix();
 
-    /*triangle(vec2i{ 100,100 }, vec2i{ 100,500 }, vec2i{ 500, 100 }, col1);
-    triangle(vec2i{ 100,500 }, vec2i{ 500,100 }, vec2i{ 500, 500 }, col2);*/
+
+    //mat4f view_projection = mul(perspec, view);
+    ////for (int i = 0; i < 4; i++) {
+    ////    for (int j = 0; j < 4; j++) {
+    ////        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
+    ////    }
+    ////}
+
+    //std::vector<Triangle> model = load("videoship.obj");
+
+    //applyTransform(view_projection, model);
+    //for (int i = 0; i < model.size(); i++)
+    //{
+    //    for (int j = 0; j < 3; j++)
+    //    {
+    //        //std::cout << "inside";
+    //        model[i].vertices[j] = model[i].vertices[j].Convert_to_Screen(model[i].vertices[j]);
+    //        //std::cout << model[i].vertices[0];
+    //        //std::cout << model[i].vertices[1];
+    //        //std::cout << model[i].vertices[2];
+    //        transate_polygon(model[i].vertices[j], { wid , hei / 1.5, 0, 0 }); // translate the cube back to its original position
+    //        scale_polygon(model[i].vertices[j], { 0.3,0.3,0.3 });
+    //    }
+    //    wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], white);
+    //    //fillTriangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
+
+    //}
+
+
 
     //Point v0 = { 300,600,0 };
     //Point v1 = { 600,600,0 };
@@ -96,7 +92,7 @@ void draw() {
     //Point v6 = { 600,300,-300 };
     //Point v7 = { 300,300,-300 };
     ////cube(v0,v1,v2,v3,v4,v5,v6,v7,col1,perspective);
-    //rotateCube(v0, v1, v2, v3, v4, v5, v6, v7, red, perspective);
+    //rotateCube(v0, v1, v2, v3, v4, v5, v6, v7, red, perspect);
 }
 
 void reshape(int w, int h) {
