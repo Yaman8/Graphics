@@ -1,7 +1,7 @@
 #include<iostream>
 #include"includes.h"
 
-int main(int argc, char** argv){
+int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitWindowSize(width, height);
     glutInitWindowPosition(0, 0);
@@ -39,7 +39,7 @@ void draw() {
     mat4f perspec = perspectiveMatrix();
     mat4f view_projection = mul(perspec, view);
 
-    std::vector<Triangle> model = load("videoship.obj");
+    std::vector<Triangle> model = load("obj/videoship.obj");
 
     applyTransform(view_projection, model);
 

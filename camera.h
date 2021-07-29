@@ -57,7 +57,7 @@ Camera::Camera(Point position, Point up, float yaw, float pitch) : Front(Point{ 
 {
     std::cout << "Hello Camera 1\n";
     Position = position;
-    
+
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
@@ -165,9 +165,9 @@ mat4f lookAt(Point eye, Point target, Point vUp = { 0, 1, 0 })
     float one = dotProduct(left, eye);
     float two = -dotProduct(up, eye);
     float three = -dotProduct(forward, eye);
-/*    std::cout << one << std::end;
-    std::cout << two << std::end;
-    std::cout << three << std::end*/;
-    // Construct Dimensioning and Translation Matrix
-    return view;
+    /*    std::cout << one << std::end;
+        std::cout << two << std::end;
+        std::cout << three << std::end*/;
+        // Construct Dimensioning and Translation Matrix
+        return view;
 }

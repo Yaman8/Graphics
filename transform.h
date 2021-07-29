@@ -5,7 +5,7 @@
 #include<cmath>
 
 
-void rotateY(Point& v1 ,float angle);
+void rotateY(Point& v1, float angle);
 void rotateX(Point& v1, float angle);
 void matrix_product(Point& v, float matrix[4][4]);
 Point GetNormal(Point v0, Point v1, Point v2);
@@ -72,9 +72,9 @@ void rotateY(Point& v1, float angle) {
 							{0,sin(ang),cos(ang),0},
 							{0,0,0,1}
 	};
-	v1.x = v1.x*cos(ang)+v1.z*sin(ang);
+	v1.x = v1.x * cos(ang) + v1.z * sin(ang);
 	v1.y = v1.y;
-	v1.z = v1.z*cos(ang)-v1.x*sin(ang);
+	v1.z = v1.z * cos(ang) - v1.x * sin(ang);
 
 	//std::cout <<v1.x<<" "<<v1.y<<" "<<v1.z <<std::endl;
 
@@ -95,7 +95,7 @@ void rotateX(Point& v1, float angle) {
 
 }
 
-void translate(Point& v1, Point& points){
+void translate(Point& v1, Point& points) {
 	v1.x += points.x;
 	v1.y += points.y;
 	v1.z += points.z;
@@ -103,7 +103,7 @@ void translate(Point& v1, Point& points){
 
 }
 
-vec3 mul(mat4f matrix, vec3& p){
+vec3 mul(mat4f matrix, vec3& p) {
 	// float homogenous_b[] = {b[0], b[1], b[2], 1};
 	vec3 temp;
 	temp.x = matrix.matrix4[0][0] * p.x + matrix.matrix4[0][1] * p.y + matrix.matrix4[0][2] * p.z + matrix.matrix4[0][3];

@@ -23,18 +23,18 @@ struct Point2i
 
 
 struct Point {
-	float x, y, z, w;
-	float xfactor = wid / 8.0f;
-	float yfactor = hei / 8.0f;
-	float cube_height = cH / 8.0f;
+    float x, y, z, w;
+    float xfactor = wid / 8.0f;
+    float yfactor = hei / 8.0f;
+    float cube_height = cH / 8.0f;
 
     Point Convert_to_Screen()
     {
         x = (x + 1.0f) * xfactor;
         y = (y + 1.0f) * yfactor;
-         //pt.x = (pt.x) +200;
-         //pt.y = (pt.y) + 200;
-        z = (z) * cube_height;
+        //pt.x = (pt.x) +200;
+        //pt.y = (pt.y) + 200;
+        z = (z)*cube_height;
         return { x,y,z };
     }
 

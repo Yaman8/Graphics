@@ -1,3 +1,4 @@
+#include<gl/glew.h>
 #include<gl/glut.h>
 #include<cmath>
 #include"math.h"
@@ -17,13 +18,13 @@ Camera camera = Camera(Point{ 0.0f,0.0f,3.0f });
 
 int width = 800, height = 800;
 const float l = 1.6;
-bool perspect = false, firstMouse=true;
+bool perspect = false, firstMouse = true;
 float val = 0;
-vec3 cv = {300,600,150 };
+vec3 cv = { 300,600,150 };
 float lastX = width / 2;
 float lastY = height / 2;
 const unsigned int cubeH = 300;
-float xfactor = width/ 8.0f;
+float xfactor = width / 8.0f;
 float yfactor = height / 8.0f;
 
 void processKeys(unsigned char key, int x, int y);
@@ -55,8 +56,8 @@ void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Poin
     getProjection(v7, perspective);
 
 
-    Line(v0.x, v0.y, v1.x, v1.y,color);
-    Line(v1.x, v1.y, v2.x, v2.y,color);
+    Line(v0.x, v0.y, v1.x, v1.y, color);
+    Line(v1.x, v1.y, v2.x, v2.y, color);
     Line(v2.x, v2.y, v3.x, v3.y, color);
     Line(v3.x, v3.y, v0.x, v0.y, color);
     Line(v4.x, v4.y, v5.x, v5.y, color);
@@ -83,7 +84,7 @@ void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Poin
 
 }
 
-void getProjection(Point& v,bool perspective) {
+void getProjection(Point& v, bool perspective) {
     if (perspective) {
         float xv, yv, zv, zvp = 0, xp, yp, zp;
         float xprp = 450, yprp = 450, zprp = 450;
@@ -170,7 +171,7 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
     translate(v6, r);
     translate(v7, r);
 
-    
+
 
     Point normal0 = GetNormal(v0, v1, v2);
     Point normal1 = GetNormal(v1, v5, v6);
@@ -180,7 +181,7 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
     Point normal5 = GetNormal(v3, v2, v7);
 
     if (dot(camera, normal0) < 0) {
-        std::cout<<"Not drawn0"<<std::endl;
+        std::cout << "Not drawn0" << std::endl;
     }
     else {
         fillTriangle(v0, v3, v2, red);
@@ -256,5 +257,4 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
     //Line(v3.x, v3.y, v7.x, v7.y, color);
 
 }
-
 
