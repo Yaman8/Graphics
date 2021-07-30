@@ -25,7 +25,7 @@ void translate_model(std::vector<Triangle>& model, Point pt)
     }
 }
 
-void scale_model(std::vector<Triangle>& model, Point pt)
+void scale_model(std::vector<Triangle>& model, float pt)
 {
     for (int i = 0; i < model.size(); i++)
     {

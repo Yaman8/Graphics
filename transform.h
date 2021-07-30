@@ -120,7 +120,7 @@ void transate_polygon(Point& pt, Point translate)
 	pt = pt + translate;
 }
 
-void scale_polygon(Point& pt, Point scale)
+void scale_polygon(Point& pt, float scale)
 {
 
 	pt = pt.scaleProduct(scale);

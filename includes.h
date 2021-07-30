@@ -27,7 +27,7 @@ const unsigned int cubeH = 300;
 float xfactor = width / 8.0f;
 float yfactor = height / 8.0f;
 
-void processKeys(unsigned char key, int x, int y);
+void processKeyboard(unsigned char key, int x, int y);
 void processMouse(int xpos, int ypos);
 
 

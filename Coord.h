@@ -38,6 +38,11 @@ struct Point {
         return { x,y,z };
     }
 
+    Point inverse()
+    {
+        return { -x, -y, -z, w };
+    }
+
     Point operator+(Point& translate)
     {
         return { x + translate.x, y + translate.y, z + translate.z, w };
@@ -55,9 +60,9 @@ struct Point {
     {
         return { float(x / div), float(y / div), float(z / div), w };
     }
-    Point scaleProduct(Point pt)
+    Point scaleProduct(float pt)
     {
-        return { x * pt.x, y * pt.y, z * pt.z, w };
+        return { x * pt, y * pt, z * pt, w };
     }
     Point crossProduct(Point pt)
     {
@@ -99,6 +104,7 @@ float dotProduct(Point& pt1, Point& pt2)
 
 struct Triangle {
     Point vertices[3];
+    vec3 color;
 };
 
 struct mat4f {

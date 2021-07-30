@@ -9,8 +9,8 @@ int main(int argc, char** argv) {
     glutCreateWindow("Project");
 
 
-    //glutKeyboardFunc(processKeys);
-    //glutMotionFunc(processMouse);
+    glutKeyboardFunc(processKeyboard);
+    glutPassiveMotionFunc(processMouse);
     glutReshapeFunc(reshape);
     glutIdleFunc(display);
     glutDisplayFunc(draw);
@@ -45,11 +45,12 @@ void draw() {
     applyTransform(view_projection, model);
 
     convertToScreen_model(model);
-    translate_model(model, { wid / 4, hei / 4, 0, 0 }); // translate the cube back to its original position
-    //scale_model(model, {0.25, 0.25, 0.25});
+    scale_model(model,  0.25);
+    translate_model(model, { wid / 2, hei / 2, 0, 0 }); // translate the cube back to its original position
+
     
-    //drawWireframe_model(model,wmodel);
-    draw_model(model,wmodel);
+    drawWireframe_model(model,wmodel);
+    //draw_model(model,wmodel);
 
 
     //mat4f view = camera.GetViewMatrix();
@@ -109,59 +110,59 @@ void reshape(int w, int h) {
     glLoadIdentity();
     glutPostRedisplay();
 }
-//
-//void processMouse(int xpos, int ypos)
-//{
-//    if (firstMouse)
-//    {
-//        lastX = xpos;
-//        lastY = ypos;
-//        firstMouse = false;
-//    }
-//
-//    float xoffset = xpos - lastX;
-//    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-//
-//    lastX = xpos;
-//    lastY = ypos;
-//
-//    camera.ProcessMouseMovement(xoffset, yoffset);
-//}
-//
-//void processKeys(unsigned char key, int x, int y)
-//{
-//    // const float dt = 1.0f / 60; //fps
-//    // switch (key)
-//    // {
-//    // case 27:
-//    //     glutDestroyWindow(0);
-//    //     exit(0);
-//    // case 120:
-//    //     theta_x += wrap_angle(deltaTime * dTheta * dt);
-//    // case 121:
-//    //     theta_y += wrap_angle(deltaTime * dTheta * dt);
-//    // case 122:
-//    //     theta_z += wrap_angle(deltaTime * dTheta * dt);
-//
-//    // }
-//    std::cout << "Key Pressed" << std::endl;
-//    static float lastFrame = 0;
-//    static float deltaTime = 0;
-//    float currentFrame = glutGet(GLUT_ELAPSED_TIME);
-//    deltaTime = (currentFrame - lastFrame) / 1000;
-//    lastFrame = currentFrame;
-//    if (key == 27)
-//    {
-//        glutDestroyWindow(0);
-//        exit(0);
-//    }
-//    if (key == 's')
-//        camera.ProcessKeyboard(FORWARD, deltaTime);
-//    if (key == 'w')
-//        camera.ProcessKeyboard(BACKWARD, deltaTime);
-//    if (key == 'd')
-//        camera.ProcessKeyboard(LEFT, deltaTime);
-//    if (key == 'a')
-//        camera.ProcessKeyboard(RIGHT, deltaTime);
-//    glutPostRedisplay();
-//}
+
+void processMouse(int xpos, int ypos)
+{
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera.processMouseMovement(xoffset, yoffset);
+}
+
+void processKeyboard(unsigned char key, int x, int y)
+{
+    // const float dt = 1.0f / 60; //fps
+    // switch (key)
+    // {
+    // case 27:
+    //     glutDestroyWindow(0);
+    //     exit(0);
+    // case 120:
+    //     theta_x += wrap_angle(deltaTime * dTheta * dt);
+    // case 121:
+    //     theta_y += wrap_angle(deltaTime * dTheta * dt);
+    // case 122:
+    //     theta_z += wrap_angle(deltaTime * dTheta * dt);
+
+    // }
+    std::cout << "Key Pressed" << std::endl;
+    static float lastFrame = 0;
+    static float deltaTime = 0;
+    float currentFrame = glutGet(GLUT_ELAPSED_TIME);
+    deltaTime = (currentFrame - lastFrame) / 1000;
+    lastFrame = currentFrame;
+    if (key == 27)
+    {
+        glutDestroyWindow(0);
+        exit(0);
+    }
+    if (key == 's')
+        camera.processKeyboard(FORWARD, deltaTime);
+    if (key == 'w')
+        camera.processKeyboard(BACKWARD, deltaTime);
+    if (key == 'd')
+        camera.processKeyboard(LEFT, deltaTime);
+    if (key == 'a')
+        camera.processKeyboard(RIGHT, deltaTime);
+    glutPostRedisplay();
+}

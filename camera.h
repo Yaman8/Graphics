@@ -89,9 +89,9 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime)
     if (direction == FORWARD)
         Position = Position + temp1;
     if (direction == BACKWARD)
-        Position = Position - temp1;
+        Position = temp1.inverse() + Position;
     if (direction == LEFT)
-        Position = Position - temp2;
+        Position = temp2.inverse() + Position;
     if (direction == RIGHT)
         Position = Position + temp2;
 }
@@ -150,21 +150,21 @@ mat4f lookAt(Point eye, Point target, Point vUp = { 0, 1, 0 })
     Point temp = eye - target;
 
     Point forward = temp.normalize();
-    temp = vUp.crossProduct(target);
-    Point left = temp.normalize();
+    temp = vUp.crossProduct(forward);
+    Point right = temp.normalize();
     // Calculate new Up direction
-    Point up = forward.crossProduct(left);
+    Point up = forward.crossProduct(right);
 
-    mat4f view = { {{left.x, left.y, left.z, -dotProduct(left, eye)},
+    mat4f view = { {{right.x, right.y, right.z, -dotProduct(right, eye)},
                    {up.x, up.y, up.z, -dotProduct(up, eye)},
                    {forward.x, forward.y, forward.z, -dotProduct(forward, eye)},
                    {0, 0, 0, 1}} };
     //std::cout << "l " << left.x << " " << left.y << " " << left.z << std::endl;
     //std::cout << "u " << up.x << " " << up.y << " " << up.z << std::endl;
     //std::cout << "f " << forward.x << " " << forward.y << " " << forward.z << std::endl;
-    float one = dotProduct(left, eye);
-    float two = -dotProduct(up, eye);
-    float three = -dotProduct(forward, eye);
+    //float one = dotProduct(left, eye);
+    //float two = -dotProduct(up, eye);
+    //float three = -dotProduct(forward, eye);
     /*    std::cout << one << std::end;
         std::cout << two << std::end;
         std::cout << three << std::end*/;
