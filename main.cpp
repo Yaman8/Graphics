@@ -40,14 +40,16 @@ void draw() {
     mat4f view_projection = mul(perspec, view);
 
     std::vector<Triangle> model = load("obj/videoship.obj");
+    std::vector<Triangle> wmodel = load("obj/videoship.obj");
 
     applyTransform(view_projection, model);
 
     convertToScreen_model(model);
     translate_model(model, { wid / 4, hei / 4, 0, 0 }); // translate the cube back to its original position
     //scale_model(model, {0.25, 0.25, 0.25});
-    drawWireframe_model(model);
-    //draw_model(model);
+    
+    //drawWireframe_model(model,wmodel);
+    draw_model(model,wmodel);
 
 
     //mat4f view = camera.GetViewMatrix();

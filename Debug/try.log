@@ -1,1 +1,20 @@
-﻿  try.vcxproj -> C:\Users\Yaman\source\repos\try\Debug\try.exe
+﻿  main.cpp
+C:\Users\Yaman\source\repos\try\lineFunc.h(9,16): warning C4101: 'k': unreferenced local variable
+C:\Users\Yaman\source\repos\try\lineFunc.h(9,9): warning C4101: 'steps': unreferenced local variable
+C:\Users\Yaman\source\repos\try\modelDraw.h(17,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Yaman\source\repos\try\modelDraw.h(34,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Yaman\source\repos\try\modelFuncs.h(8,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Yaman\source\repos\try\modelFuncs.h(19,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Yaman\source\repos\try\modelFuncs.h(30,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Yaman\source\repos\try\modelFuncs.h(41,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Yaman\source\repos\try\includes.h(89,15): warning C4101: 'xv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(89,19): warning C4101: 'yv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(89,23): warning C4101: 'zv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(101,21): warning C4101: 'yprp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(100,44): warning C4101: 'zp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(100,15): warning C4101: 'xv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(101,15): warning C4101: 'xprp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(101,27): warning C4101: 'zprp': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(100,19): warning C4101: 'yv': unreferenced local variable
+C:\Users\Yaman\source\repos\try\includes.h(100,23): warning C4101: 'zv': unreferenced local variable
+  try.vcxproj -> C:\Users\Yaman\source\repos\try\Debug\try.exe
