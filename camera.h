@@ -20,7 +20,7 @@ const float SPEED = 2.5f;
 const float SENSITIVITY = 0.01f;
 const float ZOOM = 45.0f;
 
-mat4f lookAt(Point eye, Point target, Point vUp);
+mat4f lookAt(vect4 eye, vect4 target, vect4 vUp);
 
 class Camera
 {
@@ -30,18 +30,18 @@ private:
 
 public:
     // camera Attributes
-    Point Position;
-    Point Front;
-    Point Up;
-    Point Right;
-    Point WorldUp;
+    vect4 Position;
+    vect4 Front;
+    vect4 Up;
+    vect4 Right;
+    vect4 WorldUp;
     float Yaw;
     float Pitch;
     float MovementSpeed;
     float MouseSensitivity;
     float Zoom;
 
-    Camera(Point position = Point{ 0.0f, 0.0f, 0.0f }, Point up = Point{ 0.0f, 1.0f, 0.0f }, float yaw = YAW, float pitch = PITCH);
+    Camera(vect4 position = vect4{ 0.0f, 0.0f, 0.0f }, vect4 up = vect4{ 0.0f, 1.0f, 0.0f }, float yaw = YAW, float pitch = PITCH);
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
     mat4f GetViewMatrix();
@@ -53,9 +53,9 @@ public:
 
 };
 
-Camera::Camera(Point position, Point up, float yaw, float pitch) : Front(Point{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+Camera::Camera(vect4 position, vect4 up, float yaw, float pitch) : Front(vect4{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
-    std::cout << "Hello Camera 1\n";
+    //std::cout << "Hello Camera 1\n";
     Position = position;
 
     WorldUp = up;
@@ -64,12 +64,12 @@ Camera::Camera(Point position, Point up, float yaw, float pitch) : Front(Point{ 
     updateCameraVectors();
 }
 
-Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(Point{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(vect4{ 0.0f, 0.0f, -1.0f }), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
-    std::cout << "Hello Camera 2\n";
+    //std::cout << "Hello Camera 2\n";
 
-    Position = Point{ posX, posY, posZ };
-    WorldUp = Point{ upX, upY, upZ };
+    Position = vect4{ posX, posY, posZ };
+    WorldUp = vect4{ upX, upY, upZ };
     Yaw = yaw;
     Pitch = pitch;
     updateCameraVectors();
@@ -84,8 +84,8 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime)
 {
 
     float velocity = MovementSpeed * deltaTime;
-    Point temp1 = Up * velocity;
-    Point temp2 = Right * velocity;
+    vect4 temp1 = Up * velocity;
+    vect4 temp2 = Right * velocity;
     if (direction == FORWARD)
         Position = Position + temp1;
     if (direction == BACKWARD)
@@ -128,38 +128,38 @@ void Camera::processMouseScroll(float yoffset)
 
 void Camera::updateCameraVectors()
 {
-    Point front;
+    vect4 front;
     front.x = cos(deg_to_radians(Yaw)) * cos(deg_to_radians(Pitch));
     front.y = sin(deg_to_radians(Pitch));
     front.z = sin(deg_to_radians(Yaw)) * cos(deg_to_radians(Pitch));
     Front = front.normalize();
 
 
-    Point temp1 = Front.crossProduct(WorldUp);
+    vect4 temp1 = Front.crossProduct(WorldUp);
     Right = temp1.normalize();
     //std::cout << "Right " << Right.x << " " << Right.y << " " << Right.z;
     // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-    Point temp2 = Right.crossProduct(Front);
+    vect4 temp2 = Right.crossProduct(Front);
     Up = temp2.normalize();
 }
 
 //-------------------------------- lookAt matrix ---------------------------------------------------
-mat4f lookAt(Point eye, Point target, Point vUp = { 0, 1, 0 })
+mat4f lookAt(vect4 eye, vect4 target, vect4 vUp = { 0, 1, 0 })
 {
     // Calculate new forward direction
-    Point temp = eye - target;
+    vect4 temp = eye - target;
 
-    Point forward = temp.normalize();
+    vect4 forward = temp.normalize();
     temp = vUp.crossProduct(forward);
-    Point right = temp.normalize();
+    vect4 right = temp.normalize();
     // Calculate new Up direction
-    Point up = forward.crossProduct(right);
+    vect4 up = forward.crossProduct(right);
 
     mat4f view = { {{right.x, right.y, right.z, -dotProduct(right, eye)},
                    {up.x, up.y, up.z, -dotProduct(up, eye)},
                    {forward.x, forward.y, forward.z, -dotProduct(forward, eye)},
                    {0, 0, 0, 1}} };
-    //std::cout << "l " << left.x << " " << left.y << " " << left.z << std::endl;
+    //std::cout << "l " << right.x << " " << right.y << " " << right.z << std::endl;
     //std::cout << "u " << up.x << " " << up.y << " " << up.z << std::endl;
     //std::cout << "f " << forward.x << " " << forward.y << " " << forward.z << std::endl;
     //float one = dotProduct(left, eye);

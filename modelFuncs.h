@@ -10,11 +10,13 @@ void convertToScreen_model(std::vector<Triangle>& model)
         for (int j = 0; j < 3; j++)
         {
             model[i].vertices[j] = model[i].vertices[j].Convert_to_Screen();
+            /*std::cout<<"Conv"<<std::endl;
+            std::cout<< model[i].vertices[j] <<std::endl;*/
         }
     }
 }
 
-void translate_model(std::vector<Triangle>& model, Point pt)
+void translate_model(std::vector<Triangle>& model, vect4 pt)
 {
     for (int i = 0; i < model.size(); i++)
     {

@@ -1,19 +1,19 @@
 #pragma once
 
-void wireFrame(Point v1, Point v2, Point v3, const vec3& color);
-void fillTriangle(Point v1, Point v2, Point v3, const vec3& color);
+void wireFrame(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
+void fillTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
 
-void fillBottomFlatTriangle(Point v1, Point v2, Point v3, const vec3& color);
-void fillTopFlatTriangle(Point v1, Point v2, Point v3, const vec3& color);
+void fillBottomFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
+void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
 
-void wireFrame(Point v1, Point v2, Point v3, const vec3& color) {
+void wireFrame(vect4 v1, vect4 v2, vect4 v3, const vec3& color) {
     //fillTriangle(v1, v2, v3, color);
     Line(v1.x, v1.y, v2.x, v2.y, color);
     Line(v1.x, v1.y, v3.x, v3.y, color);
     Line(v3.x, v3.y, v2.x, v2.y, color);
 }
 
-void fillTriangle(Point v1, Point v2, Point v3, const vec3& color) {
+void fillTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color) {
     if (v1.y > v2.y) { std::swap(v2, v1); }
     if (v1.y > v3.y) { std::swap(v3, v1); }
     if (v2.y > v3.y) { std::swap(v3, v2); }
@@ -23,7 +23,7 @@ void fillTriangle(Point v1, Point v2, Point v3, const vec3& color) {
     else
     {
         // general case - split the triangle in a topflat and bottom-flat one
-        Point* v4 = new Point({
+        vect4* v4 = new vect4({
             (v1.x + ((float)(v2.y - v1.y) / (float)(v3.y - v1.y)) * (v3.x - v1.x)),v2.y, 0
             });
         fillBottomFlatTriangle(v1, v2, *v4, color);
@@ -31,7 +31,7 @@ void fillTriangle(Point v1, Point v2, Point v3, const vec3& color) {
     }
 }
 
-void fillBottomFlatTriangle(Point v1, Point v2, Point v3, const vec3& color)
+void fillBottomFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color)
 {
     float invslope1 = (v2.x - v1.x) / (v2.y - v1.y);
     // cout <<"a"<< (v2.x - v1.x) / (v2.y - v1.y)<<endl;
@@ -57,7 +57,7 @@ void fillBottomFlatTriangle(Point v1, Point v2, Point v3, const vec3& color)
     }
 }
 
-void fillTopFlatTriangle(Point v1, Point v2, Point v3, const vec3& color)
+void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color)
 {
     float invslope1 = (v3.x - v1.x) / (v3.y - v1.y);
     float invslope2 = (v3.x - v2.x) / (v3.y - v2.y);

@@ -38,6 +38,12 @@ void draw() {
     mat4f view = camera.GetViewMatrix();
     mat4f perspec = perspectiveMatrix();
     mat4f view_projection = mul(perspec, view);
+    //for (int i = 0; i < 4; i++) {
+    //    for (int j = 0; j < 4; j++) {
+    //        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
+    //    }
+    //}
+
 
     std::vector<Triangle> model = load("obj/videoship.obj");
     std::vector<Triangle> wmodel = load("obj/videoship.obj");
@@ -58,11 +64,11 @@ void draw() {
 
 
     //mat4f view_projection = mul(perspec, view);
-    ////for (int i = 0; i < 4; i++) {
-    ////    for (int j = 0; j < 4; j++) {
-    ////        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
-    ////    }
-    ////}
+    //for (int i = 0; i < 4; i++) {
+    //    for (int j = 0; j < 4; j++) {
+    //        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
+    //    }
+    //}
 
     //std::vector<Triangle> model = load("videoship.obj");
 

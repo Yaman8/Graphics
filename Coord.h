@@ -22,13 +22,13 @@ struct Point2i
 };
 
 
-struct Point {
+struct vect4 {
     float x, y, z, w;
-    float xfactor = wid / 8.0f;
-    float yfactor = hei / 8.0f;
-    float cube_height = cH / 8.0f;
+    float xfactor = wid / 2.0f;
+    float yfactor = hei / 2.0f;
+    float cube_height = cH / 2.0f;
 
-    Point Convert_to_Screen()
+    vect4 Convert_to_Screen()
     {
         x = (x + 1.0f) * xfactor;
         y = (y + 1.0f) * yfactor;
@@ -38,35 +38,35 @@ struct Point {
         return { x,y,z };
     }
 
-    Point inverse()
+    vect4 inverse()
     {
         return { -x, -y, -z, w };
     }
 
-    Point operator+(Point& translate)
+    vect4 operator+(vect4& translate)
     {
         return { x + translate.x, y + translate.y, z + translate.z, w };
     }
     //inverse the vector direction
-    Point operator-(Point& sub)
+    vect4 operator-(vect4& sub)
     {
         return { x - sub.x, y - sub.y, z - sub.z, w };
     }
-    Point operator*(float mul)
+    vect4 operator*(float mul)
     {
         return { float(mul * x), float(mul * y), float(mul * z), w };
     }
-    Point operator/(float div)
+    vect4 operator/(float div)
     {
         return { float(x / div), float(y / div), float(z / div), w };
     }
-    Point scaleProduct(float pt)
+    vect4 scaleProduct(float pt)
     {
         return { x * pt, y * pt, z * pt, w };
     }
-    Point crossProduct(Point pt)
+    vect4 crossProduct(vect4 pt)
     {
-        Point ret;
+        vect4 ret;
         ret.x = y * pt.z - z * pt.y;
         ret.y = z * pt.x - x * pt.z;
         ret.z = x * pt.y - y * pt.x;
@@ -75,13 +75,13 @@ struct Point {
         return ret;
     }
 
-    friend std::ostream& operator<<(std::ostream& out, Point& vec)
+    friend std::ostream& operator<<(std::ostream& out, vect4& vec)
     {
         out << "( " << vec.x << ", " << vec.y << ", " << vec.z << " )\n";
         return out;
     }
 
-    Point normalize()
+    vect4 normalize()
     {
         float mag = x * x + y * y + z * z;
         mag = pow(mag, 0.5);
@@ -97,13 +97,13 @@ struct Point {
     //}
 };
 
-float dotProduct(Point& pt1, Point& pt2)
+float dotProduct(vect4& pt1, vect4& pt2)
 {
     return { pt1.x * pt2.x + pt1.y * pt2.y + pt1.z * pt2.z };
 }
 
 struct Triangle {
-    Point vertices[3];
+    vect4 vertices[3];
     vec3 color;
 };
 

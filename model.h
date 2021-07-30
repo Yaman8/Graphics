@@ -17,7 +17,7 @@ std::vector<Triangle> load(std::string filename)
     }
     //std::cout << "open";
     // Local cache of verts
-    std::vector<Point> verts;
+    std::vector<vect4> verts;
     std::vector<Triangle>triangles;
 
     while (!file.eof())
@@ -32,7 +32,7 @@ std::vector<Triangle> load(std::string filename)
 
         if (line[0] == 'v')
         {
-            Point v;
+            vect4 v;
             s >> junk >> v.x >> v.y >> v.z;
             verts.push_back(v);
         }

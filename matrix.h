@@ -10,7 +10,7 @@ mat4f mul(mat4f a, mat4f b);
 mat4f perspectiveMatrix();
 mat4f rotateMatrix(float yaw, float pitch, float roll);
 mat4f orthoprojectMatrix();
-Point mul(mat4f matrix, Point& p);
+vect4 mul(mat4f matrix, vect4& p);
 
 
 mat4f mul(mat4f a, mat4f b)
@@ -64,15 +64,18 @@ void applyTransform(mat4f& transform, std::vector<Triangle>& triangles)
         tri.vertices[0] = mul(transform, tri.vertices[0]);
         tri.vertices[1] = mul(transform, tri.vertices[1]);
         tri.vertices[2] = mul(transform, tri.vertices[2]);
+        //std::cout<<"apply"<<std::endl;
+        //std::cout << tri.vertices[0] << "," << tri.vertices[1] << "," << tri.vertices[2] << std::endl;
     }
+
     glutPostRedisplay();
 }
 
-Point mul(mat4f matrix, Point& p)
+vect4 mul(mat4f matrix, vect4& p)
 {
 
     // float homogenous_b[] = {b[0], b[1], b[2], 1};
-    Point temp;
+    vect4 temp;
     temp.x = matrix.matrix4[0][0] * p.x + matrix.matrix4[0][1] * p.y + matrix.matrix4[0][2] * p.z + matrix.matrix4[0][3];
     temp.y = matrix.matrix4[1][0] * p.x + matrix.matrix4[1][1] * p.y + matrix.matrix4[1][2] * p.z + matrix.matrix4[1][3];
     temp.z = matrix.matrix4[2][0] * p.x + matrix.matrix4[2][1] * p.y + matrix.matrix4[2][2] * p.z + matrix.matrix4[2][3];

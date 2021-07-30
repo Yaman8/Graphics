@@ -5,13 +5,13 @@
 #include"colorOptions.h"
 #include"triangleRaster.h"
 
-Point lightDir = { 0,0,-3 };
+vect4 lightDir = { 0,0,-3 };
 
 
 void drawWireframe_model(std::vector<Triangle>& model, std::vector<Triangle>& wmodel);
 void draw_model(std::vector<Triangle>& model, std::vector<Triangle>& wmodel);
-float backfaceDetectionNormalize(Point v1, Point v2, Point v3);
-float calcIntensity(Point point, Point N, Point view, float specularVal);
+float backfaceDetectionNormalize(vect4 v1, vect4 v2, vect4 v3);
+float calcIntensity(vect4 point, vect4 N, vect4 view, float specularVal);
 void phongIlluminationModel(Triangle& tri, Camera& camera);
 
 void drawWireframe_model(std::vector<Triangle>& model, std::vector<Triangle>& wmodel)
@@ -23,8 +23,9 @@ void drawWireframe_model(std::vector<Triangle>& model, std::vector<Triangle>& wm
             float val = backfaceDetectionNormalize(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2]);
             if (val < 0)
                 wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
-
+            //std::cout << model[i].vertices[0] << " ";
         }
+        //std::cout << std::endl;
     }
 }
 
@@ -46,15 +47,15 @@ void draw_model(std::vector<Triangle>& model, std::vector<Triangle>& wmodel)
     }
 }
 
-float backfaceDetectionNormalize(Point v1, Point v2, Point v3)
+float backfaceDetectionNormalize(vect4 v1, vect4 v2, vect4 v3)
 {
-    Point V = { 0,0,100,0 };
+    vect4 V = { 0,0,100,0 };
     V = V.normalize();
-    Point newPoint1 = v1, newPoint2 = v2, newPoint3 = v3;
+    vect4 newPoint1 = v1, newPoint2 = v2, newPoint3 = v3;
     newPoint2 = newPoint2 - newPoint1;
     newPoint3 = newPoint3 - newPoint1;
 
-    Point normal = newPoint2.crossProduct(newPoint3);
+    vect4 normal = newPoint2.crossProduct(newPoint3);
     normal = normal.normalize();
     // std::cout<<normal;
 
@@ -63,10 +64,10 @@ float backfaceDetectionNormalize(Point v1, Point v2, Point v3)
     return value;
 }
 
-float calcIntensity(Point point, Point N, Point view, float specularVal) {
+float calcIntensity(vect4 point, vect4 N, vect4 view, float specularVal) {
     float i = 0.0;
-    Point position = { 500, 1000, 800 };
-    Point Ldir = (position - point).normalize();
+    vect4 position = { 500, 1000, 800 };
+    vect4 Ldir = (position - point).normalize();
     std::cout << point.x << "\t" << point.y << "\t" << point.z << "\n";
     float ambientInt = 0.4;
     float pointInt = 0.5;
@@ -80,7 +81,7 @@ float calcIntensity(Point point, Point N, Point view, float specularVal) {
     float diffuseLight = diffuseConstant * pointInt * dotProduct(N, Ldir);
 
     // Point R = maths::sub(maths::mul(Normal, (2 * maths::dot(Normal, Ldir))), Ldir);
-    Point R = (N * (2 * dotProduct(N, Ldir))) - Ldir;
+    vect4 R = (N * (2 * dotProduct(N, Ldir))) - Ldir;
     float specularLight = specularConstant * pointInt * pow(dotProduct(R, view), specularVal);
 
     float tmp = ambientLight + specularLight + diffuseLight;
@@ -91,24 +92,24 @@ float calcIntensity(Point point, Point N, Point view, float specularVal) {
 void phongIlluminationModel(Triangle& tri, Camera& camera) {
     // for (auto &triangle : cube.triangles)
 // {
-    Point v1 = tri.vertices[0];
-    Point v2 = tri.vertices[1];
-    Point v3 = tri.vertices[2];
+    vect4 v1 = tri.vertices[0];
+    vect4 v2 = tri.vertices[1];
+    vect4 v3 = tri.vertices[2];
 
-    Point centroid;
+    vect4 centroid;
     centroid.x = (v1.x + v2.x + v3.x) / 3;
     centroid.y = (v1.y + v2.y + v3.y) / 3;
     centroid.z = (v1.z + v2.z + v3.z) / 3;
 
     // std::cout << centroid[0] <<"\t";
 
-    Point view = (camera.Position - centroid).normalize();
+    vect4 view = (camera.Position - centroid).normalize();
 
     // generating the normal vector of a triangle
-    Point ver1 = v1 - v2;
-    Point ver2 = v1 - v3;
+    vect4 ver1 = v1 - v2;
+    vect4 ver2 = v1 - v3;
 
-    Point normal = (v1.crossProduct(ver2)).normalize();
+    vect4 normal = (v1.crossProduct(ver2)).normalize();
 
     float intensity = calcIntensity(centroid, normal, view, 10);
     std::cout << "The intensity: " << intensity << "\n";

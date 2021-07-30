@@ -14,7 +14,7 @@
 #include"modelDraw.h"
 #include"modelFuncs.h"
 
-Camera camera = Camera(Point{ 0.0f,0.0f,3.0f });
+Camera camera = Camera(vect4{ 0.0f,0.0f,3.0f });
 
 int width = 800, height = 800;
 const float l = 1.6;
@@ -36,16 +36,16 @@ void reshape(int w, int h);
 void display();
 
 
-void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective);
-void getProjection(Point& v, bool perspective);
-void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective);
+void cube(vect4& v0, vect4& v1, vect4& v2, vect4& v3, vect4& v4, vect4& v5, vect4& v6, vect4& v7, const vec3& color, bool perspective);
+void getProjection(vect4& v, bool perspective);
+void rotateCube(vect4& v0, vect4& v1, vect4& v2, vect4& v3, vect4& v4, vect4& v5, vect4& v6, vect4& v7, const vec3& color, bool perspective);
 void draw();
 
 
 
 
 
-void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective) {
+void cube(vect4& v0, vect4& v1, vect4& v2, vect4& v3, vect4& v4, vect4& v5, vect4& v6, vect4& v7, const vec3& color, bool perspective) {
     getProjection(v0, perspective);
     getProjection(v1, perspective);
     getProjection(v2, perspective);
@@ -84,7 +84,7 @@ void cube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Poin
 
 }
 
-void getProjection(Point& v, bool perspective) {
+void getProjection(vect4& v, bool perspective) {
     if (perspective) {
         float xv, yv, zv, zvp = 0, xp, yp, zp;
         float xprp = 450, yprp = 450, zprp = 450;
@@ -110,9 +110,9 @@ void getProjection(Point& v, bool perspective) {
     //std::cout << v.x << " " << v.y << " " << std::endl;
 }
 
-void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5, Point& v6, Point& v7, const vec3& color, bool perspective) {
-    Point camera;
-    Point v = { 300,600,80 };
+void rotateCube(vect4& v0, vect4& v1, vect4& v2, vect4& v3, vect4& v4, vect4& v5, vect4& v6, vect4& v7, const vec3& color, bool perspective) {
+    vect4 camera;
+    vect4 v = { 300,600,80 };
     camera.x = v.x - cv.x;
     camera.y = v.y - cv.y;
     camera.z = v.z - cv.z;
@@ -126,8 +126,8 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
     getProjection(v6, perspective);
     getProjection(v7, perspective);
 
-    Point t = { -450,-450,150 };
-    Point r = { 450,450,-150 };
+    vect4 t = { -450,-450,150 };
+    vect4 r = { 450,450,-150 };
 
     if (val > 360) {
         val = 0;
@@ -173,12 +173,12 @@ void rotateCube(Point& v0, Point& v1, Point& v2, Point& v3, Point& v4, Point& v5
 
 
 
-    Point normal0 = GetNormal(v0, v1, v2);
-    Point normal1 = GetNormal(v1, v5, v6);
-    Point normal2 = GetNormal(v4, v0, v3);
-    Point normal3 = GetNormal(v5, v4, v7);
-    Point normal4 = GetNormal(v0, v4, v5);
-    Point normal5 = GetNormal(v3, v2, v7);
+    vect4 normal0 = GetNormal(v0, v1, v2);
+    vect4 normal1 = GetNormal(v1, v5, v6);
+    vect4 normal2 = GetNormal(v4, v0, v3);
+    vect4 normal3 = GetNormal(v5, v4, v7);
+    vect4 normal4 = GetNormal(v0, v4, v5);
+    vect4 normal5 = GetNormal(v3, v2, v7);
 
     if (dot(camera, normal0) < 0) {
         std::cout << "Not drawn0" << std::endl;
