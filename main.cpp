@@ -2,120 +2,198 @@
 #include"includes.h"
 
 int main(int argc, char** argv) {
-    glutInit(&argc, argv);
-    glutInitWindowSize(width, height);
-    glutInitWindowPosition(0, 0);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutCreateWindow("Project");
+
+    myinit(argc, argv);
+
+    model = new Model;
+    model->load("obj/ranipokhari.obj");
+    model->camera = &camera;
+    model->convertToScreen_model();
+    model->scale_model(0.2);
+    model->translate_model({ wid / 2,hei / 4,0 });
 
 
     glutKeyboardFunc(processKeyboard);
     glutPassiveMotionFunc(processMouse);
-    glutReshapeFunc(reshape);
-    glutIdleFunc(display);
-    glutDisplayFunc(draw);
+    //glutMouseFunc(mouseCB);
+    //glutMotionFunc(mouseMotionCB);
+    //glutReshapeFunc(reshape);
+    //glutIdleFunc(display);
+    glutDisplayFunc(drawModel);
     glutMainLoop();
 
     return 0;
 }
 
-void display() {
-    glClear(GL_COLOR_BUFFER_BIT);
+//void display() {
+//    glClear(GL_COLOR_BUFFER_BIT);
+//    glLoadIdentity();
+//
+//    draw();
+//    //ob();
+//
+//    glFlush();
+//    glutSwapBuffers();
+//}
+
+void myinit(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitWindowSize(width, height); //sets the width and height of the window in pixels
+    glutInitWindowPosition(0, 0);              //sets the position of the window in pixels from top left corner
+    // glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //creates a single frame buffer of RGB color capacity.
+    glutCreateWindow("Project");
+
+    glClearColor(0.1, 0.1, 0.1, 0.0);
+    glViewport(0, 0, width, height);
+    // glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-
-    draw();
-    //ob();
-
-    glFlush();
-    glutSwapBuffers();
+    gluOrtho2D(0, width, 0, height);
 }
 
+void updateFunction(int val) {
+    glutPostRedisplay();
+    glutTimerFunc(1000 / fps, updateFunction, 0);
+}
 
-void draw() {
-    mat4f mat = { {{1, 2, 3, 4},{2, 3, 4, 5},{1, 3, 2, 4},{ 1, 3, 2, 2}} };
-    mat4f val = mul(mat, mat);
+void mouseMotionCB(int xpos, int ypos) {
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera.processMouseMovement(xoffset, yoffset);
+}
+
+void mouseCB(int button, int state, int xpos, int ypos) {
+    if (firstMouse == true)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+    if ((button == GLUT_LEFT_BUTTON))
+    {
+        if (state == GLUT_DOWN)
+        {
+
+            mouseLeftDown = true;
+        }
+        else
+        {
+            mouseLeftDown = false;
+        }
+    }
+}
+
+void drawModel() {
+    static float lastFrame = 0;
+    float currentFrame = glutGet(GLUT_ELAPSED_TIME);
+    deltaTime = (currentFrame - lastFrame) / 10;
+    lastFrame = currentFrame;
+
+    glClear(GL_COLOR_BUFFER_BIT);
 
     mat4f view = camera.GetViewMatrix();
     mat4f perspec = perspectiveMatrix();
+
     mat4f view_projection = mul(perspec, view);
-    //for (int i = 0; i < 4; i++) {
-    //    for (int j = 0; j < 4; j++) {
-    //        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
-    //    }
-    //}
 
+    model->applyTransform(view_projection);
+    model->draw();
 
-    std::vector<Triangle> model = load("obj/videoship.obj");
-    std::vector<Triangle> wmodel = load("obj/videoship.obj");
+    glutSwapBuffers();
+    glFlush(); // flushes the frame buffer to the screen
 
-    applyTransform(view_projection, model);
-
-    convertToScreen_model(model);
-    scale_model(model,  0.25);
-    translate_model(model, { wid / 2, hei / 2, 0, 0 }); // translate the cube back to its original position
-
-    
-    drawWireframe_model(model,wmodel);
-    //draw_model(model,wmodel);
-
-
-    //mat4f view = camera.GetViewMatrix();
-    //mat4f perspec = perspectiveMatrix();
-
-
-    //mat4f view_projection = mul(perspec, view);
-    //for (int i = 0; i < 4; i++) {
-    //    for (int j = 0; j < 4; j++) {
-    //        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
-    //    }
-    //}
-
-    //std::vector<Triangle> model = load("videoship.obj");
-
-    //applyTransform(view_projection, model);
-    //for (int i = 0; i < model.size(); i++)
-    //{
-    //    for (int j = 0; j < 3; j++)
-    //    {
-    //        //std::cout << "inside";
-    //        model[i].vertices[j] = model[i].vertices[j].Convert_to_Screen(model[i].vertices[j]);
-    //        //std::cout << model[i].vertices[0];
-    //        //std::cout << model[i].vertices[1];
-    //        //std::cout << model[i].vertices[2];
-    //        transate_polygon(model[i].vertices[j], { wid , hei / 1.5, 0, 0 }); // translate the cube back to its original position
-    //        scale_polygon(model[i].vertices[j], { 0.3,0.3,0.3 });
-    //    }
-    //    wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], white);
-    //    //fillTriangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
-
-    //}
-
-
-
-    //Point v0 = { 300,600,0 };
-    //Point v1 = { 600,600,0 };
-    //Point v2 = { 600,300,0 };
-    //Point v3 = { 300,300,0 };
-    //Point v4 = { 300,600,-300 };
-    //Point v5 = { 600,600,-300 };
-    //Point v6 = { 600,300,-300 };
-    //Point v7 = { 300,300,-300 };
-    ////cube(v0,v1,v2,v3,v4,v5,v6,v7,col1,perspective);
-    //rotateCube(v0, v1, v2, v3, v4, v5, v6, v7, red, perspect);
+    // glutPostRedisplay();
+    updateFunction(0);
 }
 
-void reshape(int w, int h) {
-    width = w;
-    height = h;
+//void draw() {
+//    mat4f mat = { {{1, 2, 3, 4},{2, 3, 4, 5},{1, 3, 2, 4},{ 1, 3, 2, 2}} };
+//    mat4f val = mul(mat, mat);
+//
+//    mat4f view = camera.GetViewMatrix();
+//    mat4f perspec = perspectiveMatrix();
+//    mat4f view_projection = mul(perspec, view);
+//    //for (int i = 0; i < 4; i++) {
+//    //    for (int j = 0; j < 4; j++) {
+//    //        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
+//    //    }
+//    //}
+//
+//
+//    std::vector<Triangle> model = load("obj/videoship.obj");
+//    std::vector<Triangle> wmodel = load("obj/videoship.obj");
+//
+//    applyTransform(view_projection, model);
+//
+//    convertToScreen_model(model);
+//    scale_model(model,  0.1);
+//    translate_model(model, { wid / 2, hei / 2, 0, 0 }); // translate the cube back to its original position
+//
+//    
+//    drawWireframe_model(model,wmodel);
+//    //draw_model(model,wmodel);
+//
+//
+//    //mat4f view = camera.GetViewMatrix();
+//    //mat4f perspec = perspectiveMatrix();
+//
+//
+//    //mat4f view_projection = mul(perspec, view);
+//    //for (int i = 0; i < 4; i++) {
+//    //    for (int j = 0; j < 4; j++) {
+//    //        std::cout << "viewp" << "[" << i << "]" << "[" << j << "]" << view_projection.matrix4[i][j] << std::endl;
+//    //    }
+//    //}
+//
+//    //std::vector<Triangle> model = load("videoship.obj");
+//
+//    //applyTransform(view_projection, model);
+//    //for (int i = 0; i < model.size(); i++)
+//    //{
+//    //    for (int j = 0; j < 3; j++)
+//    //    {
+//    //        //std::cout << "inside";
+//    //        model[i].vertices[j] = model[i].vertices[j].Convert_to_Screen(model[i].vertices[j]);
+//    //        //std::cout << model[i].vertices[0];
+//    //        //std::cout << model[i].vertices[1];
+//    //        //std::cout << model[i].vertices[2];
+//    //        transate_polygon(model[i].vertices[j], { wid , hei / 1.5, 0, 0 }); // translate the cube back to its original position
+//    //        scale_polygon(model[i].vertices[j], { 0.3,0.3,0.3 });
+//    //    }
+//    //    wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], white);
+//    //    //fillTriangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
+//
+//    //}
+//
+//
+//
+//    //Point v0 = { 300,600,0 };
+//    //Point v1 = { 600,600,0 };
+//    //Point v2 = { 600,300,0 };
+//    //Point v3 = { 300,300,0 };
+//    //Point v4 = { 300,600,-300 };
+//    //Point v5 = { 600,600,-300 };
+//    //Point v6 = { 600,300,-300 };
+//    //Point v7 = { 300,300,-300 };
+//    ////cube(v0,v1,v2,v3,v4,v5,v6,v7,col1,perspective);
+//    //rotateCube(v0, v1, v2, v3, v4, v5, v6, v7, red, perspect);
+//}
 
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0.0, width, 0.0, height);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glutPostRedisplay();
-}
+//void reshape(int w, int h) {
+//    width = w;
+//    height = h;
+//
+//    glViewport(0, 0, width, height);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    gluOrtho2D(0.0, width, 0.0, height);
+//    glMatrixMode(GL_MODELVIEW);
+//    glLoadIdentity();
+//    glutPostRedisplay();
+//}
 
 void processMouse(int xpos, int ypos)
 {

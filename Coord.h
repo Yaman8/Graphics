@@ -24,9 +24,9 @@ struct Point2i
 
 struct vect4 {
     float x, y, z, w;
-    float xfactor = wid / 2.0f;
-    float yfactor = hei / 2.0f;
-    float cube_height = cH / 2.0f;
+    float xfactor = wid / 8.0f;
+    float yfactor = hei / 8.0f;
+    float cube_height = cH / 8.0f;
 
     vect4 Convert_to_Screen()
     {

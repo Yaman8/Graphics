@@ -57,19 +57,6 @@ mat4f orthoprojectMatrix()
     return ortho;
 }
 
-void applyTransform(mat4f& transform, std::vector<Triangle>& triangles)
-{
-    for (auto& tri : triangles)
-    {
-        tri.vertices[0] = mul(transform, tri.vertices[0]);
-        tri.vertices[1] = mul(transform, tri.vertices[1]);
-        tri.vertices[2] = mul(transform, tri.vertices[2]);
-        //std::cout<<"apply"<<std::endl;
-        //std::cout << tri.vertices[0] << "," << tri.vertices[1] << "," << tri.vertices[2] << std::endl;
-    }
-
-    glutPostRedisplay();
-}
 
 vect4 mul(mat4f matrix, vect4& p)
 {

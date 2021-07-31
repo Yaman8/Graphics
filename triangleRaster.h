@@ -1,10 +1,16 @@
 #pragma once
 
+#include"lineFunc.h"
+#include"matrix.h"
+#include"colorOptions.h"
 void wireFrame(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
 void fillTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
 
 void fillBottomFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
 void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
+
+void drawWireframe_model(std::vector<Triangle>& model, std::vector<Triangle>& wmodel);
+void draw_model(std::vector<Triangle>& model, std::vector<Triangle>& wmodel);
 
 void wireFrame(vect4 v1, vect4 v2, vect4 v3, const vec3& color) {
     //fillTriangle(v1, v2, v3, color);
@@ -73,5 +79,36 @@ void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color)
         Line(curx1, scanlineY, curx2, scanlineY, color);
         curx1 -= invslope1;
         curx2 -= invslope2;
+    }
+}
+
+void drawWireframe_model(std::vector<Triangle>& model)
+{
+    for (int i = 0; i < model.size(); i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
+            //std::cout << model[i].vertices[0] << " ";
+        }
+        //std::cout << std::endl;
+    }
+}
+
+void draw_model(std::vector<Triangle>& model)
+{
+    for (int i = 0; i < model.size(); i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+
+        }
+        //Point n = (wmodel[i].vertices[2] - wmodel[i].vertices[0]).crossProduct(wmodel[i].vertices[1] - wmodel[i].vertices[0]);
+        //n.normalize();
+        //float intensity = dotProduct(n, lightDir);
+        //std::cout<<intensity<<std::endl;
+        //vec3 col;
+        //if (intensity > 0)
+        fillTriangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
     }
 }

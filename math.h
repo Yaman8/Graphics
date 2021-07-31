@@ -160,6 +160,10 @@ struct vec3_T {
         return vec3_T<T>(x - a, y - a, z - a);
     }
 
+    vec3_T<T> operator*(float mul) {
+        return { float(mul * x),float(mul * y),float(mul * z) };
+    }
+
     T operator*(const vec3_T<T>& b) const {
         return x * b.x + y * b.y + z * b.z;
     }
