@@ -28,8 +28,8 @@ public:
 };
 
 void Model::draw() {
-    //drawWireframe_model(ftriangles);
-    draw_model(ftriangles);
+    drawWireframe_model(ftriangles);
+    //draw_model(ftriangles);
 }
 
 void Model::load(std::string filename)

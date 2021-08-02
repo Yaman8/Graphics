@@ -6,11 +6,11 @@ int main(int argc, char** argv) {
     myinit(argc, argv);
 
     model = new Model;
-    model->load("obj/ranipokhari.obj");
+    model->load("obj/objtry3.obj");
     model->camera = &camera;
     model->convertToScreen_model();
-    model->scale_model(0.2);
-    model->translate_model({ wid / 2,hei / 4,0 });
+    model->scale_model(0.1);
+    model->translate_model({ (wid /8)-600.0,hei / 1.5,0 });
 
 
     glutKeyboardFunc(processKeyboard);

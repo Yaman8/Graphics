@@ -88,7 +88,7 @@ void drawWireframe_model(std::vector<Triangle>& model)
     {
         for (int j = 0; j < 3; j++)
         {
-            wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
+            wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], white);
             //std::cout << model[i].vertices[0] << " ";
         }
         //std::cout << std::endl;
@@ -109,6 +109,6 @@ void draw_model(std::vector<Triangle>& model)
         //std::cout<<intensity<<std::endl;
         //vec3 col;
         //if (intensity > 0)
-        fillTriangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
+        fillTriangle(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], white);
     }
 }
