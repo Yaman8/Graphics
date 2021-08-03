@@ -135,7 +135,7 @@ void Model::applyTransform(mat4f& transform)
         counter++;
         phongIlluminationModel(tri);
     }
-    // std::cout << "The counter is: " << counter;
+    std::cout << "The counter is: " << counter;
 }
 
 bool Model::backfaceDetectionNormalize(Triangle& tri)

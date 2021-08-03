@@ -7,12 +7,6 @@ C:\Users\Yaman\source\repos\try\model.h(76,23): warning C4018: '<': signed/unsig
 C:\Users\Yaman\source\repos\try\model.h(86,23): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Yaman\source\repos\try\model.h(96,23): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Yaman\source\repos\try\model.h(106,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Yaman\source\repos\try\modelDraw.h(19,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Yaman\source\repos\try\modelDraw.h(34,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Yaman\source\repos\try\modelFuncs.h(8,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Yaman\source\repos\try\modelFuncs.h(21,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Yaman\source\repos\try\modelFuncs.h(32,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Yaman\source\repos\try\modelFuncs.h(43,23): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Yaman\source\repos\try\includes.h(97,15): warning C4101: 'xv': unreferenced local variable
 C:\Users\Yaman\source\repos\try\includes.h(97,19): warning C4101: 'yv': unreferenced local variable
 C:\Users\Yaman\source\repos\try\includes.h(97,23): warning C4101: 'zv': unreferenced local variable

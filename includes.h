@@ -11,8 +11,8 @@
 #include"lineFunc.h"
 #include"triangleRaster.h"
 #include"colorOptions.h"
-#include"modelDraw.h"
-#include"modelFuncs.h"
+//#include"modelDraw.h"
+//#include"modelFuncs.h"
 
 Camera camera = Camera(vect4{ 0.0f,0.0f,3.0f });
 

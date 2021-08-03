@@ -27,16 +27,10 @@
     <ClInclude Include="Coord.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="lineFunc.h" />
-    <ClInclude Include="loader.h" />
-    <ClInclude Include="load_object.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="modelDraw.h" />
-    <ClInclude Include="modelFuncs.h" />
     <ClInclude Include="projections.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Texture.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="triangleRaster.h" />
   </ItemGroup>
