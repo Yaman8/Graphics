@@ -58,6 +58,7 @@ void Line(int x1, int y1, int x2, int y2, const vec3& color)
 void putpixel(int x, int y, const vec3& col) {
     glColor3f(col.x, col.y, col.z);
     glBegin(GL_POINTS);
+    glLoadIdentity();
     glVertex2i(x, y);
     glEnd();
 }

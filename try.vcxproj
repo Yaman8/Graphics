@@ -34,10 +34,6 @@
     <ClInclude Include="transform.h" />
     <ClInclude Include="triangleRaster.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="skybox.fs" />
-    <None Include="skybox.vs" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

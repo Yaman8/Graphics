@@ -6,23 +6,23 @@ int main(int argc, char** argv) {
     myinit(argc, argv);
 
     model = new Model;
-    model->load("obj/videoship.obj");
-    model->camera = &camera;
+    model->newLoad("obj/sphere.obj");
+    model->camera = camera;
     model->convertToScreen_model();
-    model->scale_model(0.25);
-    model->translate_model({ (wid /2),hei / 4,0 });
+    model->scale_model(0.5);
+    model->translate_model({ (wid /4),hei / 4,0 });
 
     //model = new Model;
-    //model->load("obj/videoship.obj");
-    //model->camera = &camera;
+    //model->load("obj/objtry3.obj");
+    //model->camera = camera;
     //model->convertToScreen_model();
     //model->scale_model(0.1);
     //model->translate_model({ (wid / 8) - 600.0,hei / 1.5,0 });
 
     glutKeyboardFunc(processKeyboard);
     glutPassiveMotionFunc(processMouse);
-    //glutMouseFunc(mouseCB);
-    //glutMotionFunc(mouseMotionCB);
+    glutMouseFunc(mouseCB);
+    glutMotionFunc(mouseMotionCB);
     //glutReshapeFunc(reshape);
     //glutIdleFunc(display);
     glutDisplayFunc(drawModel);
@@ -57,6 +57,7 @@ void myinit(int argc, char** argv) {
 }
 
 void updateFunction(int val) {
+    int fps = 60;
     glutPostRedisplay();
     glutTimerFunc(1000 / fps, updateFunction, 0);
 }
@@ -68,16 +69,17 @@ void mouseMotionCB(int xpos, int ypos) {
     lastX = xpos;
     lastY = ypos;
 
-    camera.processMouseMovement(xoffset, yoffset);
+    camera->processMouseMovement(xoffset, yoffset);
 }
 
 void mouseCB(int button, int state, int xpos, int ypos) {
-    if (firstMouse == true)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
+    // // std::cout << xpos << "\t" << ypos << "\n";
+    // if (firstMouse == true)
+    // {
+    //     lastX = xpos;
+    //     lastY = ypos;
+    //     firstMouse = false;
+    // }
     if ((button == GLUT_LEFT_BUTTON))
     {
         if (state == GLUT_DOWN)
@@ -95,17 +97,17 @@ void mouseCB(int button, int state, int xpos, int ypos) {
 void drawModel() {
     static float lastFrame = 0;
     float currentFrame = glutGet(GLUT_ELAPSED_TIME);
-    deltaTime = (currentFrame - lastFrame) / 10;
+    deltaTime = (currentFrame - lastFrame) / 1000;
     lastFrame = currentFrame;
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    mat4f view = camera.GetViewMatrix();
-    mat4f perspec = perspectiveMatrix();
+    mat4f view = camera->GetViewMatrix();
+    mat4f projection = newPerspective(camera->Zoom,(float)width/height);
 
-    mat4f view_projection = mul(perspec, view);
+    //mat4f view_projection = mul(perspec, view);
 
-    model->applyTransform(view_projection);
+    model->applyTransform(view,projection);
     model->draw();
 
     glutSwapBuffers();
@@ -203,6 +205,9 @@ void drawModel() {
 
 void processMouse(int xpos, int ypos)
 {
+    static float lastX = 800;
+    static float lastY = 800;
+    static bool firstMouse = true;
     if (firstMouse)
     {
         lastX = xpos;
@@ -216,7 +221,7 @@ void processMouse(int xpos, int ypos)
     lastX = xpos;
     lastY = ypos;
 
-    camera.processMouseMovement(xoffset, yoffset);
+    camera->processMouseMovement(xoffset, yoffset);
 }
 
 void processKeyboard(unsigned char key, int x, int y)
@@ -235,24 +240,28 @@ void processKeyboard(unsigned char key, int x, int y)
     //     theta_z += wrap_angle(deltaTime * dTheta * dt);
 
     // }
-    std::cout << "Key Pressed" << std::endl;
-    static float lastFrame = 0;
-    static float deltaTime = 0;
-    float currentFrame = glutGet(GLUT_ELAPSED_TIME);
-    deltaTime = (currentFrame - lastFrame) / 1000;
-    lastFrame = currentFrame;
+    //std::cout << "Key Pressed" << std::endl;
+    //static float lastFrame = 0;
+    //static float deltaTime = 0;
+    //float currentFrame = glutGet(GLUT_ELAPSED_TIME);
+    //deltaTime = (currentFrame - lastFrame) / 1000;
+    //lastFrame = currentFrame;
     if (key == 27)
     {
         glutDestroyWindow(0);
         exit(0);
     }
     if (key == 's')
-        camera.processKeyboard(FORWARD, deltaTime);
+        camera->processKeyboard(FORWARD, deltaTime);
     if (key == 'w')
-        camera.processKeyboard(BACKWARD, deltaTime);
+        camera->processKeyboard(BACKWARD, deltaTime);
     if (key == 'd')
-        camera.processKeyboard(LEFT, deltaTime);
+        camera->processKeyboard(LEFT, deltaTime);
     if (key == 'a')
-        camera.processKeyboard(RIGHT, deltaTime);
+        camera->processKeyboard(RIGHT, deltaTime);
+    if (key == 'z')
+        camera->processKeyboard(ZOOMIN, deltaTime);
+    if (key == 'x')
+        camera->processKeyboard(ZOOMOUT, deltaTime);
     glutPostRedisplay();
 }

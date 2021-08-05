@@ -1,4 +1,3 @@
-#include<gl/glew.h>
 #include<gl/glut.h>
 #include<cmath>
 #include"math.h"
@@ -14,19 +13,18 @@
 //#include"modelDraw.h"
 //#include"modelFuncs.h"
 
-Camera camera = Camera(vect4{ 0.0f,0.0f,3.0f });
+Camera* camera = new Camera(vect4{ 0.0f,0.0f,100.0f });
 
 int width = 800, height = 800;
 const float l = 1.6;
 bool perspect = false, firstMouse = true, mouseLeftDown = false;
 float val = 0;
 vec3 cv = { 300,600,150 };
-float lastX = width / 2;
-float lastY = height / 2;
+float lastX = 800;
+float lastY = 800;
 const unsigned int cubeH = 300;
 float xfactor = width / 8.0f;
 float yfactor = height / 8.0f;
-int fps = 60;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;

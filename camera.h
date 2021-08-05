@@ -10,15 +10,17 @@ enum CameraMovement
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+    RIGHT,
+    ZOOMIN,
+    ZOOMOUT
 };
 
 // Default camera values
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 2.5f;
-const float SENSITIVITY = 0.01f;
-const float ZOOM = 45.0f;
+const float SPEED = 500.0f;
+const float SENSITIVITY = 0.02f;
+const float ZOOM = 20.0f;
 
 mat4f lookAt(vect4 eye, vect4 target, vect4 vUp);
 
@@ -48,7 +50,7 @@ public:
 
     void processKeyboard(CameraMovement direction, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
-    void processMouseScroll(float yoffset);
+    //void processMouseScroll(float yoffset);
 
 
 };
@@ -94,6 +96,23 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime)
         Position = temp2.inverse() + Position;
     if (direction == RIGHT)
         Position = Position + temp2;
+
+    if (direction == ZOOMIN)
+    {
+        Zoom += MovementSpeed * deltaTime;
+        if (Zoom < 1.0f)
+            Zoom = 1.0f;
+        if (Zoom > 45.0f)
+            Zoom = 45.0f;
+    }
+    if (direction == ZOOMOUT)
+    {
+        Zoom -= MovementSpeed * deltaTime;
+        if (Zoom < 1.0f)
+            Zoom = 1.0f;
+        if (Zoom > 45.0f)
+            Zoom = 45.0f;
+    }
 }
 
 void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch /*= true*/)
@@ -116,15 +135,15 @@ void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPi
     // update Front, Right and Up Vectors using the updated Euler angles
     updateCameraVectors();
 }
-
-void Camera::processMouseScroll(float yoffset)
-{
-    Zoom -= (float)yoffset;
-    if (Zoom < 1.0f)
-        Zoom = 1.0f;
-    if (Zoom > 45.0f)
-        Zoom = 45.0f;
-}
+//
+//void Camera::processMouseScroll(float yoffset)
+//{
+//    Zoom -= (float)yoffset;
+//    if (Zoom < 1.0f)
+//        Zoom = 1.0f;
+//    if (Zoom > 45.0f)
+//        Zoom = 45.0f;
+//}
 
 void Camera::updateCameraVectors()
 {

@@ -11,6 +11,9 @@ mat4f perspectiveMatrix();
 mat4f rotateMatrix(float yaw, float pitch, float roll);
 mat4f orthoprojectMatrix();
 vect4 mul(mat4f matrix, vect4& p);
+mat4f newPerspective(float fov, float aspect);
+vect4 getnormal(vect4 point1, vect4 point2, vect4 point3);
+std::vector<float> interpolate(float i0, float d0, float il, float dl);
 
 
 mat4f mul(mat4f a, mat4f b)
@@ -51,6 +54,18 @@ mat4f rotateMatrix(float yaw, float pitch = 0, float roll = 0)
     return rotation;
 }
 
+mat4f newPerspective(float fov, float aspect)
+{
+    float zNear = 0.1;
+    float zFar = 100.0f;
+
+    mat4f projection = { {{1 / (aspect * tan(fov / 2)), 0, 0, 0},
+                         {0, 1 / tan(fov / 2), 0, 0},
+                         {0, 0, -(zFar + zNear) / (zFar - zNear), -1},
+                         {0, 0, -(2 * zFar * zNear) / (zFar - zNear), 0}} };
+    return projection;
+}
+
 mat4f orthoprojectMatrix()
 {
     mat4f ortho = { {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 1}} };
@@ -68,4 +83,34 @@ vect4 mul(mat4f matrix, vect4& p)
     temp.z = matrix.matrix4[2][0] * p.x + matrix.matrix4[2][1] * p.y + matrix.matrix4[2][2] * p.z + matrix.matrix4[2][3];
     temp.w = p.w;
     return temp;
+}
+
+//std::vector<float> interpolate(float i0, float d0, float il, float dl)
+//{
+//    std::vector<float> values;
+//
+//    if (i0 == il)
+//    {
+//        values.push_back(d0);
+//        return values;
+//    }
+//
+//    float a = (dl - d0) / (il - i0);
+//    float d = d0;
+//
+//    for (int i = i0; i < il; i++)
+//    {
+//        values.push_back(d);
+//        d = d + a;
+//    }
+//    return values;
+//}
+
+vect4 getnormal(vect4 point1, vect4 point2, vect4 point3)
+{
+    vect4 ver1 = point1 - point2;
+    vect4 ver2 = point1 - point3;;
+
+    vect4 normal = (ver1.crossProduct(ver2)).normalize();
+    return normal;
 }
