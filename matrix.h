@@ -7,7 +7,7 @@
 
 void applyTransform(mat4f& transform, std::vector<Triangle>& triangles);
 mat4f mul(mat4f a, mat4f b);
-mat4f perspectiveMatrix();
+mat4f perspectiveMatrix(vect4 eye);
 mat4f rotateMatrix(float yaw, float pitch, float roll);
 mat4f orthoprojectMatrix();
 vect4 mul(mat4f matrix, vect4& p);
@@ -32,9 +32,9 @@ mat4f mul(mat4f a, mat4f b)
     return product;
 }
 
-mat4f perspectiveMatrix()
+mat4f perspectiveMatrix(vect4 eye)
 {
-    float zprp = 250, xprp = 100, yprp = 100;
+    float zprp = eye.z, xprp = eye.x, yprp = eye.y;
     float zvp = 0;
     float dp = zprp - zvp;
     mat4f persmatrix = { {{1, 0, xprp / dp, -xprp * zvp / dp},
@@ -57,12 +57,29 @@ mat4f rotateMatrix(float yaw, float pitch = 0, float roll = 0)
 mat4f newPerspective(float fov, float aspect)
 {
     float zNear = 0.1;
-    float zFar = 100.0f;
 
+    // float zFar = 100.0f;
+
+    float zFar = -30.0f;
+    float zRange = zNear - zFar;
     mat4f projection = { {{1 / (aspect * tan(fov / 2)), 0, 0, 0},
                          {0, 1 / tan(fov / 2), 0, 0},
-                         {0, 0, -(zFar + zNear) / (zFar - zNear), -1},
-                         {0, 0, -(2 * zFar * zNear) / (zFar - zNear), 0}} };
+                         {0, 0, (zFar + zNear) / zRange, (2 * zFar * zNear) / zRange},
+                         {0, 0, -1, 0}} };
+
+    // mat4f projection = {{
+    //     {1/(aspect*tan(fov/2)),0,0,0},
+    //     {0,1/tan(fov/2),0,0},
+    //     {0,0,(zFar+zNear)/zRange,-1},
+    //     {0,0,(2*zFar*zNear)/zRange,0}
+    //     }};
+    return projection;
+
+    // mat4f projection = {{{1 / (aspect * tan(fov / 2)), 0, 0, 0},
+    //                      {0, 1 / tan(fov / 2), 0, 0},
+    //                      {0, 0, -(zFar + zNear) / (zFar - zNear), -1},
+    //                      {0, 0, -(2 * zFar * zNear) / (zFar - zNear), 0}}};
+
     return projection;
 }
 

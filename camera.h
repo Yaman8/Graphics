@@ -99,17 +99,19 @@ void Camera::processKeyboard(CameraMovement direction, float deltaTime)
 
     if (direction == ZOOMIN)
     {
-        Zoom += MovementSpeed * deltaTime;
-        if (Zoom < 1.0f)
-            Zoom = 1.0f;
-        if (Zoom > 45.0f)
-            Zoom = 45.0f;
+        Zoom += 10 * deltaTime;
+
+        if (Zoom < 5.0f)
+            Zoom = 5.0f;
+        if (Zoom > 150.0f)
+            Zoom = 150.0f;
     }
     if (direction == ZOOMOUT)
     {
-        Zoom -= MovementSpeed * deltaTime;
-        if (Zoom < 1.0f)
-            Zoom = 1.0f;
+        Zoom -= 10 * deltaTime;
+
+        if (Zoom < 5.0f)
+            Zoom = 5.0f;
         if (Zoom > 45.0f)
             Zoom = 45.0f;
     }

@@ -293,7 +293,7 @@ float Model::calculateIntensity(vect4 point, vect4 Normal, vect4 View)
 
     // Point R = maths::sub(maths::mul(Normal, (2 * maths::dot(Normal, Ldir))), Ldir);
     vect4 R = ((Normal * (2 * dotProduct(Normal, Ldir))) - Ldir).normalize();
-    float specularExp = 4;
+    float specularExp = 32;
     float specularLight = specularConstant * pointInt * pow(dotProduct(R, View), specularExp);
 
     float tmp = ambientLight + specularLight + diffuseLight;
@@ -315,7 +315,7 @@ void Model::phongIlluminationModel(Triangle& tri)
     // std::cout << centroid[0] <<"\t";
 
     // Point view = (camera->Position - centroid).normalize();
-    vect4 view = (vect4{ 0,0,1000 } - centroid).normalize();
+    vect4 view = (camera->Position - centroid).normalize();
 
     // generating the normal vector of a triangle
     vect4 ver2 = centroid - v3;
@@ -348,7 +348,7 @@ void Model::gouraudShading(Triangle& tri)
     int count = 0;
     for (auto& vertex : tri.vertices)
     {
-        vect4 view = (vect4{ 0, 0, 1000 } - vertex).normalize();
+        vect4 view = (vect4{ 0, 0, 10 } - vertex).normalize();
         intensity[count] = calculateIntensity(vertex, tri.normals[count], view);
         count++;
     }

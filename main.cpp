@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
     myinit(argc, argv);
 
     model = new Model;
-    model->newLoad("obj/sphere.obj");
+    model->newLoad("obj/cube.obj");
     model->camera = camera;
     model->convertToScreen_model();
     model->scale_model(0.5);

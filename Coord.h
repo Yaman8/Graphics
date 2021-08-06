@@ -8,6 +8,17 @@ const unsigned int wid = 800;
 const unsigned int hei = 800;
 const unsigned int cH = 300;
 
+float rad_to_deg(float radian)
+{
+    return (180 * radian) / 3.1416;
+}
+
+float deg_to_rad(float degree)
+{
+    return (3.1416 * degree / 180);
+}
+
+
 struct Point2i
 {
     float x, y;
