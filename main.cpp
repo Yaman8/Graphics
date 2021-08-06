@@ -5,19 +5,19 @@ int main(int argc, char** argv) {
 
     myinit(argc, argv);
 
-    model = new Model;
-    model->newLoad("obj/cube.obj");
-    model->camera = camera;
-    model->convertToScreen_model();
-    model->scale_model(0.5);
-    model->translate_model({ (wid /4),hei / 4,0 });
-
     //model = new Model;
-    //model->load("obj/objtry3.obj");
+    //model->newLoad("obj/cube.obj");
     //model->camera = camera;
     //model->convertToScreen_model();
-    //model->scale_model(0.1);
-    //model->translate_model({ (wid / 8) - 600.0,hei / 1.5,0 });
+    //model->scale_model(0.5);
+    //model->translate_model({ (wid /4),hei / 4,0 });
+
+    model = new Model;
+    model->newLoad("obj/new2.obj");
+    model->camera = camera;
+    model->convertToScreen_model();
+    model->scale_model(0.1);
+    model->translate_model({ (wid /1.5),hei/2,0 });
 
     glutKeyboardFunc(processKeyboard);
     glutPassiveMotionFunc(processMouse);

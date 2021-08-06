@@ -35,19 +35,19 @@ public:
 };
 
 void Model::draw() {
-    //drawWireframe_model(ftriangles);
-    draw_model(ftriangles);
-    if (!gouraudShade) {
-        draw_model(ftriangles);
-    }
-    else
-    {
-        //----------------  Gaurav Rasterize    -------------------------------------------------
-        for (auto& tri : ftriangles)
-        {
-            tri.gouraudRasterize1();
-        }
-    }
+    drawWireframe_model(ftriangles);
+    //draw_model(ftriangles);
+    //if (!gouraudShade) {
+    //    draw_model(ftriangles);
+    //}
+    //else
+    //{
+    //    //----------------  Gaurav Rasterize    -------------------------------------------------
+    //    for (auto& tri : ftriangles)
+    //    {
+    //        tri.gouraudRasterize1();
+    //    }
+    //}
 }
 
 void Model::load(std::string filename)

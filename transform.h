@@ -99,7 +99,7 @@ void translate(vect4& v1, vect4& points) {
 	v1.x += points.x;
 	v1.y += points.y;
 	v1.z += points.z;
-	//std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
+	std::cout << v1.x << " " << v1.y << " " << v1.z << std::endl;
 
 }
 
