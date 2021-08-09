@@ -25,29 +25,29 @@ public:
     void applyTransform(mat4f&,mat4f&);
     bool backfaceDetectionNormalize(Triangle& tri);
     void draw();
-    float calculateIntensity(vect4, vect4, vect4);
+    float calcIntensity(vect4, vect4, vect4);
     void phongIlluminationModel(Triangle&);
     void diffuseLighting();
-    void gouraudShading(Triangle&);
-    bool gouraudShade = false;
+    void Shading(Triangle&);
+    bool Shade = false;
 
     Camera* camera;
 };
 
 void Model::draw() {
-    drawWireframe_model(ftriangles);
-    //draw_model(ftriangles);
-    //if (!gouraudShade) {
-    //    draw_model(ftriangles);
-    //}
-    //else
-    //{
-    //    //----------------  Gaurav Rasterize    -------------------------------------------------
-    //    for (auto& tri : ftriangles)
-    //    {
-    //        tri.gouraudRasterize1();
-    //    }
-    //}
+
+    //drawWireframe_model(ftriangles);
+    draw_model(ftriangles);
+    if (!Shade) {
+        draw_model(ftriangles);
+    }
+    else
+    {
+        for (auto& tri : ftriangles)
+        {
+            tri.gouraudRasterize1();
+        }
+    }
 }
 
 void Model::load(std::string filename)
@@ -101,7 +101,7 @@ void Model::newLoad(std::string filename) {
     std::string line;
     std::vector<vect4> verts;
     std::vector<vect4> normals;
-    std::vector<Point2i> textures;
+    std::vector<vec2i> textures;
 
     int count = 1;
     while (!in.eof())
@@ -129,7 +129,7 @@ void Model::newLoad(std::string filename) {
         else if (!line.compare(0, 3, "vt ")) //starts with vt<space>
         {
             iss >> trash >> trash; //Ignore vt
-            Point2i uv;
+            vec2i uv;
             iss >> uv.x;
             iss >> uv.y;
             textures.push_back(uv);
@@ -206,7 +206,7 @@ void Model::rotate_model(float angle) {
     {
         for (int j = 0; j < 3; j++)
         {
-            rotateX(triangles[i].vertices[j], angle);
+            //rotateX(triangles[i].vertices[j], angle);
             rotateY(triangles[i].vertices[j], angle);
             //rotateZ(triangles[i].vertices[j], angle);
         }
@@ -235,8 +235,8 @@ void Model::applyTransform(mat4f& view, mat4f& projection) {
         tri.color = vec3{ 0.8, 0.8, 0.8 };
 
         // phongIlluminationModel(tri);
-        if (gouraudShade)
-            gouraudShading(tri);
+        if (Shade)
+            Shading(tri);
         else
             phongIlluminationModel(tri);
 
@@ -274,7 +274,7 @@ bool Model::backfaceDetectionNormalize(Triangle& tri)
     return true;
 }
 
-float Model::calculateIntensity(vect4 point, vect4 Normal, vect4 View)
+float Model::calcIntensity(vect4 point, vect4 Normal, vect4 View)
 {
     float i = 0.0;
     vect4 position = { 500, 600, -200 };
@@ -323,7 +323,7 @@ void Model::phongIlluminationModel(Triangle& tri)
 
     vect4 normal = (ver1.crossProduct(ver2)).normalize();
 
-    float intensity = calculateIntensity(centroid, normal, view);
+    float intensity = calcIntensity(centroid, normal, view);
     //std::cout << "The intensity: " << intensity << "\n";
     vec3 newColor = tri.color * intensity;
 
@@ -342,14 +342,14 @@ void diffuseLighting(Triangle& tri) {
     vect4 normal = (v1.crossProduct(ver2)).normalize();
 }
 
-void Model::gouraudShading(Triangle& tri)
+void Model::Shading(Triangle& tri)
 {
     std::vector<float>intensity(3);
     int count = 0;
     for (auto& vertex : tri.vertices)
     {
         vect4 view = (vect4{ 0, 0, 10 } - vertex).normalize();
-        intensity[count] = calculateIntensity(vertex, tri.normals[count], view);
+        intensity[count] = calcIntensity(vertex, tri.normals[count], view);
         count++;
     }
     tri.setIntensity(intensity);

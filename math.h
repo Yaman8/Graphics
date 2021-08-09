@@ -125,7 +125,7 @@ struct vec2_T
     }
 };
 typedef vec2_T<float> vec2;
-typedef vec2_T<int> vec2i;
+typedef vec2_T<int> vec2u;
 
 template <class T>
 struct vec3_T {

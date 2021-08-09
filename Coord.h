@@ -19,7 +19,7 @@ float deg_to_rad(float degree)
 }
 
 
-struct Point2i
+struct vec2i
 {
     float x, y;
     // Point Convert_to_Screen(Point &pt) const
@@ -121,7 +121,7 @@ float dotProduct(vect4& pt1, vect4& pt2)
 struct Triangle {
     vect4 vertices[3];
     vect4 normals[3];
-    Point2i texCoords[3];
+    vec2i texCoords[3];
     vec3 color;
     vect4 vertex_intensity[3];
 
@@ -174,7 +174,7 @@ struct Triangle {
         normals[2] = nc;
     }
 
-    void setTexCoords(Point2i uv1, Point2i uv2, Point2i uv3)
+    void setTexCoords(vec2i uv1, vec2i uv2, vec2i uv3)
     {
         // std::cout << "Hello Texture:\n";
         texCoords[0] = uv1;

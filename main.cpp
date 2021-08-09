@@ -13,11 +13,12 @@ int main(int argc, char** argv) {
     //model->translate_model({ (wid /4),hei / 4,0 });
 
     model = new Model;
-    model->newLoad("obj/new2.obj");
+    model->newLoad("obj/zahaf1.obj");
     model->camera = camera;
     model->convertToScreen_model();
     model->scale_model(0.1);
-    model->translate_model({ (wid /1.5),hei/2,0 });
+    //model->rotate_model(90);
+    model->translate_model({ (wid /4),hei/4,0 });
 
     glutKeyboardFunc(processKeyboard);
     glutPassiveMotionFunc(processMouse);
