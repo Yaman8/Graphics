@@ -59,12 +59,12 @@ struct vect4 {
         return { -x, -y, -z, w };
     }
 
-    vect4 operator+(vect4& translate)
+    vect4 operator+(vect4 translate)
     {
         return { x + translate.x, y + translate.y, z + translate.z, w };
     }
     //inverse the vector direction
-    vect4 operator-(vect4& sub)
+    vect4 operator-(vect4 sub)
     {
         return { x - sub.x, y - sub.y, z - sub.z, w };
     }

@@ -44,17 +44,7 @@ void Model::loadTexture(std::string name) {
 void Model::draw() {
 
     //drawWireframe_model(ftriangles);
-    draw_model(ftriangles);
-    if (!Shade) {
-        draw_model(ftriangles);
-    }
-    else
-    {
-        for (auto& tri : ftriangles)
-        {
-            tri.gouraudRasterize1();
-        }
-    }
+    draw_model(ftriangles,Shade);
 }
 
 void Model::load(std::string filename)

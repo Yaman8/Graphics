@@ -1,3 +1,4 @@
+#include<gl/glew.h>
 #include<gl/glut.h>
 #include<cmath>
 #include"math.h"

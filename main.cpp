@@ -6,10 +6,10 @@ int main(int argc, char** argv) {
     myinit(argc, argv);
 
     //model = new Model;
-    //model->newLoad("obj/cube.obj");
+    //model->newLoad("obj/untitled.obj");
     //model->camera = camera;
     //model->convertToScreen_model();
-    //model->scale_model(0.5);
+    ////model->scale_model(0.5);
     //model->translate_model({ (wid /4),hei / 4,0 });
 
     model = new Model;
@@ -21,9 +21,9 @@ int main(int argc, char** argv) {
     model->translate_model({ (wid /4),hei/4,0 });
 
     glutKeyboardFunc(processKeyboard);
-    glutPassiveMotionFunc(processMouse);
-    glutMouseFunc(mouseCB);
-    glutMotionFunc(mouseMotionCB);
+    //glutPassiveMotionFunc(processMouse);
+    //glutMouseFunc(mouseCB);
+    //glutMotionFunc(mouseMotionCB);
     //glutReshapeFunc(reshape);
     //glutIdleFunc(display);
     glutDisplayFunc(drawModel);
@@ -62,38 +62,38 @@ void updateFunction(int val) {
     glutPostRedisplay();
     glutTimerFunc(1000 / fps, updateFunction, 0);
 }
-
-void mouseMotionCB(int xpos, int ypos) {
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-    lastX = xpos;
-    lastY = ypos;
-
-    camera->processMouseMovement(xoffset, yoffset);
-}
-
-void mouseCB(int button, int state, int xpos, int ypos) {
-    // // std::cout << xpos << "\t" << ypos << "\n";
-    // if (firstMouse == true)
-    // {
-    //     lastX = xpos;
-    //     lastY = ypos;
-    //     firstMouse = false;
-    // }
-    if ((button == GLUT_LEFT_BUTTON))
-    {
-        if (state == GLUT_DOWN)
-        {
-
-            mouseLeftDown = true;
-        }
-        else
-        {
-            mouseLeftDown = false;
-        }
-    }
-}
+//
+//void mouseMotionCB(int xpos, int ypos) {
+//    float xoffset = xpos - lastX;
+//    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+//
+//    lastX = xpos;
+//    lastY = ypos;
+//
+//    camera->processMouseMovement(xoffset, yoffset);
+//}
+//
+//void mouseCB(int button, int state, int xpos, int ypos) {
+//    // // std::cout << xpos << "\t" << ypos << "\n";
+//    // if (firstMouse == true)
+//    // {
+//    //     lastX = xpos;
+//    //     lastY = ypos;
+//    //     firstMouse = false;
+//    // }
+//    if ((button == GLUT_LEFT_BUTTON))
+//    {
+//        if (state == GLUT_DOWN)
+//        {
+//
+//            mouseLeftDown = true;
+//        }
+//        else
+//        {
+//            mouseLeftDown = false;
+//        }
+//    }
+//}
 
 void drawModel() {
     static float lastFrame = 0;
@@ -204,26 +204,26 @@ void drawModel() {
 //    glutPostRedisplay();
 //}
 
-void processMouse(int xpos, int ypos)
-{
-    static float lastX = 800;
-    static float lastY = 800;
-    static bool firstMouse = true;
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-    lastX = xpos;
-    lastY = ypos;
-
-    camera->processMouseMovement(xoffset, yoffset);
-}
+//void processMouse(int xpos, int ypos)
+//{
+//    static float lastX = 800;
+//    static float lastY = 800;
+//    static bool firstMouse = true;
+//    if (firstMouse)
+//    {
+//        lastX = xpos;
+//        lastY = ypos;
+//        firstMouse = false;
+//    }
+//
+//    float xoffset = xpos - lastX;
+//    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+//
+//    lastX = xpos;
+//    lastY = ypos;
+//
+//    camera->processMouseMovement(xoffset, yoffset);
+//}
 
 void processKeyboard(unsigned char key, int x, int y)
 {

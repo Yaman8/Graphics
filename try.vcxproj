@@ -30,9 +30,13 @@
     <ClInclude Include="math.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="nCamera.h" />
     <ClInclude Include="projections.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="triangleRaster.h" />
+    <ClInclude Include="vertex.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
