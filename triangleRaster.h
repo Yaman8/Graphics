@@ -111,7 +111,7 @@ void drawWireframe_model(std::vector<Triangle>& model)
     {
         for (int j = 0; j < 3; j++)
         {
-            wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], white);
+            wireFrame(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], red);
             //std::cout << model[i].vertices[0] << " ";
         }
         //std::cout << std::endl;

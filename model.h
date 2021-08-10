@@ -10,6 +10,8 @@
 #include<array>
 #include<string>
 
+void painterSort(std::vector<Triangle>& tri, float low, float high);
+
 class Model {
 private:
     std::vector<Triangle> triangles;
@@ -29,10 +31,15 @@ public:
     void phongIlluminationModel(Triangle&);
     void diffuseLighting();
     void Shading(Triangle&);
+    void loadTexture(std::string);
     bool Shade = false;
 
     Camera* camera;
 };
+
+void Model::loadTexture(std::string name) {
+
+}
 
 void Model::draw() {
 
@@ -168,6 +175,10 @@ void Model::newLoad(std::string filename) {
             triangles.push_back(tri);
         }
     }
+    for (size_t i = 0; i < triangles.size() - 1; i++)
+    {
+        triangles[i].zbuff = (triangles[i].vertices[0].z + triangles[i].vertices[1].z + triangles[i].vertices[2].z);
+    }
     ftriangles = triangles;
 }
 
@@ -227,6 +238,9 @@ void Model::applyTransform(mat4f& view, mat4f& projection) {
         if (culled)
             cullCount++;
     }
+
+
+    //painterSort(ftriangles, 0, ftriangles.size());
 
     for (auto& tri : ftriangles)
     {
@@ -353,4 +367,34 @@ void Model::Shading(Triangle& tri)
         count++;
     }
     tri.setIntensity(intensity);
+}
+
+void painterSort(std::vector<Triangle>& tri, float low, float high)  // Quick sort algo
+{
+    float i = low;
+    float j = high;
+    float pivot = tri[(i + j) / 2].zbuff;
+    Triangle temp;
+
+    while (i <= j)
+    {
+        while (tri[i].zbuff < pivot)
+            i++;
+        while (tri[j].zbuff > pivot)
+            j--;
+        if (i <= j)
+        {
+            temp = tri[i];
+            tri[i] = tri[j];
+            tri[j] = temp;
+            i++;
+            j--;
+        }
+
+    }
+    if (j > low)
+        painterSort(tri, low, j);
+    if (i < high)
+        painterSort(tri, i, high);
+
 }

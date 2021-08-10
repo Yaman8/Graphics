@@ -4,10 +4,10 @@ J:\Graphics\lineFunc.h(9,9): warning C4101: 'steps': unreferenced local variable
 J:\Graphics\triangleRaster.h(110,23): warning C4018: '<': signed/unsigned mismatch
 J:\Graphics\triangleRaster.h(123,23): warning C4018: '<': signed/unsigned mismatch
 J:\Graphics\triangleRaster.h(256,16): warning C4101: 'di1': unreferenced local variable
-J:\Graphics\model.h(175,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(185,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(195,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(205,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(186,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(196,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(206,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(216,23): warning C4018: '<': signed/unsigned mismatch
 J:\Graphics\includes.h(95,15): warning C4101: 'xv': unreferenced local variable
 J:\Graphics\includes.h(95,19): warning C4101: 'yv': unreferenced local variable
 J:\Graphics\includes.h(95,23): warning C4101: 'zv': unreferenced local variable

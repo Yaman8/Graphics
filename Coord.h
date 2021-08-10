@@ -124,6 +124,7 @@ struct Triangle {
     vec2i texCoords[3];
     vec3 color;
     vect4 vertex_intensity[3];
+    float zbuff;
 
     Triangle(const Triangle& tri)
     {
