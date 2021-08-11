@@ -16,9 +16,9 @@ int main(int argc, char** argv) {
     model->newLoad("obj/zahaf1.obj");
     model->camera = camera;
     model->convertToScreen_model();
-    model->scale_model(0.13);
+    model->scale_model(0.12);
     //model->rotate_model(90);
-    model->translate_model({ (wid /4),hei/4,0 });
+    model->translate_model({ (wid / 4),hei / 4,0 });
 
     glutKeyboardFunc(processKeyboard);
     glutPassiveMotionFunc(processMouse);
@@ -45,14 +45,12 @@ int main(int argc, char** argv) {
 
 void myinit(int argc, char** argv) {
     glutInit(&argc, argv);
-    glutInitWindowSize(width, height); //sets the width and height of the window in pixels
-    glutInitWindowPosition(0, 0);              //sets the position of the window in pixels from top left corner
-    // glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //creates a single frame buffer of RGB color capacity.
+    glutInitWindowSize(width, height);
+    glutInitWindowPosition(0, 0);
     glutCreateWindow("Project");
 
     glClearColor(0.39, 0.6, 0.69, 0.0);
     glViewport(0, 0, width, height);
-    // glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0, width, 0, height);
 }
@@ -65,7 +63,7 @@ void updateFunction(int val) {
 
 void mouseMotionCB(int xpos, int ypos) {
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    float yoffset = lastY - ypos; 
 
     lastX = xpos;
     lastY = ypos;
@@ -97,10 +95,10 @@ void drawModel() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     mat4f view = camera->GetViewMatrix();
-    mat4f projection = newPerspective(camera->Zoom,(float)width/height);
+    mat4f projection = newPerspective(camera->Zoom, (float)width / height);
 
 
-    model->applyTransform(view,projection);
+    model->Transform(view, projection);
     model->draw();
 
     glutSwapBuffers();

@@ -9,7 +9,6 @@ void Line(int x1, int y1, int x2, int y2, const vec3& color)
     int steps, k;
     dx = abs(x2 - x1);
     dy = abs(y2 - y1);
-    //Sets increment/decrement : stepsize
     int lx, ly;
 
     if (x2 > x1) { lx = 1; }
@@ -17,9 +16,7 @@ void Line(int x1, int y1, int x2, int y2, const vec3& color)
 
     if (y2 > y1) { ly = 1; }
     else { ly = -1; }
-    //initialize
     int x = x1, y = y1;
-    //slope<1
     if (dx > dy) {
         int p = 2 * dy - dx;
         for (int k = 0; k <= dx; k++) {
@@ -35,7 +32,6 @@ void Line(int x1, int y1, int x2, int y2, const vec3& color)
             }
         }
     }
-    //if slope>=1
     else {
         int p = 2 * dx - dy;
         for (int k = 0; k <= dy; k++) {

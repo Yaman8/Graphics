@@ -56,12 +56,6 @@
     <ClInclude Include="nCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>

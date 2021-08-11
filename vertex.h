@@ -22,7 +22,10 @@ public:
         color(src.color),
         pos(pos)
     {}*/
-    Vertex(const vect4& pos, const vect4& normal, const vect4& c):color(c),normal(normal),pos(pos)
+    Vertex(const vect4& pos, const vect4& normal, const vect4& c)
+        :color(c),
+        normal(normal),
+        pos(pos)
     {
         //color.x = c.x;
         //color.y = c.y;

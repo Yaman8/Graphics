@@ -209,7 +209,7 @@ void rotateCube(vect4& v0, vect4& v1, vect4& v2, vect4& v3, vect4& v4, vect4& v5
     }
     else {
         fillTriangle(v0, v7, v3, white);
-        fillTriangle(v0, v7, v4, unk);
+        fillTriangle(v0, v7, v4, cyan);
     }
 
     if (dot(camera, normal3) < 0) {

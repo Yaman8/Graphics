@@ -40,9 +40,9 @@ constexpr T interpolate(const T& src, const T& dst, float alpha)
 }
 
 void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);
-void DrawFlatTopTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2);
-void DrawFlatBottomTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2);
-void DrawFlatTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2,const Vertex& dv0,const Vertex& dv1,Vertex itEdge1);
+void DrawFlatTopTriangle(const Vertex& it0, const Vertex& it1, const Vertex& it2);
+void DrawFlatBottomTriangle(const Vertex& it0, const Vertex& it1, const Vertex& it2);
+void DrawFlatTriangle(const Vertex& it0, const Vertex& it1, const Vertex& it2, const Vertex& dv0, const Vertex& dv1, Vertex itEdge1);
 
 
 void wireFrame(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
@@ -499,7 +499,7 @@ void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
     }
 }
 // does flat *TOP* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatTopTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2)
+void DrawFlatTopTriangle(const Vertex& it0, const Vertex& it1, const Vertex& it2)
 {
     // calulcate dVertex / dy
     // change in interpolant for every 1 change in y
@@ -512,7 +512,7 @@ void DrawFlatTopTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2)
     DrawFlatTriangle(it0, it1, it2, dit0, dit1, itEdge1);
 }
 // does flat *BOTTOM* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatBottomTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2)
+void DrawFlatBottomTriangle(const Vertex& it0, const Vertex& it1, const Vertex& it2)
 {
     // calulcate dVertex / dy
     // change in interpolant for every 1 change in y
@@ -527,7 +527,7 @@ void DrawFlatBottomTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it
 // does processing common to both flat top and flat bottom tris
 // scan over triangle in screen space, interpolate attributes,
 // invoke ps and write pixel to screen
-void DrawFlatTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2,const Vertex& dv0,const Vertex& dv1,Vertex itEdge1)
+void DrawFlatTriangle(const Vertex& it0, const Vertex& it1, const Vertex& it2, const Vertex& dv0, const Vertex& dv1, Vertex itEdge1)
 {
     // create edge interpolant for left edge (always v0)
     auto itEdge0 = it0;

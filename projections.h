@@ -14,9 +14,7 @@ float idenity_matrix[4][4] = { {1, 0, 0, 0},
 
 void viewc(vect4& pt, vect4 viewp)
 {
-    //view = translate + rotate
     pt = pt - viewp;
-    //rotate
     matrix_product(pt, idenity_matrix);
 }
 

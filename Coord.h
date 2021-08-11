@@ -22,19 +22,6 @@ float deg_to_rad(float degree)
 struct vec2i
 {
     float x, y;
-    // Point Convert_to_Screen(Point &pt) const
-    // {
-    //     pt.x = (pt.x + 1.0f) * xfactor;
-    //     pt.y = (pt.y + 1.0f) * yfactor;
-    //     // pt.x = (pt.x) * xfactor;
-    //     // pt.y = (pt.y) * yfactor;
-    //     return pt;
-    // }
-    //friend std::ostream& operator<<(std::ostream& out, Point2i& vec)
-    //{
-    //    out << "( " << vec.x << ", " << vec.y <<" )\n";
-    //    return out;
-    //}
 };
 
 
@@ -48,8 +35,6 @@ struct vect4 {
     {
         x = (x + 1.0f) * xfactor;
         y = (y + 1.0f) * yfactor;
-        //pt.x = (pt.x) +200;
-        //pt.y = (pt.y) + 200;
         z = (z)*cube_height;
         return { x,y,z };
     }
@@ -63,7 +48,6 @@ struct vect4 {
     {
         return { x + translate.x, y + translate.y, z + translate.z, w };
     }
-    //inverse the vector direction
     vect4 operator-(vect4 sub)
     {
         return { x - sub.x, y - sub.y, z - sub.z, w };
@@ -90,8 +74,6 @@ struct vect4 {
         ret.x = y * pt.z - z * pt.y;
         ret.y = z * pt.x - x * pt.z;
         ret.z = x * pt.y - y * pt.x;
-        // std::cout<<ret;
-        // ret = normalize(ret);
         return ret;
     }
 
@@ -107,14 +89,6 @@ struct vect4 {
         mag = pow(mag, 0.5);
         return { x / mag, y / mag, z / mag };
     }
-
-    //static Point normalize(Point& pt)
-    //{
-    //    float mag = pt.x * pt.x + pt.y * pt.y + pt.z * pt.z;
-    //    mag = pow(mag, 0.5);
-    //    pt = pt / (mag);
-    //    return pt;
-    //}
 };
 
 float dotProduct(vect4& pt1, vect4& pt2)

@@ -32,8 +32,6 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="nCamera.h" />
     <ClInclude Include="projections.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Texture.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="triangleRaster.h" />
     <ClInclude Include="vertex.h" />

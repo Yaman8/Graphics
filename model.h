@@ -23,7 +23,7 @@ public:
     void translate_model(vect4);
     void scale_model(float);
     void applyTransform(mat4f&);
-    void applyTransform(mat4f&,mat4f&);
+    void Transform(mat4f&, mat4f&);
     bool backfaceDetectionNormalize(Triangle& tri);
     void draw();
     float calcIntensity(vect4, vect4, vect4);
@@ -44,7 +44,7 @@ void Model::loadTexture(std::string name) {
 void Model::draw() {
 
     //drawWireframe_model(ftriangles);
-    draw_model(ftriangles,Shade);
+    draw_model(ftriangles, Shade);
 }
 
 void Model::load(std::string filename)
@@ -187,7 +187,7 @@ void Model::translate_model(vect4 pt) {
     {
         for (int j = 0; j < 3; j++)
         {
-            transate_polygon(triangles[i].vertices[j], pt); 
+            transate_polygon(triangles[i].vertices[j], pt);
         }
     }
 }
@@ -214,7 +214,7 @@ void Model::rotate_model(float angle) {
     }
 }
 
-void Model::applyTransform(mat4f& view, mat4f& projection) {
+void Model::Transform(mat4f& view, mat4f& projection) {
     ftriangles.clear();
     int cullCount = 0;
 
