@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
     model->newLoad("obj/zahaf1.obj");
     model->camera = camera;
     model->convertToScreen_model();
-    model->scale_model(0.12);
+    model->scale_model(0.13);
     //model->rotate_model(90);
     model->translate_model({ (wid /4),hei/4,0 });
 
