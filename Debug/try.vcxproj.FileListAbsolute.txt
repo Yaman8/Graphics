@@ -1,3 +1,0 @@
-C:\Users\Yaman\source\repos\try\Debug\try.exe
-C:\Users\Yaman\source\repos\try\Debug\try.pdb
-J:\Graphics\Debug\try.exe
