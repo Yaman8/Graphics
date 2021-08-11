@@ -1,14 +1,5 @@
 #pragma once
 
-#define WHITE {1.0f, 1.0f, 1.0f}
-#define RED {1.0f, 0.0f, 0.0f}
-#define GREEN {0.0f, 1.0f, 0.0f}
-#define BLUE {0.0f, 0.0f, 1.0f}
-#define YELLOW {1.0f, 1.0f, 0.0f}
-#define BLACK {0.0f, 0.0f, 0.0f}
-#define ORANGE {1.0f, 0.5f, 0.0f}
-#define PURPLE {1.0f, 0.0f, 1.0f}
-
 
 #include<iostream>
 
@@ -27,3 +18,12 @@ struct vec3
         return { x / mag,y / mag,z / mag };
     }
 };
+
+vec3 WHITE = { 1.0f, 1.0f, 1.0f };
+vec3 RED={ 1.0f, 0.0f, 0.0f };
+vec3 GREEN= {0.0f, 1.0f, 0.0f};
+vec3 BLUE ={0.0f, 0.0f, 1.0f};
+vec3 YELLOW ={1.0f, 1.0f, 0.0f};
+vec3 BLACK ={0.0f, 0.0f, 0.0f};
+vec3 ORANGE ={1.0f, 0.5f, 0.0f};
+vec3 PURPLE ={1.0f, 0.0f, 1.0f};

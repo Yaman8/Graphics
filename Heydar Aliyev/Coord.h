@@ -11,14 +11,11 @@
 
 #include "colorOptions.h"
 
-// settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 800;
-const unsigned int CUBE_HEIGHT = 500;
+const unsigned int WIDTH = 800;
+const unsigned int HEIGHT = 800;
+const unsigned int ZHEIGHT = 500;
 
-//no of sides of a polygon
-const int n = 8;
-const int m = 4; //matrix size for 3D i.e 4x4
+const int m = 4;
 
 float deg_to_rad(float degree)
 {
@@ -36,8 +33,7 @@ inline T wrap_angle(T theta)
     if (theta >= 360)
         theta = 0;
     return theta;
-    // const T modded = fmod(theta, (T)2.0 * (T)M_PI);
-    // return (modded > (T)M_PI) ? (modded - (T)2.0 * (T)M_PI) : modded;
+
 }
 
 struct vec2i
@@ -50,23 +46,20 @@ struct mat4f
     float matrix4[4][4];
 };
 
-//----------------------- 3D point---------------------------------------
 struct vect4
 {
     float x = 0, y = 0, z = 0, w = 1;
-    float xfactor = SCR_WIDTH / 8.0f;
-    float yfactor = SCR_HEIGHT / 8.0f;
-    float cube_height = CUBE_HEIGHT / 8.0f;
+    float xfactor = WIDTH / 8.0f;
+    float yfactor = HEIGHT / 8.0f;
+    float zheight = ZHEIGHT / 8.0f;
 
-    // Point() : x(0.0),y(0.0),z(0.0),w(1.0){}
 
     vect4 Convert_to_Screen()
     {
         x = (x + 1.0f) * xfactor;
         y = (y + 1.0f) * yfactor;
-        // pt.x = (pt.x) * xfactor;
-        // pt.y = (pt.y) * yfactor;
-        z = (z)*cube_height;
+
+        z = (z)*zheight;
         return { x,y,z };
     }
     vect4 inverse()

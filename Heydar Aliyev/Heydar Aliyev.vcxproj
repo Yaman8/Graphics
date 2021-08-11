@@ -142,6 +142,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="colorOptions.h" />
     <ClInclude Include="Coord.h" />
+    <ClInclude Include="includes.h" />
     <ClInclude Include="lineFunc.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="model.h" />

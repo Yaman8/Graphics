@@ -12,24 +12,9 @@ public:
 
 public:
     Vertex() = default;
-    /*Vertex(const Point& pos)
-        :
-        pos(pos)
-    {}
-    Vertex(const Point& pos, const Vertex& src)
-        :
-        color(src.color),
-        pos(pos)
-    {}*/
-    Vertex(const vect4& pos, const vect4& normal, const vect4& c)
-        : color(c),
-        normal(normal),
-        pos(pos)
-    {
-        // color.x = c.r;
-        // color.y = c.g;
-        // color.z = c.b;
-    }
+
+    Vertex(const vect4& pos, const vect4& normal, const vect4& c): color(c),normal(normal),pos(pos){}
+
     Vertex& operator+=(const Vertex& rhs)
     {
         pos = pos + rhs.pos;

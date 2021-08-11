@@ -3,16 +3,14 @@
 #include "Coord.h"
 #include "colorOptions.h"
 
-//line algorithm
-void BressenhamAlgo(int, int, vec3);
+void SketchLine(int, int, vec3);
 void putpixel(int, int, vec3);
-int Round(float);
 
-//variables for BressenhamAlgo
+
 float x, y, dx, dy;
 int steps, k, ptX1, ptY1, ptX2, ptY2;
 
-void BressenhamAlgo(float x1, float yy, float x2, float y2, vec3 color)
+void SketchLine(float x1, float yy, float x2, float y2, vec3 color)
 {
     float dx, dy;
     float steps, k;
@@ -38,7 +36,7 @@ void BressenhamAlgo(float x1, float yy, float x2, float y2, vec3 color)
         float p = 2 * dy - dx;
         for (float k = 0; k <= dx; k++)
         {
-            putpixel(Round(x), Round(y), color);
+            putpixel(x, y, color);
             if (p < 0)
             {
                 x += lx;
@@ -57,7 +55,7 @@ void BressenhamAlgo(float x1, float yy, float x2, float y2, vec3 color)
         float p = 2 * dx - dy;
         for (float k = 0; k <= dy; k++)
         {
-            putpixel(Round(x), Round(y), color);
+            putpixel(x, y, color);
             if (p < 0)
             {
                 y += ly;
@@ -71,22 +69,14 @@ void BressenhamAlgo(float x1, float yy, float x2, float y2, vec3 color)
             }
         }
     }
-    // putpixel(x, y, color);
 }
-
-int Round(float a)
-{
-    int b = a + 0.5;
-    return b;
-}
-
 
 void putpixel(int x, int y, vec3 color)
 {
     glColor3f(color.x, color.y, color.z);
-    glPointSize(2);     // sets the size of points to be drawn (in pixels)
-    glBegin(GL_POINTS); // writes pixels on the frame buffer with the current drawing color
+    glPointSize(2);     
+    glBegin(GL_POINTS); 
     glLoadIdentity();
-    glVertex2i(x, y);   //sets vertex
+    glVertex2i(x, y); 
     glEnd();
 }

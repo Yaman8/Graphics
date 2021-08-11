@@ -1,10 +1,10 @@
 ﻿  main.cpp
-J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\lineFunc.h(18,18): warning C4101: 'k': unreferenced local variable
-J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\lineFunc.h(18,11): warning C4101: 'steps': unreferenced local variable
+J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\lineFunc.h(16,18): warning C4101: 'k': unreferenced local variable
+J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\lineFunc.h(16,11): warning C4101: 'steps': unreferenced local variable
 J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\triangleRaster.h(275,23): warning C4018: '<': signed/unsigned mismatch
-J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\triangleRaster.h(290,27): warning C4018: '<': signed/unsigned mismatch
-J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\triangleRaster.h(298,27): warning C4018: '<': signed/unsigned mismatch
-J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\triangleRaster.h(432,16): warning C4101: 'di1': unreferenced local variable
+J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\triangleRaster.h(286,27): warning C4018: '<': signed/unsigned mismatch
+J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\triangleRaster.h(294,27): warning C4018: '<': signed/unsigned mismatch
+J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\triangleRaster.h(428,16): warning C4101: 'di1': unreferenced local variable
 J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\model.h(173,23): warning C4018: '<': signed/unsigned mismatch
 J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\model.h(184,23): warning C4018: '<': signed/unsigned mismatch
 J:\Heydar Aliyev\Heydar Aliyev\Heydar Aliyev\model.h(195,23): warning C4018: '<': signed/unsigned mismatch

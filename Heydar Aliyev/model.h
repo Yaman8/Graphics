@@ -13,23 +13,23 @@ class Model
 {
 private:
     std::vector<Triangle> triangles;
-    std::vector<Triangle> final_triangles;
+    std::vector<Triangle> ftriangles;
 
 public:
-    void load(std::string);
-    void newLoad(std::string);
-    void convertToScreen_model();
+    void oldLoad(std::string);
+    void Load(std::string);
+    void modelToScreen();
     void rotate_model(float);
     void translate_model(vect4);
     void scale_model(float);
     void updateTransform(mat4f& view, mat4f& projection);
-    void applyTransform(mat4f&, mat4f&);
+    void transformModel(mat4f&, mat4f&);
     bool backfaceDetectionNormalize(Triangle& tri);
     bool backFaceCulling(Triangle& tri);
     bool Culling(Triangle& tri);
 
     void draw();
-    float calculateIntensity(vect4, vect4, vect4);
+    float calIntensity(vect4, vect4, vect4);
     void phongIlluminationModel(Triangle&);
     void Shading(Triangle&);
     bool Shade = true;
@@ -39,11 +39,11 @@ public:
 
 void Model::draw()
 {
-    // drawWireframe_model(final_triangles);
-    draw_model(final_triangles, Shade);
+    //drawWireframe_model(ftriangles);
+    draw_model(ftriangles, Shade);
 }
 
-void Model::load(std::string filename)
+void Model::oldLoad(std::string filename)
 {
     std::ifstream file;
     file.open(filename);
@@ -79,10 +79,10 @@ void Model::load(std::string filename)
             triangles.push_back(Triangle{ verts[f[0] - 1], verts[f[1] - 1], verts[f[2] - 1] });
         }
     }
-    final_triangles = triangles;
+    ftriangles = triangles;
 }
 
-void Model::newLoad(std::string filename)
+void Model::Load(std::string filename)
 {
     std::ifstream in;
     in.open(filename, std::ifstream::in);
@@ -165,10 +165,10 @@ void Model::newLoad(std::string filename)
     {
         triangles[i].zbuffer = (triangles[i].vertices[0].z + triangles[i].vertices[1].z + triangles[i].vertices[2].z);
     }
-    final_triangles = triangles;
+    ftriangles = triangles;
 }
 
-void Model::convertToScreen_model()
+void Model::modelToScreen()
 {
     for (int i = 0; i < triangles.size(); i++)
     {
@@ -214,9 +214,9 @@ void Model::rotate_model(float angle)
     }
 }
 
-void Model::applyTransform(mat4f& view, mat4f& projection)
+void Model::transformModel(mat4f& view, mat4f& projection)
 {
-    final_triangles.clear();
+    ftriangles.clear();
     int cullCount = 0;
 
     for (auto& tri : triangles)
@@ -236,18 +236,18 @@ void Model::applyTransform(mat4f& view, mat4f& projection)
         temptri.vertices[1] = mul(projection, temptri.vertices[1]);
         temptri.vertices[2] = mul(projection, temptri.vertices[2]);
 
-        final_triangles.push_back(temptri);
+        ftriangles.push_back(temptri);
     }
 
 
-    sort(final_triangles.begin(), final_triangles.end(), [](Triangle& t1, Triangle& t2)
+    sort(ftriangles.begin(), ftriangles.end(), [](Triangle& t1, Triangle& t2)
         {
             float z1 = (t1.vertices[0].z + t1.vertices[1].z + t1.vertices[2].z) / 3.0f;
             float z2 = (t2.vertices[0].z + t2.vertices[1].z + t2.vertices[2].z) / 3.0f;
             return z1 > z2;
         });
 
-    for (auto& tri : final_triangles)
+    for (auto& tri : ftriangles)
     {
 
         tri.color = vec3{ 136, 140, 141 }.normalize();
@@ -327,44 +327,14 @@ bool Model::backfaceDetectionNormalize(Triangle& tri)
 
     if (value < 0)
     {
-        final_triangles.push_back(tri);
+        ftriangles.push_back(tri);
         return false;
     }
 
     return true;
 }
 
-void painterSort(std::vector<Triangle>& tri, float low, float high)  // Quick sort algo
-{
-    float i = low;
-    float j = high;
-    float pivot = tri[(i + j) / 2].zbuffer;
-    Triangle temp;
-
-    while (i <= j)
-    {
-        while (tri[i].zbuffer < pivot)
-            i++;
-        while (tri[j].zbuffer > pivot)
-            j--;
-        if (i <= j)
-        {
-            temp = tri[i];
-            tri[i] = tri[j];
-            tri[j] = temp;
-            i++;
-            j--;
-        }
-
-    }
-    if (j > low)
-        painterSort(tri, low, j);
-    if (i < high)
-        painterSort(tri, i, high);
-
-}
-
-float Model::calculateIntensity(vect4 point, vect4 Normal, vect4 View)
+float Model::calIntensity(vect4 point, vect4 Normal, vect4 View)
 {
     float i = 0.0;
     vect4 position = { 500, 600, -200 };
@@ -413,7 +383,7 @@ void Model::phongIlluminationModel(Triangle& tri)
 
     vect4 normal = (ver1.crossProduct(ver2)).normalize();
 
-    float intensity = calculateIntensity(centroid, normal, view);
+    float intensity = calIntensity(centroid, normal, view);
     // std::cout << "The intensity: " << intensity << "\n";
     vec3 newColor = tri.color * intensity;
 
@@ -427,7 +397,7 @@ void Model::Shading(Triangle& tri)
     for (auto& vertex : tri.vertices)
     {
         vect4 view = (vect4{ 0, 0, 10 } - vertex).normalize();
-        intensity[count] = calculateIntensity(vertex, tri.normals[count], view);
+        intensity[count] = calIntensity(vertex, tri.normals[count], view);
         count++;
     }
     tri.setIntensity(intensity);
@@ -440,8 +410,8 @@ void Model::updateTransform(mat4f& view, mat4f& projection)
     mat4f matWorld = mul(translate, rotation);
 
 
-    final_triangles.clear();
-    // final_triangles = triangles;
+    ftriangles.clear();
+    // ftriangles = triangles;
     int cullCount = 0;
 
     for (auto& tri : triangles)
@@ -482,20 +452,20 @@ void Model::updateTransform(mat4f& view, mat4f& projection)
         // temptri.vertices[1] = mul(projection, temptri.vertices[1]);
         // temptri.vertices[2] = mul(projection, temptri.vertices[2]);
 
-        final_triangles.push_back(triProjected);
+        ftriangles.push_back(triProjected);
     }
 
     //------------------- painters algorithm    ---------------------------
-    // painterSort(final_triangles, 0, final_triangles.size());
+    // painterSort(ftriangles, 0, ftriangles.size());
 
-    sort(final_triangles.begin(), final_triangles.end(), [](Triangle& t1, Triangle& t2)
+    sort(ftriangles.begin(), ftriangles.end(), [](Triangle& t1, Triangle& t2)
         {
             float z1 = (t1.vertices[0].z + t1.vertices[1].z + t1.vertices[2].z) / 3.0f;
             float z2 = (t2.vertices[0].z + t2.vertices[1].z + t2.vertices[2].z) / 3.0f;
             return z1 > z2;
         });
 
-    for (auto& tri : final_triangles)
+    for (auto& tri : ftriangles)
     {
         // Point color = Point{220, 220, 220}.normalize();
 

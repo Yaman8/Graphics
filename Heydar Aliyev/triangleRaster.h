@@ -227,9 +227,9 @@ void fillBottomFlatTriangle(vect4 v1, vect4 v2, vect4 v3, vec3 c)
     float curx1 = v1.x;
     float curx2 = v1.x;
 
-    BressenhamAlgo(v1.x, v1.y, v2.x, v2.y, c);
-    BressenhamAlgo(v2.x, v2.y, v3.x, v3.y, c);
-    BressenhamAlgo(v3.x, v3.y, v1.x, v1.y, c);
+    SketchLine(v1.x, v1.y, v2.x, v2.y, c);
+    SketchLine(v2.x, v2.y, v3.x, v3.y, c);
+    SketchLine(v3.x, v3.y, v1.x, v1.y, c);
 
     for (int scanlineY = v1.y; scanlineY < v2.y - 0.5f; scanlineY++)
     {
@@ -238,7 +238,7 @@ void fillBottomFlatTriangle(vect4 v1, vect4 v2, vect4 v3, vec3 c)
         //     std::cout << "x" << curx1 << "," << curx2 << std::endl;
         //     std::cout << v2.y << endl;
         // }
-        BressenhamAlgo(curx1, scanlineY, curx2, scanlineY, c);
+        SketchLine(curx1, scanlineY, curx2, scanlineY, c);
         curx1 += invslope1;
         curx2 += invslope2;
     }
@@ -251,13 +251,13 @@ void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, vec3 c)
 
     float curx1 = v3.x;
     float curx2 = v3.x;
-    BressenhamAlgo(v1.x, v1.y, v2.x, v2.y, c);
-    BressenhamAlgo(v2.x, v2.y, v3.x, v3.y, c);
-    BressenhamAlgo(v3.x, v3.y, v1.x, v1.y, c);
+    SketchLine(v1.x, v1.y, v2.x, v2.y, c);
+    SketchLine(v2.x, v2.y, v3.x, v3.y, c);
+    SketchLine(v3.x, v3.y, v1.x, v1.y, c);
 
     for (int scanlineY = v3.y; scanlineY > v1.y; scanlineY--)
     {
-        BressenhamAlgo(curx1, scanlineY, curx2, scanlineY, c);
+        SketchLine(curx1, scanlineY, curx2, scanlineY, c);
         curx1 -= invslope1;
         curx2 -= invslope2;
     }
@@ -265,9 +265,9 @@ void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, vec3 c)
 
 void wireframe_draw(vect4 v1, vect4 v2, vect4 v3, vec3 c)
 {
-    BressenhamAlgo(v1.x, v1.y, v2.x, v2.y, c);
-    BressenhamAlgo(v2.x, v2.y, v3.x, v3.y, c);
-    BressenhamAlgo(v3.x, v3.y, v1.x, v1.y, c);
+    SketchLine(v1.x, v1.y, v2.x, v2.y, c);
+    SketchLine(v2.x, v2.y, v3.x, v3.y, c);
+    SketchLine(v3.x, v3.y, v1.x, v1.y, c);
 }
 
 void drawWireframe_model(std::vector<Triangle>& model)
@@ -276,10 +276,6 @@ void drawWireframe_model(std::vector<Triangle>& model)
     {
         // wireframe_draw(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], model[i].color);
         wireframe_draw(model[i].vertices[0], model[i].vertices[1], model[i].vertices[2], WHITE);
-
-        std::cout << model[i].vertices[0];
-        std::cout << model[i].vertices[1];
-        std::cout << model[i].vertices[2] << std::endl;
     }
 }
 
