@@ -10,13 +10,13 @@ float lightY = 0.0f;
 float lightZ = 30.0f;
 
 vect4 view = vect4{ 0.0f, 0.0f, 1.0f };
-vect4 Ka = vect4{ 0.75f, 0.38f, 0.23f };
-vect4 Kd = vect4{ 0.8f, 0.8f, 0.8f };
-vect4 Ks = vect4{ 0.8f, 0.8f, 0.8f };
+vect4 Ka = vect4{ 0.19125f, 0.19125f, 0.19225f };
+vect4 Kd = vect4{ 0.50754f, 0.50754f, 0.50754f };
+vect4 Ks = vect4{ 0.508273f, 	0.508273f, 	0.508273f };
 vect4 light = vect4{ lightX, lightY, lightZ };
 float ns = 400.0f;
 vect4 Ia = vect4{ 0.3f, 0.1f, 0.1f };
-vect4 Il = vect4{ 0.9f, 0.9f, 0.9f };
+vect4 Il = vect4{ 0.8f, 0.8f, 0.8f };
 
 template <typename T>
 constexpr T interpolate(const T& src, const T& dst, float alpha)
@@ -25,18 +25,9 @@ constexpr T interpolate(const T& src, const T& dst, float alpha)
 }
 
 void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);
-void DrawFlatTopTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2);
-void DrawFlatBottomTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2);
-void DrawFlatTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2,
-    const Vertex& dv0,
-    const Vertex& dv1,
-    Vertex itEdge1);
+void DrawFlatTopTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2);
+void DrawFlatBottomTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2);
+void DrawFlatTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2,const Vertex& dv0,const Vertex& dv1,Vertex itEdge1);
 
 
 void wireFrame(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
@@ -55,7 +46,7 @@ vect4 calculateIntensity(vect4& Ka, vect4& Kd, vect4& Ks, float ns, vect4& point
     vect4 lightVec = light - point;
     vect4 unitLight = lightVec.normalize();
     vect4 diffuseColor = Kd * Il * dotProduct(normal, unitLight);
-    vect4 reflection = (normal * 2.0 * dotProduct(normal, unitLight)) - unitLight;
+    vect4 reflection = (normal * 0.4 * dotProduct(normal, unitLight)) - unitLight;
     vect4 specularColor = Ks * Il * pow(dotProduct(view, reflection), ns);
     vect4 intensity = ambientColor + diffuseColor + specularColor;
     //Color intensityColor = { intensity.x, intensity.y, intensity.z };
@@ -493,9 +484,7 @@ void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
     }
 }
 // does flat *TOP* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatTopTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2)
+void DrawFlatTopTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2)
 {
     // calulcate dVertex / dy
     // change in interpolant for every 1 change in y
@@ -508,9 +497,7 @@ void DrawFlatTopTriangle(const Vertex& it0,
     DrawFlatTriangle(it0, it1, it2, dit0, dit1, itEdge1);
 }
 // does flat *BOTTOM* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatBottomTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2)
+void DrawFlatBottomTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2)
 {
     // calulcate dVertex / dy
     // change in interpolant for every 1 change in y
@@ -525,12 +512,7 @@ void DrawFlatBottomTriangle(const Vertex& it0,
 // does processing common to both flat top and flat bottom tris
 // scan over triangle in screen space, interpolate attributes,
 // invoke ps and write pixel to screen
-void DrawFlatTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2,
-    const Vertex& dv0,
-    const Vertex& dv1,
-    Vertex itEdge1)
+void DrawFlatTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2,const Vertex& dv0,const Vertex& dv1,Vertex itEdge1)
 {
     // create edge interpolant for left edge (always v0)
     auto itEdge0 = it0;

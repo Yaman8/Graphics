@@ -11,8 +11,6 @@
 #include<array>
 #include<string>
 
-void painterSort(std::vector<Triangle>& tri, float low, float high);
-
 class Model {
 private:
     std::vector<Triangle> triangles;
@@ -245,11 +243,14 @@ void Model::applyTransform(mat4f& view, mat4f& projection) {
 
         tri.color = vec3{ 0.8, 0.8, 0.8 };
 
+
+        //--------------------------------------------CHECKPOINT--------------------------------------------------//
+
         // phongIlluminationModel(tri);
-        if (Shade)
-            Shading(tri);
-        else
-            phongIlluminationModel(tri);
+        //if (Shade)
+        //    Shading(tri);
+        //else
+        //    phongIlluminationModel(tri);
 
         //Projection Transformation
         tri.vertices[0] = mul(projection, tri.vertices[0]);
@@ -285,62 +286,62 @@ bool Model::backfaceDetectionNormalize(Triangle& tri)
     return true;
 }
 
-float Model::calcIntensity(vect4 point, vect4 Normal, vect4 View)
-{
-    float i = 0.0;
-    vect4 position = { 500, 600, -200 };
-    vect4 Ldir = (position - point).normalize();
-    //std::cout << point.x << "\t" << point.y << "\t" << point.z << "\n";
-    float ambientInt = 0.9;
-    float pointInt = 0.5;
-
-    float ambientConstant = 1;
-    float diffuseConstant = 0.7;
-    float specularConstant = 0.8;
-
-    float ambientLight = ambientConstant * ambientInt;
-
-    float diffuseLight = std::max(0.0f, diffuseConstant * pointInt * dotProduct(Normal, Ldir));
-
-    // Point R = maths::sub(maths::mul(Normal, (2 * maths::dot(Normal, Ldir))), Ldir);
-    vect4 R = ((Normal * (2 * dotProduct(Normal, Ldir))) - Ldir).normalize();
-    float specularExp = 32;
-    float specularLight = specularConstant * pointInt * pow(dotProduct(R, View), specularExp);
-
-    float tmp = ambientLight + specularLight + diffuseLight;
-    tmp = tmp > 1 ? 1 : tmp;
-    return tmp;
-}
-
-void Model::phongIlluminationModel(Triangle& tri)
-{
-    vect4 v1 = tri.vertices[0];
-    vect4 v2 = tri.vertices[1];
-    vect4 v3 = tri.vertices[2];
-
-    vect4 centroid;
-    centroid.x = (v1.x + v2.x + v3.x) / 3;
-    centroid.y = (v1.y + v2.y + v3.y) / 3;
-    centroid.z = (v1.z + v2.z + v3.z) / 3;
-
-    // std::cout << centroid[0] <<"\t";
-
-    // Point view = (camera->Position - centroid).normalize();
-    vect4 view = (camera->Position - centroid).normalize();
-
-    // generating the normal vector of a triangle
-    vect4 ver2 = centroid - v3;
-    vect4 ver1 = centroid - v2;
-
-    vect4 normal = (ver1.crossProduct(ver2)).normalize();
-
-    float intensity = calcIntensity(centroid, normal, view);
-    //std::cout << "The intensity: " << intensity << "\n";
-    vec3 newColor = tri.color * intensity;
-
-    tri.color = newColor;
-    // triangle.print();
-}
+//float Model::calcIntensity(vect4 point, vect4 Normal, vect4 View)
+//{
+//    float i = 0.0;
+//    vect4 position = { 500, 600, -200 };
+//    vect4 Ldir = (position - point).normalize();
+//    //std::cout << point.x << "\t" << point.y << "\t" << point.z << "\n";
+//    float ambientInt = 0.9;
+//    float pointInt = 0.5;
+//
+//    float ambientConstant = 1;
+//    float diffuseConstant = 0.7;
+//    float specularConstant = 0.8;
+//
+//    float ambientLight = ambientConstant * ambientInt;
+//
+//    float diffuseLight = std::max(0.0f, diffuseConstant * pointInt * dotProduct(Normal, Ldir));
+//
+//    // Point R = maths::sub(maths::mul(Normal, (2 * maths::dot(Normal, Ldir))), Ldir);
+//    vect4 R = ((Normal * (2 * dotProduct(Normal, Ldir))) - Ldir).normalize();
+//    float specularExp = 32;
+//    float specularLight = specularConstant * pointInt * pow(dotProduct(R, View), specularExp);
+//
+//    float tmp = ambientLight + specularLight + diffuseLight;
+//    tmp = tmp > 1 ? 1 : tmp;
+//    return tmp;
+//}
+//
+//void Model::phongIlluminationModel(Triangle& tri)
+//{
+//    vect4 v1 = tri.vertices[0];
+//    vect4 v2 = tri.vertices[1];
+//    vect4 v3 = tri.vertices[2];
+//
+//    vect4 centroid;
+//    centroid.x = (v1.x + v2.x + v3.x) / 3;
+//    centroid.y = (v1.y + v2.y + v3.y) / 3;
+//    centroid.z = (v1.z + v2.z + v3.z) / 3;
+//
+//    // std::cout << centroid[0] <<"\t";
+//
+//    // Point view = (camera->Position - centroid).normalize();
+//    vect4 view = (camera->Position - centroid).normalize();
+//
+//    // generating the normal vector of a triangle
+//    vect4 ver2 = centroid - v3;
+//    vect4 ver1 = centroid - v2;
+//
+//    vect4 normal = (ver1.crossProduct(ver2)).normalize();
+//
+//    float intensity = calcIntensity(centroid, normal, view);
+//    //std::cout << "The intensity: " << intensity << "\n";
+//    vec3 newColor = tri.color * intensity;
+//
+//    tri.color = newColor;
+//    // triangle.print();
+//}
 
 void diffuseLighting(Triangle& tri) {
     vect4 v1 = tri.vertices[0];
@@ -353,45 +354,15 @@ void diffuseLighting(Triangle& tri) {
     vect4 normal = (v1.crossProduct(ver2)).normalize();
 }
 
-void Model::Shading(Triangle& tri)
-{
-    std::vector<float>intensity(3);
-    int count = 0;
-    for (auto& vertex : tri.vertices)
-    {
-        vect4 view = (vect4{ 0, 0, 10 } - vertex).normalize();
-        intensity[count] = calcIntensity(vertex, tri.normals[count], view);
-        count++;
-    }
-    tri.setIntensity(intensity);
-}
-
-void painterSort(std::vector<Triangle>& tri, float low, float high)  // Quick sort algo
-{
-    float i = low;
-    float j = high;
-    float pivot = tri[(i + j) / 2].zbuff;
-    Triangle temp;
-
-    while (i <= j)
-    {
-        while (tri[i].zbuff < pivot)
-            i++;
-        while (tri[j].zbuff > pivot)
-            j--;
-        if (i <= j)
-        {
-            temp = tri[i];
-            tri[i] = tri[j];
-            tri[j] = temp;
-            i++;
-            j--;
-        }
-
-    }
-    if (j > low)
-        painterSort(tri, low, j);
-    if (i < high)
-        painterSort(tri, i, high);
-
-}
+//void Model::Shading(Triangle& tri)
+//{
+//    std::vector<float>intensity(3);
+//    int count = 0;
+//    for (auto& vertex : tri.vertices)
+//    {
+//        vect4 view = (vect4{ 0, 0, 10 } - vertex).normalize();
+//        intensity[count] = calcIntensity(vertex, tri.normals[count], view);
+//        count++;
+//    }
+//    tri.setIntensity(intensity);
+//}

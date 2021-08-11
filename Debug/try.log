@@ -1,14 +1,14 @@
 ﻿  main.cpp
 J:\Graphics\lineFunc.h(9,16): warning C4101: 'k': unreferenced local variable
 J:\Graphics\lineFunc.h(9,9): warning C4101: 'steps': unreferenced local variable
-J:\Graphics\triangleRaster.h(159,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\triangleRaster.h(174,27): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\triangleRaster.h(182,27): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\triangleRaster.h(317,16): warning C4101: 'di1': unreferenced local variable
-J:\Graphics\model.h(177,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(187,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(197,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(207,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\triangleRaster.h(150,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\triangleRaster.h(165,27): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\triangleRaster.h(173,27): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\triangleRaster.h(308,16): warning C4101: 'di1': unreferenced local variable
+J:\Graphics\model.h(175,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(185,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(195,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(205,23): warning C4018: '<': signed/unsigned mismatch
 J:\Graphics\includes.h(96,15): warning C4101: 'xv': unreferenced local variable
 J:\Graphics\includes.h(96,19): warning C4101: 'yv': unreferenced local variable
 J:\Graphics\includes.h(96,23): warning C4101: 'zv': unreferenced local variable
