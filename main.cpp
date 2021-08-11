@@ -6,10 +6,10 @@ int main(int argc, char** argv) {
     myinit(argc, argv);
 
     //model = new Model;
-    //model->newLoad("obj/untitled.obj");
+    //model->newLoad("obj/Temple.obj");
     //model->camera = camera;
     //model->convertToScreen_model();
-    ////model->scale_model(0.5);
+    //model->scale_model(0.1);
     //model->translate_model({ (wid /4),hei / 4,0 });
 
     model = new Model;

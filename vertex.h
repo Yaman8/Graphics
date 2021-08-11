@@ -22,14 +22,14 @@ public:
         color(src.color),
         pos(pos)
     {}*/
-    Vertex(const vect4& pos, const vect4& normal, const vec3& c)
-        :
+    Vertex(const vect4& pos, const vect4& normal, const vect4& c)
+        :color(c),
         normal(normal),
         pos(pos)
     {
-        color.x = c.x;
-        color.y = c.y;
-        color.z = c.z;
+        //color.x = c.x;
+        //color.y = c.y;
+        //color.z = c.z;
     }
     Vertex& operator+=(const Vertex& rhs)
     {

@@ -72,6 +72,10 @@ struct vect4 {
     {
         return { float(mul * x), float(mul * y), float(mul * z), w };
     }
+    vect4 operator*(vect4 mul)
+    {
+        return { float(mul.x * x), float(mul.y * y), float(mul.z * z), w };
+    }
     vect4 operator/(float div)
     {
         return { float(x / div), float(y / div), float(z / div), w };

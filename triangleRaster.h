@@ -5,6 +5,19 @@
 #include"vertex.h"
 #include"colorOptions.h"
 
+float lightX = 0.0f;
+float lightY = 0.0f;
+float lightZ = 30.0f;
+
+vect4 view = vect4{ 0.0f, 0.0f, 1.0f };
+vect4 Ka = vect4{ 0.75f, 0.38f, 0.23f };
+vect4 Kd = vect4{ 0.8f, 0.8f, 0.8f };
+vect4 Ks = vect4{ 0.8f, 0.8f, 0.8f };
+vect4 light = vect4{ lightX, lightY, lightZ };
+float ns = 400.0f;
+vect4 Ia = vect4{ 0.3f, 0.1f, 0.1f };
+vect4 Il = vect4{ 0.9f, 0.9f, 0.9f };
+
 template <typename T>
 constexpr T interpolate(const T& src, const T& dst, float alpha)
 {
@@ -25,130 +38,6 @@ void DrawFlatTriangle(const Vertex& it0,
     const Vertex& dv1,
     Vertex itEdge1);
 
-void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
-{
-    // using pointers so we can swap (for sorting purposes)
-    const Vertex* pv0 = &v0;
-    const Vertex* pv1 = &v1;
-    const Vertex* pv2 = &v2;
-    // sorting vertices by y
-    if (pv1->pos.y < pv0->pos.y)
-        std::swap(pv0, pv1);
-    if (pv2->pos.y < pv1->pos.y)
-        std::swap(pv1, pv2);
-    if (pv1->pos.y < pv0->pos.y)
-        std::swap(pv0, pv1);
-    if (pv0->pos.y == pv1->pos.y) // natural flat top
-    {
-        // sorting top vertices by x
-        if (pv1->pos.x < pv0->pos.x)
-            std::swap(pv0, pv1);
-        DrawFlatTopTriangle(*pv0, *pv1, *pv2);
-    }
-    else if (pv1->pos.y == pv2->pos.y) // natural flat bottom
-    {
-        // sorting bottom vertices by x
-        if (pv2->pos.x < pv1->pos.x)
-            std::swap(pv1, pv2);
-        DrawFlatBottomTriangle(*pv0, *pv1, *pv2);
-    }
-    else // general triangle
-    {
-        // find splitting vertex interpolant
-        const float alphaSplit =
-            (pv1->pos.y - pv0->pos.y) /
-            (pv2->pos.y - pv0->pos.y);
-        const auto vi = interpolate(*pv0, *pv2, alphaSplit);
-        if (pv1->pos.x < vi.pos.x) // major right
-        {
-            DrawFlatBottomTriangle(*pv0, *pv1, vi);
-            DrawFlatTopTriangle(*pv1, vi, *pv2);
-        }
-        else // major left
-        {
-            DrawFlatBottomTriangle(*pv0, vi, *pv1);
-            DrawFlatTopTriangle(vi, *pv1, *pv2);
-        }
-    }
-}
-// does flat *TOP* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatTopTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2)
-{
-    // calulcate dVertex / dy
-    // change in interpolant for every 1 change in y
-    const float delta_y = it2.pos.y - it0.pos.y;
-    const auto dit0 = (it2 - it0) / delta_y;
-    const auto dit1 = (it2 - it1) / delta_y;
-    // create right edge interpolant
-    auto itEdge1 = it1;
-    // call the flat triangle render routine
-    DrawFlatTriangle(it0, it1, it2, dit0, dit1, itEdge1);
-}
-// does flat *BOTTOM* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatBottomTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2)
-{
-    // calulcate dVertex / dy
-    // change in interpolant for every 1 change in y
-    const float delta_y = it2.pos.y - it0.pos.y;
-    const auto dit0 = (it1 - it0) / delta_y;
-    const auto dit1 = (it2 - it0) / delta_y;
-    // create right edge interpolant
-    auto itEdge1 = it0;
-    // call the flat triangle render routine
-    DrawFlatTriangle(it0, it1, it2, dit0, dit1, itEdge1);
-}
-// does processing common to both flat top and flat bottom tris
-// scan over triangle in screen space, interpolate attributes,
-// invoke ps and write pixel to screen
-void DrawFlatTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2,
-    const Vertex& dv0,
-    const Vertex& dv1,
-    Vertex itEdge1)
-{
-    // create edge interpolant for left edge (always v0)
-    auto itEdge0 = it0;
-    // calculate start and end scanlines
-    const int yStart = (int)ceil(it0.pos.y - 0.5f);
-    const int yEnd = (int)ceil(it2.pos.y - 0.5f); // the scanline AFTER the last line drawn
-    // do interpolant prestep
-    itEdge0 += dv0 * (float(yStart) + 0.5f - it0.pos.y);
-    itEdge1 += dv1 * (float(yStart) + 0.5f - it0.pos.y);
-    for (int y = yStart; y < yEnd; y++, itEdge0 += dv0, itEdge1 += dv1)
-    {
-        // calculate start and end pixels
-        const int xStart = (int)ceil(itEdge0.pos.x - 0.5f);
-        const int xEnd = (int)ceil(itEdge1.pos.x - 0.5f); // the pixel AFTER the last pixel drawn
-        // create scanline interpolant startpoint
-        // (some waste for interpolating x,y,z, but makes life easier not having
-        //  to split them off, and z will be needed in the future anyways...)
-        auto iLine = itEdge0;
-        // calculate delta scanline interpolant / dx
-        const float dx = itEdge1.pos.x - itEdge0.pos.x;
-        const auto diLine = (itEdge1 - iLine) / dx;
-        // prestep scanline interpolant
-        iLine += diLine * (float(xStart) + 0.5f - itEdge0.pos.x);
-        for (int x = xStart; x < xEnd; x++, iLine += diLine)
-        {
-            // invoke pixel shader and write resulting color value
-            vec3 color = { iLine.color.x, iLine.color.y, iLine.color.z };
-            putpixel(x, y, color);
-            /*float tex_width = getWidth();
-            float tex_height = getHeight();
-            int tex_xclamp = tex_width - 1;
-            int tex_yclamp = tex_height - 1;
-            Vec3f colorVec = GetPixel(int(std::min(iLine.tc.x * tex_width + 0.5f, tex_xclamp)), int(std::min(iLine.tc.y * tex_height + 0.5f, tex_yclamp)));
-            Color color = { colorVec.x, colorVec.y, colorVec.z };
-            putPixel(x, y, color); */
-        }
-    }
-}
-
 
 void wireFrame(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
 void fillTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
@@ -159,6 +48,19 @@ void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, const vec3& color);
 void drawWireframe_model(std::vector<Triangle>& model);
 void draw_model(std::vector<Triangle>& model, bool Shade);
 
+
+vect4 calculateIntensity(vect4& Ka, vect4& Kd, vect4& Ks, float ns, vect4& point, vect4& light, vect4& view, vect4& normal, vect4& Ia, vect4& Il)
+{
+    vect4 ambientColor = Ka * Ia;
+    vect4 lightVec = light - point;
+    vect4 unitLight = lightVec.normalize();
+    vect4 diffuseColor = Kd * Il * dotProduct(normal, unitLight);
+    vect4 reflection = (normal * 2.0 * dotProduct(normal, unitLight)) - unitLight;
+    vect4 specularColor = Ks * Il * pow(dotProduct(view, reflection), ns);
+    vect4 intensity = ambientColor + diffuseColor + specularColor;
+    //Color intensityColor = { intensity.x, intensity.y, intensity.z };
+    return intensity;
+}
 
 std::vector<float> interpolate(float i0, float d0, float il, float dl)
 {
@@ -279,9 +181,12 @@ void draw_model(std::vector<Triangle>& model, bool Shade)
     {
         for (int i = 0; i < model.size(); i++)
         {
-            Vertex v1(model[i].vertices[0], model[i].normals[0], model[i].color);
-            Vertex v2(model[i].vertices[1], model[i].normals[1], model[i].color);
-            Vertex v3(model[i].vertices[2], model[i].normals[2], model[i].color);
+            vect4 vc1 = calculateIntensity(Ka, Kd, Ks, ns, model[i].vertices[0], light, view, model[i].normals[0], Ia, Il);
+            vect4 vc2 = calculateIntensity(Ka, Kd, Ks, ns, model[i].vertices[1], light, view, model[i].normals[1], Ia, Il);
+            vect4 vc3 = calculateIntensity(Ka, Kd, Ks, ns, model[i].vertices[2], light, view, model[i].normals[2], Ia, Il);
+            Vertex v1(model[i].vertices[0], model[i].normals[0], vc1);
+            Vertex v2(model[i].vertices[1], model[i].normals[1], vc2);
+            Vertex v3(model[i].vertices[2], model[i].normals[2], vc3);
             DrawTriangle(v1, v2, v3);
         }
 
@@ -537,6 +442,130 @@ void Triangle::gouraudRasterize2()
             S.w += ddp3;
             E.x += dx2;
             E.w += ddp2;
+        }
+    }
+}
+
+void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
+{
+    // using pointers so we can swap (for sorting purposes)
+    const Vertex* pv0 = &v0;
+    const Vertex* pv1 = &v1;
+    const Vertex* pv2 = &v2;
+    // sorting vertices by y
+    if (pv1->pos.y < pv0->pos.y)
+        std::swap(pv0, pv1);
+    if (pv2->pos.y < pv1->pos.y)
+        std::swap(pv1, pv2);
+    if (pv1->pos.y < pv0->pos.y)
+        std::swap(pv0, pv1);
+    if (pv0->pos.y == pv1->pos.y) // natural flat top
+    {
+        // sorting top vertices by x
+        if (pv1->pos.x < pv0->pos.x)
+            std::swap(pv0, pv1);
+        DrawFlatTopTriangle(*pv0, *pv1, *pv2);
+    }
+    else if (pv1->pos.y == pv2->pos.y) // natural flat bottom
+    {
+        // sorting bottom vertices by x
+        if (pv2->pos.x < pv1->pos.x)
+            std::swap(pv1, pv2);
+        DrawFlatBottomTriangle(*pv0, *pv1, *pv2);
+    }
+    else // general triangle
+    {
+        // find splitting vertex interpolant
+        const float alphaSplit =
+            (pv1->pos.y - pv0->pos.y) /
+            (pv2->pos.y - pv0->pos.y);
+        const auto vi = interpolate(*pv0, *pv2, alphaSplit);
+        if (pv1->pos.x < vi.pos.x) // major right
+        {
+            DrawFlatBottomTriangle(*pv0, *pv1, vi);
+            DrawFlatTopTriangle(*pv1, vi, *pv2);
+        }
+        else // major left
+        {
+            DrawFlatBottomTriangle(*pv0, vi, *pv1);
+            DrawFlatTopTriangle(vi, *pv1, *pv2);
+        }
+    }
+}
+// does flat *TOP* tri-specific calculations and calls DrawFlatTriangle
+void DrawFlatTopTriangle(const Vertex& it0,
+    const Vertex& it1,
+    const Vertex& it2)
+{
+    // calulcate dVertex / dy
+    // change in interpolant for every 1 change in y
+    const float delta_y = it2.pos.y - it0.pos.y;
+    const auto dit0 = (it2 - it0) / delta_y;
+    const auto dit1 = (it2 - it1) / delta_y;
+    // create right edge interpolant
+    auto itEdge1 = it1;
+    // call the flat triangle render routine
+    DrawFlatTriangle(it0, it1, it2, dit0, dit1, itEdge1);
+}
+// does flat *BOTTOM* tri-specific calculations and calls DrawFlatTriangle
+void DrawFlatBottomTriangle(const Vertex& it0,
+    const Vertex& it1,
+    const Vertex& it2)
+{
+    // calulcate dVertex / dy
+    // change in interpolant for every 1 change in y
+    const float delta_y = it2.pos.y - it0.pos.y;
+    const auto dit0 = (it1 - it0) / delta_y;
+    const auto dit1 = (it2 - it0) / delta_y;
+    // create right edge interpolant
+    auto itEdge1 = it0;
+    // call the flat triangle render routine
+    DrawFlatTriangle(it0, it1, it2, dit0, dit1, itEdge1);
+}
+// does processing common to both flat top and flat bottom tris
+// scan over triangle in screen space, interpolate attributes,
+// invoke ps and write pixel to screen
+void DrawFlatTriangle(const Vertex& it0,
+    const Vertex& it1,
+    const Vertex& it2,
+    const Vertex& dv0,
+    const Vertex& dv1,
+    Vertex itEdge1)
+{
+    // create edge interpolant for left edge (always v0)
+    auto itEdge0 = it0;
+    // calculate start and end scanlines
+    const int yStart = (int)ceil(it0.pos.y - 0.5f);
+    const int yEnd = (int)ceil(it2.pos.y - 0.5f); // the scanline AFTER the last line drawn
+    // do interpolant prestep
+    itEdge0 += dv0 * (float(yStart) + 0.5f - it0.pos.y);
+    itEdge1 += dv1 * (float(yStart) + 0.5f - it0.pos.y);
+    for (int y = yStart; y < yEnd; y++, itEdge0 += dv0, itEdge1 += dv1)
+    {
+        // calculate start and end pixels
+        const int xStart = (int)ceil(itEdge0.pos.x - 0.5f);
+        const int xEnd = (int)ceil(itEdge1.pos.x - 0.5f); // the pixel AFTER the last pixel drawn
+        // create scanline interpolant startpoint
+        // (some waste for interpolating x,y,z, but makes life easier not having
+        //  to split them off, and z will be needed in the future anyways...)
+        auto iLine = itEdge0;
+        // calculate delta scanline interpolant / dx
+        const float dx = itEdge1.pos.x - itEdge0.pos.x;
+        const auto diLine = (itEdge1 - iLine) / dx;
+        // prestep scanline interpolant
+        iLine += diLine * (float(xStart) + 0.5f - itEdge0.pos.x);
+        for (int x = xStart; x < xEnd; x++, iLine += diLine)
+        {
+            // invoke pixel shader and write resulting color value
+            vec3 color = { iLine.color.x, iLine.color.y, iLine.color.z };
+            putpixel(x, y, color);
+            /*float tex_width = getWidth();
+            float tex_height = getHeight();
+            int tex_xclamp = tex_width - 1;
+            int tex_yclamp = tex_height - 1;
+            Vec3f colorVec = GetPixel(int(std::min(iLine.tc.x * tex_width + 0.5f, tex_xclamp)), int(std::min(iLine.tc.y * tex_height + 0.5f, tex_yclamp)));
+            Color color = { colorVec.x, colorVec.y, colorVec.z };
+            putPixel(x, y, color); */
         }
     }
 }

@@ -60,7 +60,7 @@ mat4f newPerspective(float fov, float aspect)
 
     // float zFar = 100.0f;
 
-    float zFar = -30.0f;
+    float zFar = -100.0f;
     float zRange = zNear - zFar;
     mat4f projection = { {{1 / (aspect * tan(fov / 2)), 0, 0, 0},
                          {0, 1 / tan(fov / 2), 0, 0},

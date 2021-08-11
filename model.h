@@ -2,6 +2,7 @@
 
 #include<fstream>
 #include<sstream>
+#include<algorithm>
 #include<vector>
 #include "transform.h"
 #include"Coord.h"
@@ -32,7 +33,7 @@ public:
     void diffuseLighting();
     void Shading(Triangle&);
     void loadTexture(std::string);
-    bool Shade = false;
+    bool Shade = true;
 
     Camera* camera;
 };
@@ -231,6 +232,12 @@ void Model::applyTransform(mat4f& view, mat4f& projection) {
 
 
     //painterSort(ftriangles, 0, ftriangles.size());
+    sort(ftriangles.begin(), ftriangles.end(), [](Triangle& t1, Triangle& t2)
+        {
+            float z1 = (t1.vertices[0].z + t1.vertices[1].z + t1.vertices[2].z) / 3.0f;
+            float z2 = (t2.vertices[0].z + t2.vertices[1].z + t2.vertices[2].z) / 3.0f;
+            return z1 > z2;
+        });
 
     for (auto& tri : ftriangles)
     {
@@ -259,8 +266,8 @@ bool Model::backfaceDetectionNormalize(Triangle& tri)
     centroid.y = (v1.y + v2.y + v3.y) / 3;
     centroid.z = (v1.z + v2.z + v3.z) / 3;
 
-    // Point V = (camera->Position - centroid).normalize();
-    vect4 V = (vect4{ 0,0,-1000 } - centroid).normalize();
+    vect4 V = (camera->Position - centroid).normalize();
+    //vect4 V = (vect4{ 0,0,-1000 } - centroid).normalize();
 
     v2 = v2 - v1;
     v3 = v3 - v1;

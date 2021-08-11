@@ -3,7 +3,7 @@
 #include "transform.h"
 
 // functions
-void view(vect4& pt, vect4 viewp);
+void viewc(vect4& pt, vect4 viewp);
 void oblique(vect4& pt, int zvp, float alpha, float phi);
 void perspective(vect4& pt, int zvp, vect4& prp);
 
@@ -12,7 +12,7 @@ float idenity_matrix[4][4] = { {1, 0, 0, 0},
                               {0, 0, 1, 0},
                               {0, 0, 0, 1} };
 
-void view(vect4& pt, vect4 viewp)
+void viewc(vect4& pt, vect4 viewp)
 {
     //view = translate + rotate
     pt = pt - viewp;
