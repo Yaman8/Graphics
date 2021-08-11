@@ -6,17 +6,17 @@ int main(int argc, char** argv) {
     myinit(argc, argv);
 
     //model = new Model;
-    //model->newLoad("obj/Temple.obj");
+    //model->newLoad("obj/taj.obj");
     //model->camera = camera;
     //model->convertToScreen_model();
-    //model->scale_model(0.1);
+    //model->scale_model(0.3);
     //model->translate_model({ (wid /4),hei / 4,0 });
 
     model = new Model;
     model->newLoad("obj/zahaf1.obj");
     model->camera = camera;
     model->convertToScreen_model();
-    model->scale_model(0.1);
+    model->scale_model(0.12);
     //model->rotate_model(90);
     model->translate_model({ (wid /4),hei/4,0 });
 

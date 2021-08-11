@@ -15,6 +15,7 @@
 //#include"modelFuncs.h"
 
 Camera* camera = new Camera(vect4{ 0.0f,0.0f,100.0f });
+//Camera* camera = new Camera(vect4{ 100.0f,100.0f,50.0f });
 
 int width = 800, height = 800;
 const float l = 1.6;

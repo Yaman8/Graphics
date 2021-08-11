@@ -1,22 +1,22 @@
 ﻿  main.cpp
 J:\Graphics\lineFunc.h(9,16): warning C4101: 'k': unreferenced local variable
 J:\Graphics\lineFunc.h(9,9): warning C4101: 'steps': unreferenced local variable
-J:\Graphics\triangleRaster.h(150,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\triangleRaster.h(165,27): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\triangleRaster.h(173,27): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\triangleRaster.h(308,16): warning C4101: 'di1': unreferenced local variable
-J:\Graphics\model.h(175,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(185,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(195,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\model.h(205,23): warning C4018: '<': signed/unsigned mismatch
-J:\Graphics\includes.h(96,15): warning C4101: 'xv': unreferenced local variable
-J:\Graphics\includes.h(96,19): warning C4101: 'yv': unreferenced local variable
-J:\Graphics\includes.h(96,23): warning C4101: 'zv': unreferenced local variable
-J:\Graphics\includes.h(108,21): warning C4101: 'yprp': unreferenced local variable
-J:\Graphics\includes.h(107,44): warning C4101: 'zp': unreferenced local variable
-J:\Graphics\includes.h(107,15): warning C4101: 'xv': unreferenced local variable
-J:\Graphics\includes.h(108,15): warning C4101: 'xprp': unreferenced local variable
-J:\Graphics\includes.h(108,27): warning C4101: 'zprp': unreferenced local variable
-J:\Graphics\includes.h(107,19): warning C4101: 'yv': unreferenced local variable
-J:\Graphics\includes.h(107,23): warning C4101: 'zv': unreferenced local variable
+J:\Graphics\triangleRaster.h(165,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\triangleRaster.h(180,27): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\triangleRaster.h(188,27): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\triangleRaster.h(323,16): warning C4101: 'di1': unreferenced local variable
+J:\Graphics\model.h(176,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(186,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(196,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\model.h(206,23): warning C4018: '<': signed/unsigned mismatch
+J:\Graphics\includes.h(97,15): warning C4101: 'xv': unreferenced local variable
+J:\Graphics\includes.h(97,19): warning C4101: 'yv': unreferenced local variable
+J:\Graphics\includes.h(97,23): warning C4101: 'zv': unreferenced local variable
+J:\Graphics\includes.h(109,21): warning C4101: 'yprp': unreferenced local variable
+J:\Graphics\includes.h(108,44): warning C4101: 'zp': unreferenced local variable
+J:\Graphics\includes.h(108,15): warning C4101: 'xv': unreferenced local variable
+J:\Graphics\includes.h(109,15): warning C4101: 'xprp': unreferenced local variable
+J:\Graphics\includes.h(109,27): warning C4101: 'zprp': unreferenced local variable
+J:\Graphics\includes.h(108,19): warning C4101: 'yv': unreferenced local variable
+J:\Graphics\includes.h(108,23): warning C4101: 'zv': unreferenced local variable
   try.vcxproj -> J:\Graphics\Debug\try.exe
