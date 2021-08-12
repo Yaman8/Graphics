@@ -8,13 +8,17 @@ int main(int argc, char** argv)
     camera = new Camera();
     model = new Model;
 
-    model->Load("../obj/zahaf1.obj");
+    //model->Load("../obj/cube.obj");
+    //model->camera = camera;
+    //model->modelToScreen();
+    //model->scale_model(0.5);
+    //model->translate_model({ SWIDTH / 2, SHEIGHT / 2, 0 });
 
+    model->Load("../obj/zahaf1.obj");
     model->camera = camera;
     model->modelToScreen();
-
     model->scale_model(0.15);
-    model->translate_model({ WIDTH / 2, HEIGHT / 2, 0 });
+    model->translate_model({ SWIDTH / 2, SHEIGHT / 2, 0 });
 
 
     glutDisplayFunc(drawModel);
@@ -38,9 +42,9 @@ void myinit(int argc, char** argv)
     glutCreateWindow("Heydar Aliyev");
 
     glClearColor(0.39, 0.6, 0.69, 0.0);
-    glViewport(0, 0, WIDTH, HEIGHT);
+    glViewport(0, 0, SWIDTH, SHEIGHT);
     glLoadIdentity();
-    gluOrtho2D(0, WIDTH, 0, HEIGHT);
+    gluOrtho2D(0, SWIDTH, 0, SHEIGHT);
 }
 
 void drawModel()
@@ -53,7 +57,7 @@ void drawModel()
     glClear(GL_COLOR_BUFFER_BIT);
 
     mat4f view = camera->getViewMatrix();
-    mat4f projection = newPerspective(90.0f, (float)HEIGHT / WIDTH);
+    mat4f projection = Perspective(90.0f, (float)SHEIGHT / SWIDTH);
 
     model->transformModel(view, projection);
     model->draw();
@@ -75,7 +79,7 @@ void updateFunction(int val)
 
 void specialKeyboard(int key, int x, int y)
 {
-    std::cout << "Key Pressed" << std::endl;
+    //std::cout << "Key Pressed" << std::endl;
 
     switch (key)
     {
@@ -99,7 +103,7 @@ void specialKeyboard(int key, int x, int y)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    std::cout << "Key Pressed" << std::endl;
+    //std::cout << "Key Pressed" << std::endl;
 
     switch (key)
     {
@@ -125,8 +129,3 @@ void keyboard(unsigned char key, int x, int y)
 }
 
 
-
-
-void specialKeyboard(int key, int x, int y);
-void keyboard(unsigned char key, int x, int y);
-void myinit(int argc, char** argv);

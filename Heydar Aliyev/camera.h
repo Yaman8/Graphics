@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Coord.h"
-#include "matrix.h"
+#include "matrixFunc.h"
 
 mat4f calculateLookAt(vect4& pos, vect4& target, vect4& up);
 
@@ -19,11 +19,10 @@ enum Camera_Movement {
 class Camera
 {
 private:
-    // calculates the front vector from the Camera's (updated) Euler Angles
     void updateCameraVectors();
 
 public:
-    // camera Attributes
+    //camera values
     float zoom;
     float deltaTime;
     vect4 Position;
@@ -50,7 +49,6 @@ Camera::Camera()
     Target = { 0.0f, 0.0f, 1.0f };
     Front = { 0.0f, 0.0f, 1.0f };
     Up = { 0.0f, 1.0f, 0.0f };
-    // m_right = maths::normalize(maths::cross(m_front, m_up));
     yaw = 0.0f;
     pitch = 0.0f;
     roll = 0.0f;
@@ -60,6 +58,7 @@ Camera::Camera()
 
 void Camera::processKeyboard(Camera_Movement direction, float deltaTime)
 {
+    //To process keyboard inputs
     vect4 vForward = Front * (2.0f * deltaTime);
     if (direction == Camera_Movement::UP)
         Position.y += 1.0f * deltaTime;
@@ -84,16 +83,11 @@ mat4f Camera::getViewMatrix()
 {
     Target = { 0.0f, 0.0f, 1.0f };
     Up = { 0.0f, 1.0f, 0.0f };
-    // return lookAt(Position, Position + Front, Up);
     mat4f matCameraRot = Matrix_MakeRotationY(yaw);
     Front = mul(matCameraRot, Target);
 
     Target = Position + Front;
 
-    // mat4f matCamera = Matrix_vect4At(Position, Target, Up);
-
-    // // Make view matrix from camera
-    // return Matrix_QuickInverse(matCamera);
     return calculateLookAt(Position, Target, Up);
 }
 
@@ -108,7 +102,7 @@ mat4f calculateLookAt(vect4& pos, vect4& target, vect4& up)
     vect4 newUp = up - a;
     newUp = newUp.normalize();
 
-    // New Right direction is easy, its just cross product
+    // Calculate new right
     vect4 newRight = newUp.crossProduct(newForward);
 
     mat4f lookAt = mul(RotView(newRight, newUp, newForward), TranslateView(pos));

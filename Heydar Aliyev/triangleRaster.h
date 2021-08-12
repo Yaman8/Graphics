@@ -1,24 +1,9 @@
 #pragma once
 
-// #include "structure.h"
-// #include "colors.h"
 #include "lineFunc.h"
-#include "matrix.h"
+#include "matrixFunc.h"
 #include "vertex.h"
 
-// //------------original data--------------
-// float lightX = 0.0f;
-// float lightY = 0.0f;
-// float lightZ = 30.0f;
-
-// vect4 view = vect4{0.0f, 0.0f, 1.0f};
-// vect4 Ka = vect4{0.75f, 0.38f, 0.23f};
-// vect4 Kd = vect4{0.8f, 0.8f, 0.8f};
-// vect4 Ks = vect4{0.8f, 0.8f, 0.8f};
-// vect4 light = vect4{lightX, lightY, lightZ};
-// float ns = 400.0f;
-// vect4 Ia = vect4{0.3f, 0.1f, 0.1f};
-// vect4 Il = vect4{0.9f, 0.9f, 0.9f};
 
 float lightX = 500.0f;
 float lightY = 500.0f;
@@ -40,18 +25,9 @@ constexpr T interpolate(const T& src, const T& dst, float alpha)
 }
 
 void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2);
-void DrawFlatTopTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2);
-void DrawFlatBottomTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2);
-void DrawFlatTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2,
-    const Vertex& dv0,
-    const Vertex& dv1,
-    Vertex itEdge1);
+void DrawFlatTopTriangle(const Vertex& it0, const Vertex& it1,const Vertex& it2);
+void DrawFlatBottomTriangle(const Vertex& it0, const Vertex& it1,const Vertex& it2);
+void DrawFlatTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2,const Vertex& dv0,const Vertex& dv1,Vertex itEdge1);
 
 void fillTriangle(vect4 v1, vect4 v2, vect4 v3, vec3 c);
 void fillBottomFlatTriangle(vect4 v1, vect4 v2, vect4 v3, vec3 c);
@@ -59,19 +35,20 @@ void fillTopFlatTriangle(vect4 v1, vect4 v2, vect4 v3, vec3 c);
 
 void wireframe_draw(vect4 v1, vect4 v2, vect4 v3, vec3 c);
 void drawWireframe_model(std::vector<Triangle>& model);
-void draw_model(std::vector<Triangle>& model);
+void draw_model(std::vector<Triangle>& model, bool Shade);
 
-// new approach
-vect4 calculateIntensity(vect4& Ka, vect4& Kd, vect4& Ks, float ns, vect4& point, vect4& light, vect4& view, vect4& normal, vect4& Ia, vect4& Il)
+vect4 calcIntensity(vect4& Ka, vect4& Kd, vect4& Ks, float ns, vect4& point, vect4& light, vect4& view, vect4& normal, vect4& Ia, vect4& Il)
 {
+    //calculate ambient color
     vect4 ambientColor = Ka * Ia;
     vect4 lightVec = light - point;
     vect4 unitLight = lightVec.normalize();
+    //calculate diffuse color
     vect4 diffuseColor = Kd * Il * dotProduct(normal, unitLight);
     vect4 reflection = (normal * 2.0 * dotProduct(normal, unitLight)) - unitLight;
+    //calculate specular color
     vect4 specularColor = Ks * Il * pow(dotProduct(view, reflection), ns);
     vect4 intensity = ambientColor + diffuseColor + specularColor;
-    //Color intensityColor = { intensity.x, intensity.y, intensity.z };
     return intensity;
 }
 
@@ -122,9 +99,7 @@ void DrawTriangle(const Vertex& v0, const Vertex& v1, const Vertex& v2)
     }
 }
 // does flat *TOP* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatTopTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2)
+void DrawFlatTopTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2)
 {
     // calulcate dVertex / dy
     // change in interpolant for every 1 change in y
@@ -137,9 +112,7 @@ void DrawFlatTopTriangle(const Vertex& it0,
     DrawFlatTriangle(it0, it1, it2, dit0, dit1, itEdge1);
 }
 // does flat *BOTTOM* tri-specific calculations and calls DrawFlatTriangle
-void DrawFlatBottomTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2)
+void DrawFlatBottomTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2)
 {
     // calulcate dVertex / dy
     // change in interpolant for every 1 change in y
@@ -154,12 +127,7 @@ void DrawFlatBottomTriangle(const Vertex& it0,
 // does processing common to both flat top and flat bottom tris
 // scan over triangle in screen space, interpolate attributes,
 // invoke ps and write pixel to screen
-void DrawFlatTriangle(const Vertex& it0,
-    const Vertex& it1,
-    const Vertex& it2,
-    const Vertex& dv0,
-    const Vertex& dv1,
-    Vertex itEdge1)
+void DrawFlatTriangle(const Vertex& it0,const Vertex& it1,const Vertex& it2,const Vertex& dv0,const Vertex& dv1,Vertex itEdge1)
 {
     // create edge interpolant for left edge (always v0)
     auto itEdge0 = it0;
@@ -279,9 +247,9 @@ void drawWireframe_model(std::vector<Triangle>& model)
     }
 }
 
-void draw_model(std::vector<Triangle>& model, bool gauravShade)
+void draw_model(std::vector<Triangle>& model, bool Shade)
 {
-    if (!gauravShade)
+    if (!Shade)
     {
         for (int i = 0; i < model.size(); i++)
         {
@@ -293,20 +261,14 @@ void draw_model(std::vector<Triangle>& model, bool gauravShade)
     {
         for (int i = 0; i < model.size(); i++)
         {
-            vect4 vc1 = calculateIntensity(Ka, Kd, Ks, ns, model[i].vertices[0], light, view, model[i].normals[0], Ia, Il);
-            vect4 vc2 = calculateIntensity(Ka, Kd, Ks, ns, model[i].vertices[1], light, view, model[i].normals[1], Ia, Il);
-            vect4 vc3 = calculateIntensity(Ka, Kd, Ks, ns, model[i].vertices[2], light, view, model[i].normals[2], Ia, Il);
+            vect4 vc1 = calcIntensity(Ka, Kd, Ks, ns, model[i].vertices[0], light, view, model[i].normals[0], Ia, Il);
+            vect4 vc2 = calcIntensity(Ka, Kd, Ks, ns, model[i].vertices[1], light, view, model[i].normals[1], Ia, Il);
+            vect4 vc3 = calcIntensity(Ka, Kd, Ks, ns, model[i].vertices[2], light, view, model[i].normals[2], Ia, Il);
             Vertex v1(model[i].vertices[0], model[i].normals[0], vc1);
             Vertex v2(model[i].vertices[1], model[i].normals[1], vc2);
             Vertex v3(model[i].vertices[2], model[i].normals[2], vc3);
             DrawTriangle(v1, v2, v3);
         }
-
-        // //----------------  Gaurav Rasterize    -------------------------------------------------
-        // for (auto &tri : model)
-        // {
-        //     tri.gauravRasterize1();
-        // }
     }
 
 }
@@ -316,243 +278,243 @@ void Triangle::setIntensity(std::vector<float> intense)
     vertex_intensity[0] = { vertices[0].x, vertices[0].y, vertices[0].z, intense[0] };
     vertex_intensity[1] = { vertices[1].x, vertices[1].y, vertices[1].z, intense[1] };
     vertex_intensity[2] = { vertices[2].x, vertices[2].y, vertices[2].z, intense[2] };
-    // std::cout<<vertex_intensity[0];
+    // std::cout<<vertex_intensity[0]<<" "<<vertex_intensity[1]<<" "<<vertex_intensity[2];
 }
 
-void Triangle::Rasterize1()
-{
-    // Sort the points so that y0 <= yl <= y2
-    auto P0 = vertex_intensity[0];
-    auto P1 = vertex_intensity[1];
-    auto P2 = vertex_intensity[2];
-
-    if (P1.y < P0.y)
-    {
-        std::swap(P1, P0);
-    }
-    if (P2.y < P0.y)
-    {
-        std::swap(P2, P0);
-    }
-    if (P2.y < P1.y)
-    {
-        std::swap(P2, P1);
-    }
-
-    //  Compute the x coordinates of the triangle edges
-    std::vector<float> x01 = interpolate(P0.y, P0.x, P1.y, P1.x);
-    std::vector<float> h01 = interpolate(P0.y, P0.w, P1.y, P1.w);
-
-    std::vector<float> x12 = interpolate(P1.y, P1.x, P2.y, P2.x);
-    std::vector<float> h12 = interpolate(P1.y, P1.w, P2.y, P2.w);
-
-    std::vector<float> x02 = interpolate(P0.y, P0.x, P2.y, P2.x);
-    std::vector<float> h02 = interpolate(P0.y, P0.w, P2.y, P2.w);
-
-    //  Concatenate the short sides
-    x01.pop_back();
-    std::vector<float> x012;
-    x012.resize(x01.size() + x12.size());
-    std::copy(x01.begin(), x01.end(), x012.begin());
-    std::copy(x12.begin(), x12.end(), x012.begin() + x01.size());
-
-    // std::cout<<"------------------------------------------------\n";
-    h01.pop_back();
-
-    std::vector<float> h012;
-    h012.resize(h01.size() + h12.size());
-    std::copy(h01.begin(), h01.end(), h012.begin());
-    std::copy(h12.begin(), h12.end(), h012.begin() + h01.size());
-
-    //  Determine which is left and which is right
-    int m = x012[x012.size() / 2];
-    std::vector<float> x_left, x_right, h_left, h_right;
-
-    if (x02[m] < x012[m])
-    {
-        x_left = x02;
-        h_left = h02;
-
-        x_right = x012;
-        h_right = h012;
-    }
-    else
-    {
-        x_left = x012;
-        h_left = h012;
-
-        x_right = x02;
-        h_right = h02;
-    }
-    // printVec(x_left);
-    // std::cout<<"------------------------------------------------\n";
-    // printVec(x_right);
-
-    // Draw the horizontal segments
-    for (float y = P0.y; y < P2.y - 1; y++)
-    {
-        auto x_l = x_left[y - P0.y];
-        auto x_r = x_right[y - P0.y];
-
-        auto h_segment = interpolate(x_l, h_left[y - P0.y], x_r, h_right[y - P0.y]);
-
-        for (float x = x_l; x < x_r; x++)
-        {
-            vec3 shadedColor = color * h_segment[x - x_l];
-            // maths::printvec(shadedColor);
-            putpixel(x, y, shadedColor);
-        }
-    }
-}
-
-void Triangle::Rasterize2()
-{
-
-    auto a = vertex_intensity[0];
-    auto b = vertex_intensity[1];
-    auto c = vertex_intensity[2];
-    // vertex arr[3] = { A,B,C };
-    if (a.x > b.y)
-    {
-        std::swap(b, a);
-    }
-    if (a.x > c.y)
-    {
-        std::swap(c, a);
-    }
-    if (b.y > c.y)
-    {
-        std::swap(c, b);
-    }
-
-    float dx1, di1, dr1, dg1, db1, ddp1, ddp2, ddp3, dx2, dr2, dg2, db2, dx3, dr3, dg3, db3, dr, dg, db, ddp;
-    if (b.y - a.y > 0)
-    {
-        dx1 = (b.x - a.x) / (b.y - a.y);
-        ddp1 = (b.w - a.w) / (b.y - a.y);
-    }
-    else
-        dx1 = dr1 = dg1 = db1 = 0, ddp1 = 0;
-    ;
-
-    if (c.y - a.y > 0)
-    {
-        dx2 = (c.x - a.x) / (c.y - a.y);
-        ddp2 = (c.w - a.w) / (c.y - a.y);
-    }
-    else
-        dx2 = dr2 = dg2 = db2 = ddp2 = 0;
-
-    if (c.y - b.y > 0)
-    {
-        dx3 = (c.x - c.x) / (c.y - b.y);
-        ddp3 = (c.w - b.w) / (c.y - b.y);
-    }
-    else
-        dx3 = dr3 = dg3 = db3 = ddp3 = 0;
-    vect4 S, E, P;
-    S = a;
-    E = a;
-    if (dx1 > dx2)
-    {
-        for (; S.y <= b.y; S.y++, E.y++)
-        {
-            if (E.x - S.x > 0)
-            {
-                ddp = (E.w - S.w) / (E.x - S.x);
-            }
-            else
-                dr = dg = db = ddp = 0;
-            P = S;
-            for (; P.x < E.x; P.x++)
-            {
-                //MULTIPLY
-                vec3 ncolor = color * P.w;
-                putpixel(P.x, P.y, ncolor);
-                P.w += ddp;
-            }
-            //MULTIPLY ??
-            S.x += dx2;
-            S.w += ddp2;
-            E.x += dx1;
-            E.w += ddp1;
-        }
-
-        E = b;
-        for (; S.y <= c.y; S.y++, E.y++)
-        {
-            if (E.x - S.x > 0)
-            {
-                //MULTIPLY
-                vec3 ncolor = color * P.w;
-                ddp = (E.w - S.w) / (E.x - S.x);
-            }
-            else
-                dr = dg = db = 0;
-            P = S;
-            for (; P.x <= E.x; P.x++)
-            {
-                //multiply
-                vec3 ncolor = color * P.w;
-                putpixel(P.x, P.y, ncolor);
-                P.w += ddp;
-            }
-            S.x += dx2;
-            S.w += ddp2;
-            E.x += dx3;
-            E.w += ddp3;
-        }
-    }
-    else
-    {
-        for (; S.y <= b.y; S.y++, E.y++)
-        {
-            if (E.x - S.x > 0)
-            {
-                //MULTIPLY
-                vec3 ncolor = color * P.w;
-                ddp = (E.w - S.w) / (E.x - S.x);
-            }
-            else
-                dr = dg = db = ddp = 0;
-
-            P = S;
-            for (; P.x < E.x; P.x++)
-            {
-                vec3 ncolor = color * P.w;
-                //multiply
-                putpixel(P.x, P.y, ncolor); //doubtful-----------------------------------------------------------------------
-                P.w += ddp;
-            }
-            S.x += dx1;
-            S.w += ddp1;
-            E.x += dx2;
-            E.w += ddp2;
-        }
-
-        S = b;
-        for (; S.y <= c.y; S.y++, E.y++)
-        {
-            if (E.x - S.x > 0)
-            {
-                //MULTIPLY
-                ddp = (E.w - S.w) / (E.x - S.x);
-            }
-            else
-                dr = dg = db = ddp = 0;
-
-            P = S;
-            for (; P.x < E.x; P.x++)
-            {
-                vec3 ncolor = color * P.w;
-                putpixel(P.x, P.y, ncolor);
-                //MULTIPLY
-                P.w += ddp;
-            }
-            S.x += dx3;
-            S.w += ddp3;
-            E.x += dx2;
-            E.w += ddp2;
-        }
-    }
-}
+//void Triangle::Rasterize()
+//{
+//    // Sort the points so that y0 <= yl <= y2
+//    auto P0 = vertex_intensity[0];
+//    auto P1 = vertex_intensity[1];
+//    auto P2 = vertex_intensity[2];
+//
+//    if (P1.y < P0.y)
+//    {
+//        std::swap(P1, P0);
+//    }
+//    if (P2.y < P0.y)
+//    {
+//        std::swap(P2, P0);
+//    }
+//    if (P2.y < P1.y)
+//    {
+//        std::swap(P2, P1);
+//    }
+//
+//    //  Compute the x coordinates of the triangle edges
+//    std::vector<float> x01 = interpolate(P0.y, P0.x, P1.y, P1.x);
+//    std::vector<float> h01 = interpolate(P0.y, P0.w, P1.y, P1.w);
+//
+//    std::vector<float> x12 = interpolate(P1.y, P1.x, P2.y, P2.x);
+//    std::vector<float> h12 = interpolate(P1.y, P1.w, P2.y, P2.w);
+//
+//    std::vector<float> x02 = interpolate(P0.y, P0.x, P2.y, P2.x);
+//    std::vector<float> h02 = interpolate(P0.y, P0.w, P2.y, P2.w);
+//
+//    //  Concatenate the short sides
+//    x01.pop_back();
+//    std::vector<float> x012;
+//    x012.resize(x01.size() + x12.size());
+//    std::copy(x01.begin(), x01.end(), x012.begin());
+//    std::copy(x12.begin(), x12.end(), x012.begin() + x01.size());
+//
+//    // std::cout<<"------------------------------------------------\n";
+//    h01.pop_back();
+//
+//    std::vector<float> h012;
+//    h012.resize(h01.size() + h12.size());
+//    std::copy(h01.begin(), h01.end(), h012.begin());
+//    std::copy(h12.begin(), h12.end(), h012.begin() + h01.size());
+//
+//    //  Determine which is left and which is right
+//    int m = x012[x012.size() / 2];
+//    std::vector<float> x_left, x_right, h_left, h_right;
+//
+//    if (x02[m] < x012[m])
+//    {
+//        x_left = x02;
+//        h_left = h02;
+//
+//        x_right = x012;
+//        h_right = h012;
+//    }
+//    else
+//    {
+//        x_left = x012;
+//        h_left = h012;
+//
+//        x_right = x02;
+//        h_right = h02;
+//    }
+//    // printVec(x_left);
+//    // std::cout<<"------------------------------------------------\n";
+//    // printVec(x_right);
+//
+//    // Draw the horizontal segments
+//    for (float y = P0.y; y < P2.y - 1; y++)
+//    {
+//        auto x_l = x_left[y - P0.y];
+//        auto x_r = x_right[y - P0.y];
+//
+//        auto h_segment = interpolate(x_l, h_left[y - P0.y], x_r, h_right[y - P0.y]);
+//
+//        for (float x = x_l; x < x_r; x++)
+//        {
+//            vec3 shadedColor = color * h_segment[x - x_l];
+//            // maths::printvec(shadedColor);
+//            putpixel(x, y, shadedColor);
+//        }
+//    }
+//}
+//
+//void Triangle::newRasterize()
+//{
+//
+//    auto a = vertex_intensity[0];
+//    auto b = vertex_intensity[1];
+//    auto c = vertex_intensity[2];
+//    // vertex arr[3] = { A,B,C };
+//    if (a.x > b.y)
+//    {
+//        std::swap(b, a);
+//    }
+//    if (a.x > c.y)
+//    {
+//        std::swap(c, a);
+//    }
+//    if (b.y > c.y)
+//    {
+//        std::swap(c, b);
+//    }
+//
+//    float dx1, di1, dr1, dg1, db1, ddp1, ddp2, ddp3, dx2, dr2, dg2, db2, dx3, dr3, dg3, db3, dr, dg, db, ddp;
+//    if (b.y - a.y > 0)
+//    {
+//        dx1 = (b.x - a.x) / (b.y - a.y);
+//        ddp1 = (b.w - a.w) / (b.y - a.y);
+//    }
+//    else
+//        dx1 = dr1 = dg1 = db1 = 0, ddp1 = 0;
+//    ;
+//
+//    if (c.y - a.y > 0)
+//    {
+//        dx2 = (c.x - a.x) / (c.y - a.y);
+//        ddp2 = (c.w - a.w) / (c.y - a.y);
+//    }
+//    else
+//        dx2 = dr2 = dg2 = db2 = ddp2 = 0;
+//
+//    if (c.y - b.y > 0)
+//    {
+//        dx3 = (c.x - c.x) / (c.y - b.y);
+//        ddp3 = (c.w - b.w) / (c.y - b.y);
+//    }
+//    else
+//        dx3 = dr3 = dg3 = db3 = ddp3 = 0;
+//    vect4 S, E, P;
+//    S = a;
+//    E = a;
+//    if (dx1 > dx2)
+//    {
+//        for (; S.y <= b.y; S.y++, E.y++)
+//        {
+//            if (E.x - S.x > 0)
+//            {
+//                ddp = (E.w - S.w) / (E.x - S.x);
+//            }
+//            else
+//                dr = dg = db = ddp = 0;
+//            P = S;
+//            for (; P.x < E.x; P.x++)
+//            {
+//                //MULTIPLY
+//                vec3 ncolor = color * P.w;
+//                putpixel(P.x, P.y, ncolor);
+//                P.w += ddp;
+//            }
+//            //MULTIPLY ??
+//            S.x += dx2;
+//            S.w += ddp2;
+//            E.x += dx1;
+//            E.w += ddp1;
+//        }
+//
+//        E = b;
+//        for (; S.y <= c.y; S.y++, E.y++)
+//        {
+//            if (E.x - S.x > 0)
+//            {
+//                //MULTIPLY
+//                vec3 ncolor = color * P.w;
+//                ddp = (E.w - S.w) / (E.x - S.x);
+//            }
+//            else
+//                dr = dg = db = 0;
+//            P = S;
+//            for (; P.x <= E.x; P.x++)
+//            {
+//                //multiply
+//                vec3 ncolor = color * P.w;
+//                putpixel(P.x, P.y, ncolor);
+//                P.w += ddp;
+//            }
+//            S.x += dx2;
+//            S.w += ddp2;
+//            E.x += dx3;
+//            E.w += ddp3;
+//        }
+//    }
+//    else
+//    {
+//        for (; S.y <= b.y; S.y++, E.y++)
+//        {
+//            if (E.x - S.x > 0)
+//            {
+//                //MULTIPLY
+//                vec3 ncolor = color * P.w;
+//                ddp = (E.w - S.w) / (E.x - S.x);
+//            }
+//            else
+//                dr = dg = db = ddp = 0;
+//
+//            P = S;
+//            for (; P.x < E.x; P.x++)
+//            {
+//                vec3 ncolor = color * P.w;
+//                //multiply
+//                putpixel(P.x, P.y, ncolor); //doubtful-----------------------------------------------------------------------
+//                P.w += ddp;
+//            }
+//            S.x += dx1;
+//            S.w += ddp1;
+//            E.x += dx2;
+//            E.w += ddp2;
+//        }
+//
+//        S = b;
+//        for (; S.y <= c.y; S.y++, E.y++)
+//        {
+//            if (E.x - S.x > 0)
+//            {
+//                //MULTIPLY
+//                ddp = (E.w - S.w) / (E.x - S.x);
+//            }
+//            else
+//                dr = dg = db = ddp = 0;
+//
+//            P = S;
+//            for (; P.x < E.x; P.x++)
+//            {
+//                vec3 ncolor = color * P.w;
+//                putpixel(P.x, P.y, ncolor);
+//                //MULTIPLY
+//                P.w += ddp;
+//            }
+//            S.x += dx3;
+//            S.w += ddp3;
+//            E.x += dx2;
+//            E.w += ddp2;
+//        }
+//    }
+//}

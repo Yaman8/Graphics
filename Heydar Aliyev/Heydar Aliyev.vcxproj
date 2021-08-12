@@ -144,10 +144,11 @@
     <ClInclude Include="Coord.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="lineFunc.h" />
-    <ClInclude Include="matrix.h" />
+    <ClInclude Include="matrixFunc.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="triangleRaster.h" />
+    <ClInclude Include="vect.h" />
     <ClInclude Include="vertex.h" />
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@
     <ClInclude Include="transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="matrix.h">
+    <ClInclude Include="matrixFunc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
@@ -43,6 +43,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

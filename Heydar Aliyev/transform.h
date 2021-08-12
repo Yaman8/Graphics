@@ -2,15 +2,14 @@
 
 #include "Coord.h"
 
-//transformation functions
+//Required transformations
+
 void transate_polygon(vect4& pt, vect4 translate);
-void scale_polygon(vect4& pt, vect4 scale);
+void scale_polygon(vect4& pt, float scale);
 void rotateX(vect4& pt, float angle);
 void rotateY(vect4& pt, float angle);
 void rotateZ(vect4& pt, float angle);
 void matrix_product(vect4& p, float matrix[m][m]);
-
-///////////////////            3D transformation        ///////////////////
 
 void matrix_product(vect4& p, float matrix[m][m])
 {

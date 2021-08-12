@@ -1,15 +1,15 @@
 
 #include "model.h"
-
+//Declaration of useful variables or functions
 float lastX = 800;
 float lastY = 800;
 bool mouseLeftDown = false;
+const unsigned int SWIDTH = 800;
+const unsigned int SHEIGHT = 800;
 
 Camera* camera;
 Model* model;
 
-// bool firstMouse = true;
-// bool mouseLeftDown = false;
 
 float deltaTime = 0.0f;
 
