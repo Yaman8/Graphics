@@ -4,7 +4,8 @@
 #include<sstream>
 #include<algorithm>
 
-#include "camera.h"
+//#include "newCamera.h"
+#include"camera.h"
 #include "transform.h"
 #include "triangleRaster.h"
 
@@ -272,34 +273,20 @@ bool Model::backFaceDetection(Triangle& tri)
     vect4 v2 = tri.vertices[1];
     vect4 v3 = tri.vertices[2];
 
-    vect4 n1 = tri.normals[0];
-    vect4 n2 = tri.normals[1];
-    vect4 n3 = tri.normals[2];
+    vect4 centroid;
+    centroid.x = (v1.x + v2.x + v3.x) / 3;
+    centroid.y = (v1.y + v2.y + v3.y) / 3;
+    centroid.z = (v1.z + v2.z + v3.z) / 3;
 
+    vect4 ver1 = centroid - v2;
+    vect4 ver2 = centroid - v3;
 
-    vect4 view1 = (camera->Position - v1).normalize();
-    vect4 view2 = (camera->Position - v2).normalize();
-    vect4 view3 = (camera->Position - v3).normalize();
+    vect4 normal = (ver1.crossProduct(ver2)).normalize();
 
-    //std::cout<< view1.x <<std::endl;
-    //std::cout << view1.y << std::endl;
-    //std::cout << view1.z << std::endl;
-    //std::cout << view2.x << std::endl;
-    //std::cout << view2.y << std::endl;
-    //std::cout << view2.z << std::endl;
-    //std::cout << view3.x << std::endl;
-    //std::cout << view3.y << std::endl;
-    //std::cout << view3.z << std::endl;
+    vect4 view = (centroid - camera->Position).normalize();
 
-    float dotProduct1 = dotProduct(n1, view1);
-    float dotProduct2 = dotProduct(n2, view2);
-    float dotProduct3 = dotProduct(n3, view3);
-
-    if (dotProduct1 < 0 || dotProduct2 < 0 || dotProduct3 < 0)
-    {
-        return false;
-    }
-    return true;
+    float value = dotProduct(normal, view);
+    return value < 0 ? false : true;
 }
 
 //bool Model::Culling(Triangle& tri)
@@ -339,7 +326,7 @@ bool Model::backFaceDetection(Triangle& tri)
 //
 //    if (value < 0)
 //    {
-//        ftriangles.push_back(tri);
+//        //ftriangles.push_back(tri);
 //        return false;
 //    }
 //

@@ -146,6 +146,7 @@
     <ClInclude Include="lineFunc.h" />
     <ClInclude Include="matrixFunc.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="newCamera.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="triangleRaster.h" />
     <ClInclude Include="vect.h" />

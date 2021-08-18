@@ -14,12 +14,17 @@ int main(int argc, char** argv)
     //model->scale_model(0.5);
     //model->translate_model({ SWIDTH / 2, SHEIGHT / 2, 0 });
 
+    //model->Load("../obj/zahaf1.obj");
+    //model->camera = camera;
+    //model->modelToScreen();
+    //model->scale_model(0.1);
+    //model->translate_model({ SWIDTH / 4, SHEIGHT / 4, 0 });
+
     model->Load("../obj/zahaf1.obj");
     model->camera = camera;
     model->modelToScreen();
     model->scale_model(0.15);
     model->translate_model({ SWIDTH / 2, SHEIGHT / 2, 0 });
-
 
     glutDisplayFunc(drawModel);
 

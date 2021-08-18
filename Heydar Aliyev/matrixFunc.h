@@ -47,16 +47,16 @@ mat4f Perspective(float fov, float aspect)
 {
     float zNear = 0.9;
 
-    float fovRad = 1.0f / tanf(fov * 0.5f / 180.0f * 3.14159f);
+    //float fovRad = 1.0f / tanf(fov * 0.5f / 180.0f * 3.14159f);
 
     float zFar = -1.0f;
     float zRange = zNear - zFar;
 
 
-    mat4f projection = { {{aspect * fovRad, 0,0,0},
-                        {0, fovRad, 0, 0},
-                        {0,0,zFar / (zFar - zNear),1},
-                        {0,0,(-zFar * zNear) / (zFar - zNear), 0}} };
+    mat4f projection = { {{1/aspect * tanf(fov/2), 0,0,0},
+                        {0, 1 / aspect * tanf(fov / 2), 0, 0},
+                        {0,0,(zFar + zNear) / zRange,(zFar * zNear) / zRange},
+                        {0,0,-1, 0}} };
     return projection;
 
 
